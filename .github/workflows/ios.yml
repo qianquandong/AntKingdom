@@ -132,6 +132,18 @@ jobs:
           # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "offline-900s" -ak-scenario connected -ak-away 900
 
+      - name: TestFlight 配置无签名编译（真机架构；调试入口已剔除、未接广告/内购）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail   # 检查失败不能被 tee 吞掉
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -configuration TestFlight -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-release \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO build
+          bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app \
+            | tee build/release-check.md >> "$GITHUB_STEP_SUMMARY"
+          cat build/release-check.md
+
       - name: 上传证据
         if: always()
         uses: actions/upload-artifact@v4
@@ -140,6 +152,7 @@ jobs:
           path: |
             build/environment.md
             build/core-diff.md
+            build/release-check.md
             build/swift_core.json
             build/screenshots
             build/attachments

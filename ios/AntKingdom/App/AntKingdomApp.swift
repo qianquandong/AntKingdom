@@ -16,7 +16,8 @@ struct AntKingdomApp: App {
     }
 }
 
-/// 启动参数（仅 Debug 解释）：
+#if DEBUG
+/// 启动参数（只编译进 Debug；TestFlight/AppStore 二进制中不存在，CI 用 check-release-binary.sh 检查）：
 /// - `-ak-scenario <name>`：载入调试场景（内存存档，不碰真实存档）
 /// - `-ak-ephemeral`：使用内存存档的新档
 /// - `-ak-away <seconds>`：先在“过去”保存，再冷启动，预览离线结算
@@ -41,3 +42,4 @@ struct LaunchOptions {
         reduceMotion = arguments.contains("-ak-reduce-motion")
     }
 }
+#endif

@@ -71,6 +71,17 @@ Debug 启动参数（Xcode Scheme → Run → Arguments，或 UI 测试 `launchA
 | `-ak-reset-save` | 启动前删除本机存档，之后照常保存（杀进程恢复测试） |
 | `-ak-reduce-motion` | 强制“减少动态” |
 
+### TestFlight 内部包（C08，签名部分待用户）
+
+CI 已对 TestFlight 配置做无签名的真机架构编译，并用 `ci/check-release-binary.sh` 检查：版本/构建号、
+最低 iOS 17.0、仅 iPhone、调试入口已剔除、未链接 StoreKit/AdSupport/AppTrackingTransparency。
+用户提供 Team 与真实 Bundle ID 后，在自己的 Mac 上：
+
+1. 在 `ios/project.yml` 写入 `PRODUCT_BUNDLE_IDENTIFIER`（三个 target 的前缀一致），`DEVELOPMENT_TEAM` 用 Xcode 账号自动签名或本机 xcconfig，不提交凭据；`xcodegen generate --spec ios/project.yml`。
+2. 构建号单调递增：`xcodebuild ... CURRENT_PROJECT_VERSION=<n> archive`，`MARKETING_VERSION` 按发行计划变更。
+3. Xcode Organizer → Distribute App → TestFlight & App Store（或 Internal Only），由用户确认上传。
+4. 上传前 `python3 tools/check_assets.py --strict` 必须通过；占位资源不能进外部测试或提审包。
+
 ## 4a. 正式资源导入约定
 
 每个资源 ID 在客户端对应的运行时名称见 [`design/asset_runtime_names.json`](../design/asset_runtime_names.json)
@@ -98,6 +109,7 @@ python3 tools/export_strings.py
 | 工作流 | 运行环境 | 内容 |
 |---|---|---|
 | `validate.yml` | Ubuntu，Python 3.11 / 3.14 | 规则、地图、文案、String Catalog 同步 |
-| `ios.yml` | Ubuntu `swift:6.2` 容器 + `macos-15` runner | 核心包测试（Linux 与 macOS）、Python↔Swift 差分报告、工程漂移检查、模拟器单元/UI 测试（标准 + 小屏）、操作录像、场景与离线截图、环境记录 |
+| `validate.yml`（续） | 同上 | 资源就绪报告（信息性；发行前 `--strict`） |
+| `ios.yml` | Ubuntu `swift:6.2` 容器 + `macos-15` runner | 核心包测试（Linux 与 macOS）、Python↔Swift 差分报告、工程漂移检查、模拟器单元/UI 测试（标准 + 小屏）、操作录像、场景与离线截图、TestFlight 配置无签名编译与二进制检查、环境记录 |
 
 `ios.yml` 的证据（环境记录、截图、UI 附件、日志、xcresult）作为 Actions artifact 保存。它们来自 GitHub 托管 runner 与模拟器，**不是真机证据**，也不代表用户本人的 Mac 已验证。
