@@ -31,6 +31,8 @@ final class GameController: ObservableObject {
     @Published var selection: Selection?
     @Published private(set) var toasts: [Toast] = []
     @Published var showSettings = false
+    /// Pantry 建造/移动摆放模式（摆放时不挖土）
+    @Published var placement: PantryPlacement?
     /// 仅调试/UI 测试：地图变换与已挖格数
     @Published var debugProbe = ""
 
@@ -96,6 +98,10 @@ final class GameController: ObservableObject {
 
     /// 地图单击：可挖前沿→挖一下；实体→选中；其他→取消选中。
     func tapCell(_ cell: GridPoint) {
+        if placement != nil {
+            movePlacement(to: cell)
+            return
+        }
         if latest.frontier.contains(cell) {
             selection = nil
             guard tapLimiter.acceptManualTap(at: clock.uptime()) else { return }
@@ -138,7 +144,7 @@ final class GameController: ObservableObject {
 
     /// 长按挖掘：按下即一次，之后每秒 5 次（PRD 2.2），直到松手或该格打通。
     func holdBegan(_ cell: GridPoint) {
-        guard latest.frontier.contains(cell) else { return }
+        guard placement == nil, latest.frontier.contains(cell) else { return }
         selection = nil
         hold = (cell, clock.uptime(), 0)
         advanceHold()
@@ -176,6 +182,7 @@ final class GameController: ObservableObject {
     /// 设置里的 Start Over（UI 已二次确认）。设置项保留。
     func resetColony() {
         selection = nil
+        placement = nil
         hold = nil
         send(.reset)
         onReset?()

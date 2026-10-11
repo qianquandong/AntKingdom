@@ -9,6 +9,8 @@ public enum DebugScenario: String, CaseIterable, Sendable {
     case busy
     /// 接通、留出 2×2 空间且余额 60 Food，可直接建仓
     case pantryReady = "pantry_ready"
+    /// Pantry 建在离源较远的 (1,2)，另有 (1,4) 可移入：用于移动与“真实改善”反馈
+    case pantryBuilt = "pantry_built"
     /// 按 PRD 6.2 固定操作推进到 300 秒
     case replay300
     /// 按 PRD 6.2 固定操作推进到 600 秒（人口与容量上限）
@@ -36,6 +38,18 @@ public enum DebugScenario: String, CaseIterable, Sendable {
                 state.spent = 0
                 state.hatching = false
             }
+        case .pantryBuilt:
+            connect(session)
+            for p in [(1, 4), (1, 5), (2, 3), (1, 3), (2, 2), (1, 2)] {
+                session.apply(.debugCompleteCell(GridPoint(p.0, p.1)))
+            }
+            try session.debugReplaceState { state in
+                state.food = 80
+                state.hauled = 80
+                state.spent = 0
+                state.hatching = false
+            }
+            session.apply(.buildPantry(topLeft: GridPoint(1, 2)))
         case .replay300:
             try replay(session, until: 300)
         case .replay600:

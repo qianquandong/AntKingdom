@@ -90,6 +90,7 @@ public final class GameSession {
             emit(.pantryBuilt)
             emitStorageChange(wasFull: before.storageFull)
         } else {
+            flags.pantryMovedOnce = true
             emit(.pantryMoved)
         }
         compareLayout(before)

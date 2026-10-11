@@ -16,11 +16,21 @@ public struct GameState: Codable, Equatable, Sendable {
     }
 
     /// 首局引导与反馈去重用的进度标记（不影响经济）。
+    /// 解码时缺失的键取默认值：新增标记不会让旧存档无法读取。
     public struct Flags: Codable, Equatable, Sendable {
         public var firstSourceConnected = false
         public var pantryBuiltOnce = false
+        public var pantryMovedOnce = false
         public var prototypeComplete = false
         public init() {}
+
+        public init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            firstSourceConnected = try c.decodeIfPresent(Bool.self, forKey: .firstSourceConnected) ?? false
+            pantryBuiltOnce = try c.decodeIfPresent(Bool.self, forKey: .pantryBuiltOnce) ?? false
+            pantryMovedOnce = try c.decodeIfPresent(Bool.self, forKey: .pantryMovedOnce) ?? false
+            prototypeComplete = try c.decodeIfPresent(Bool.self, forKey: .prototypeComplete) ?? false
+        }
     }
 
     public var mapId: String
