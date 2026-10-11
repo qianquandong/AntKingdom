@@ -4,6 +4,26 @@
 
 当前仓库提供 **v0.2 核心验证版 PRD 与 Python 数值工具**，尚无 iPhone 客户端。文档使用中文，玩家文案使用英文。首版聚焦一张小地图、24 只蚂蚁和一个可移动仓库；商业化与四地层暂缓。
 
+## 从这里交给 Claude
+
+用户已确定：**Codex 负责计划与美术，Claude 负责代码；已有 Mac；正式版免费并加入内购/可选奖励广告。** 核心验证与正式发行分阶段执行，完整流程已经写好：
+
+| 入口 | 内容 |
+|---|---|
+| [CLAUDE.md](CLAUDE.md) | Claude 开工顺序、执行规则和首批任务 |
+| [交付总计划](docs/DELIVERY_PLAN.md) | 分工、M0–M8 阶段、任务依赖与验收 |
+| [执行看板](docs/EXECUTION_BOARD.md) | 当前状态、待定资料、报告模板、可复制给 Claude 的消息 |
+| [技术交接](docs/TECHNICAL_HANDOFF.md) | Swift/SpriteKit 工程、模块、差分验证与保存契约 |
+| [美术规范](docs/ART_DIRECTION.md) | 风格、尺寸、UI 状态、制作批次、商店素材 |
+| [资源清单](design/asset_manifest.json) | Codex 待制作资源 ID 与交付状态 |
+| [测试计划](docs/QA_TEST_PLAN.md) | 48 条客户端用例、真机矩阵、观察试玩、发行门槛 |
+| [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |
+| [App Store 手册](docs/APP_STORE_RUNBOOK.md) | 签名、TestFlight、隐私/IAP、商店资料、提审与上线后处理 |
+
+当前已经交付的是规则工具与计划文档；客户端、最终美术、真实支付/广告与真机测试尚待执行。Claude 从 C00 开始即可。
+
+## 核心规则资料
+
 | 文件 | 用途 |
 |---|---|
 | [docs/PRD.md](docs/PRD.md) | 当前唯一实现依据，包含运输、经济、验收与英文文案 |

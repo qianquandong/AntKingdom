@@ -1,6 +1,8 @@
 # 后续路线图与旧版归档
 
-当前需求仅以 [PRD v0.2](PRD.md) 为准。这里记录暂缓项目，不构成首版承诺。
+当前核心验证规则以 [PRD v0.2](PRD.md) 为准。这里记录长期候选项目；正式版已安排的增量见下方链接。
+
+2026-10-11 补充：用户已要求完整上架计划并确定正式版免费加内购/可选奖励广告。当前核心阶段仍按 PRD v0.2；M4–M8 以 [交付总计划](DELIVERY_PLAN.md) 和 [正式版增量](RELEASE_SCOPE.md) 为准。下面长期候选中与新计划冲突的商品/内容排期，以该增量为准；四地层、订阅和多源职业等仍不进入 1.0。
 
 旧完整设计：[v0.1 历史 PRD](https://github.com/qianquandong/AntKingdom/blob/3bd2062033cb5c2fcc1ff275c486cbee5e3a67df/docs/PRD.md)。旧四地层布局 [map_backyard.txt](../design/map_backyard.txt) 作为草案保留，不再被默认加载。
 

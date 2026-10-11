@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-11",
+  "description": "美术制作任务清单；所有资源当前均未制作。planned_output 是未来交付位置，不表示文件已存在。",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status_values": ["planned", "draft", "reviewed", "approved", "integrated", "verified_on_device"],
+  "assets": [
+    {"id":"art_keyframe","batch":"A00","phase":"core","planned_output":"assets/source/keyframe","spec":"主界面与小屏稿，无烘焙文字","status":"planned","license_or_source":null},
+    {"id":"terrain_soil","batch":"A01","phase":"core","planned_output":"assets/game/terrain/soil","spec":"144x144 PNG，3 种无缝变化","status":"planned","license_or_source":null},
+    {"id":"terrain_tunnel_masks","batch":"A01","phase":"core","planned_output":"assets/game/terrain/tunnel","spec":"144x144 PNG x16，四邻位序 N1 E2 S4 W8","status":"planned","license_or_source":null},
+    {"id":"terrain_stone","batch":"A01","phase":"core","planned_output":"assets/game/terrain/stone","spec":"144x144 PNG","status":"planned","license_or_source":null},
+    {"id":"surface_backdrop","batch":"A01","phase":"core","planned_output":"assets/game/environment/surface","spec":"1296x288 PNG，可裁切背景，不影响碰撞","status":"planned","license_or_source":null},
+    {"id":"room_queen","batch":"A01","phase":"core","planned_output":"assets/game/rooms/queen","spec":"432x288 PNG，占地 3x2","status":"planned","license_or_source":null},
+    {"id":"room_pantry","batch":"A01","phase":"core","planned_output":"assets/game/rooms/pantry","spec":"288x288 PNG，占地 2x2","status":"planned","license_or_source":null},
+    {"id":"source_cookie","batch":"A01","phase":"core","planned_output":"assets/game/sources/cookie","spec":"288x288 PNG，有货/空各一张","status":"planned","license_or_source":null},
+    {"id":"source_sugar","batch":"A01","phase":"core","planned_output":"assets/game/sources/sugar","spec":"144x144 PNG，有货/空各一张","status":"planned","license_or_source":null},
+    {"id":"source_sap","batch":"A01","phase":"core","planned_output":"assets/game/sources/sap","spec":"144x144 PNG","status":"planned","license_or_source":null},
+    {"id":"ant_worker","batch":"A02","phase":"core","planned_output":"assets/game/ants/worker","spec":"96x96 PNG，idle2/walk6/carry6，统一中心锚点，朝右","status":"planned","license_or_source":null},
+    {"id":"ant_cargo","batch":"A02","phase":"core","planned_output":"assets/game/ants/cargo","spec":"48x48 PNG，独立食物叠加层","status":"planned","license_or_source":null},
+    {"id":"egg_states","batch":"A02","phase":"core","planned_output":"assets/game/ants/egg","spec":"96x96 PNG，普通/将孵化两态","status":"planned","license_or_source":null},
+    {"id":"dig_feedback","batch":"A02","phase":"core","planned_output":"assets/game/effects/dig","spec":"144x144 PNG，裂纹两级与碎屑小图","status":"planned","license_or_source":null},
+    {"id":"route_markers","batch":"A02","phase":"core","planned_output":"assets/game/effects/route","spec":"正常/繁忙/选中标记，不能只用颜色区别","status":"planned","license_or_source":null},
+    {"id":"ui_core","batch":"A03","phase":"core","planned_output":"assets/source/ui/core","spec":"面板稿与 Food/Ant/Egg/Move/Settings 图标；文字原生","status":"planned","license_or_source":null},
+    {"id":"audio_core","batch":"A03","phase":"core","planned_output":"assets/audio/core","spec":"dig/tunnel_open/build/move/hatch/refill/ui 共7类，WAV源与授权记录；BGM可延后","status":"planned","license_or_source":null},
+    {"id":"chapter_maps","batch":"A04","phase":"release","planned_output":"design/release_maps","spec":"两张新增 9x9 地图、目标及可复现免费完成脚本","status":"planned","license_or_source":null},
+    {"id":"garden_decor_pack","batch":"A05","phase":"release","planned_output":"assets/game/skins/garden","spec":"Queen 432x288 与 Pantry 288x288 两件永久外观，不改数值","status":"planned","license_or_source":null},
+    {"id":"ui_release","batch":"A05","phase":"release","planned_output":"assets/source/ui/release","spec":"章节/完成/商品/广告状态稿和预览图","status":"planned","license_or_source":null},
+    {"id":"app_icon","batch":"A06","phase":"release","planned_output":"assets/store/icon","spec":"1024x1024 源稿；按当前 Xcode 规则导出","status":"planned","license_or_source":null},
+    {"id":"store_screenshots","batch":"A06","phase":"release","planned_output":"assets/store/screenshots","spec":"5张真实构建截图版式，英文标题；按 Apple 当前尺寸导出","status":"planned","license_or_source":null}
+  ]
+}
