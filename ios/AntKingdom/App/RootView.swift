@@ -23,7 +23,8 @@ struct RootView: View {
                 .padding(.horizontal, 12)
                 .padding(.bottom, 8)
                 #if DEBUG
-                DebugProbeView(text: controller.debugProbe)
+                DebugProbeView(text: controller.debugProbe, identifier: "debug.probe")
+                DebugProbeView(text: controller.debugLifecycle, identifier: "debug.lifecycle")
                 #endif
             }
         }
@@ -31,15 +32,16 @@ struct RootView: View {
 }
 
 #if DEBUG
-/// UI 测试读取的调试探针（地图变换与已挖格数）；只在 Debug 构建存在。
+/// UI 测试读取的调试探针（地图变换与已挖格数；生命周期日志）；只在 Debug 构建存在。
 private struct DebugProbeView: View {
     let text: String
+    let identifier: String
     var body: some View {
         Text(text)
             .font(.system(size: 1))
             .opacity(0.02)
             .frame(width: 1, height: 1)
-            .accessibilityIdentifier("debug.probe")
+            .accessibilityIdentifier(identifier)
             .allowsHitTesting(false)
     }
 }

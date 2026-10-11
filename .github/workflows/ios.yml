@@ -31,6 +31,79 @@ jobs:
       - run: swift --version
       - run: swift test --package-path Packages/AntKingdomCore
 
+  d13-roundtrips:
+    name: D-13 前后台往返回归（标准与小屏各 10 轮 × 65 秒）
+    # 每轮重启到同一可结算状态；任何一轮失败都保留日志，不重跑、不删轮（Issue #11）
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/claude/d13-lifecycle'
+    runs-on: macos-15
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 选择 Xcode
+        run: bash ci/select-xcode.sh
+
+      - name: 构建测试包（Debug，模拟器）
+        run: |
+          mkdir -p build
+          echo "SIM_STANDARD=$(python3 ci/pick_simulator.py standard 2>build/sim-standard.txt)" >> "$GITHUB_ENV"
+          echo "SIM_SMALL=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)" >> "$GITHUB_ENV"
+          echo "- 标准：$(cat build/sim-standard.txt)；小屏：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "generic/platform=iOS Simulator" -derivedDataPath build/DerivedData             CODE_SIGNING_ALLOWED=NO build-for-testing
+
+      - name: 标准机型 10 轮
+        timeout-minutes: 30
+        env:
+          TEST_RUNNER_AK_ROUNDS: "10"
+        run: |
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData             -resultBundlePath build/D13-standard.xcresult             -only-testing:AntKingdomUITests/LifecycleRoundTripUITests             CODE_SIGNING_ALLOWED=NO test-without-building
+
+      - name: 小屏 10 轮
+        if: always()
+        timeout-minutes: 30
+        env:
+          TEST_RUNNER_AK_ROUNDS: "10"
+        run: |
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_SMALL" -derivedDataPath build/DerivedData             -resultBundlePath build/D13-small.xcresult             -only-testing:AntKingdomUITests/LifecycleRoundTripUITests             CODE_SIGNING_ALLOWED=NO test-without-building
+
+      - name: 汇总每一轮
+        if: always()
+        run: |
+          grep -h "^D13-ROUND" build/logs/*.log 2>/dev/null | sort -u > build/d13-rounds.txt || true
+          {
+            echo "### D-13 往返（每轮一行；未删除任何失败轮）"
+            echo
+            echo '```'
+            cat build/d13-rounds.txt
+            echo '```'
+            echo
+            echo "PASS: $(grep -c 'result=PASS' build/d13-rounds.txt || true) / $(wc -l < build/d13-rounds.txt | tr -d ' ')"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 导出附件
+        if: always()
+        run: |
+          for kind in standard small; do
+            mkdir -p "build/attachments-d13-$kind"
+            if [ -d "build/D13-$kind.xcresult" ]; then
+              xcrun xcresulttool export attachments --path "build/D13-$kind.xcresult" --output-path "build/attachments-d13-$kind" || true
+            fi
+          done
+
+      - name: 上传证据
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: d13-evidence-${{ github.run_number }}
+          path: |
+            build/d13-rounds.txt
+            build/sim-standard.txt
+            build/sim-small.txt
+            build/attachments-d13-standard
+            build/attachments-d13-small
+            build/logs
+          retention-days: 30
+
   ios-simulator:
     name: Xcode 构建与模拟器测试（macOS）
     runs-on: macos-15

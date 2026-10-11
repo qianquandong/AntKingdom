@@ -10,6 +10,35 @@ final class GameControllerTests: XCTestCase {
         func uptime() -> Double { now }
     }
 
+    /// D-13：生命周期说 hold 时（后台区间未结算），帧既不推进也不自动保存；resumed 时弹出总结且丢弃本帧间隔。
+    func testFramesRespectLifecycleAdmission() {
+        let clock = FakeClock()
+        let controller = GameController(session: GameSession(), clock: clock)
+        var saves = 0
+        controller.persist = { saves += 1; return true }
+        var admission = ForegroundFrame.hold
+        controller.admitFrame = { admission }
+        let before = controller.session.makeState()
+        clock.now += 120                     // 距上次保存早已超过 30 秒
+        controller.frame(delta: 1)
+        XCTAssertEqual(controller.session.makeState(), before, "held frame does not advance")
+        XCTAssertEqual(saves, 0, "held frame does not autosave")
+
+        let summary = OfflineSummary(hauledFood: 27, netFood: 27, simulatedSeconds: 65, awaySeconds: 65)
+        admission = .resumed(summary)
+        var resumed = 0
+        controller.onResume = { resumed += 1 }
+        controller.frame(delta: 1)
+        XCTAssertEqual(controller.session.makeState(), before, "gap frame drops its delta")
+        XCTAssertEqual(controller.offlineSummary, summary)
+        XCTAssertEqual(resumed, 1)
+
+        admission = .run
+        controller.frame(delta: 1)
+        XCTAssertGreaterThan(controller.session.colony.elapsed, before.elapsed, "normal frames advance again")
+        XCTAssertEqual(saves, 1, "and autosave resumes")
+    }
+
     func testTapsAreRateLimitedAndOpenCells() {
         let clock = FakeClock()
         let controller = GameController(session: GameSession(), clock: clock)
