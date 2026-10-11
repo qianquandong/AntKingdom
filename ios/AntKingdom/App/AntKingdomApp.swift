@@ -36,6 +36,7 @@ struct AntKingdomApp: App {
 /// - `-ak-reduce-motion`：强制“减少动态”（模拟器测试 QA T31，不改系统设置）
 /// - `-ak-gallery`：显示通路遮罩/土层逐格检视页（A01-02 美术核对），不进入游戏
 /// - `-ak-zoom <倍数>`：初始镜头缩放（钳制到最小总览 / 最大 1.6 倍），美术截图用；UI 测试的捏合手势在 CI 上缩小不可靠
+/// - `-ak-fail-writes`：发行轨，启动完成后内存存档的写入全部失败（写盘失败提示的 UI 测试，R03/R04）
 struct LaunchOptions {
     var scenario: DebugScenario?
     var ephemeral = false
@@ -48,6 +49,8 @@ struct LaunchOptions {
     var fixtureChapters = false
     /// 发行轨：用确定性的假商店（ok/cancel/pending/fail/unavailable/owned），只在 Debug
     var storeMode: String?
+    /// 发行轨：启动完成后让内存存档写入失败，只在 Debug 且使用内存存档时生效
+    var failWrites = false
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -63,6 +66,7 @@ struct LaunchOptions {
         zoom = value(after: "-ak-zoom").flatMap(Double.init)
         fixtureChapters = arguments.contains("-ak-fixture-chapters")
         storeMode = value(after: "-ak-store")
+        failWrites = arguments.contains("-ak-fail-writes")
     }
 }
 #endif

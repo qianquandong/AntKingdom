@@ -613,6 +613,18 @@
         }
       }
     },
+    "shop.save_failed" : {
+      "comment" : "max 88 chars; 已验证购买写盘失败：交易未完成，重试写盘不重新购买（R03）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase received but not saved yet. Tap Try Again. You won't be charged twice."
+          }
+        }
+      }
+    },
     "shop.title" : {
       "comment" : "max 20 chars; 外观页",
       "extractionState" : "manual",

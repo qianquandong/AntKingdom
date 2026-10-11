@@ -74,8 +74,9 @@ final class CampaignModel: ObservableObject {
             service: storeService, bundleId: bundleId,
             progress: { [weak self] in self?.campaign?.progress },
             updateEntitlements: { [weak self] owned in
-                guard let self else { return }
-                self.campaign?.updateEntitlements(owned, bundleId: self.bundleId)
+                // 返回是否已写盘（R03）：没有可用进度（存档错误页）时也算未写盘，交易不完成
+                guard let self, let campaign = self.campaign else { return false }
+                return campaign.updateEntitlements(owned, bundleId: self.bundleId)
             },
             selectStyle: { [weak self] style in
                 guard let self else { return false }
@@ -84,6 +85,11 @@ final class CampaignModel: ObservableObject {
         shop.onStyleChange = { [weak self] in self?.applyRoomStyle() }
         launch()
         observeApplicationLifecycle()
+        #if DEBUG
+        if options.failWrites, let memory = store as? MemorySaveStore {
+            memory.failWrites = true   // 启动之后的写入全部失败（UI 测试写盘失败提示）
+        }
+        #endif
         shop.start()
     }
 

@@ -17,6 +17,18 @@ struct ShopView: View {
                         .multilineTextAlignment(.center)
                         .accessibilityIdentifier("shop.message")
                 }
+                if shop.savePending {
+                    // 权益写盘失败（R03）：重试写盘，不重新购买
+                    Button {
+                        Task { await shop.retrySave() }
+                    } label: {
+                        Text(L10n.text("action.retry")).frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Theme.connected)
+                    .disabled(shop.busy)
+                    .accessibilityIdentifier("shop.retry_save")
+                }
                 Spacer(minLength: 0)
                 Button {
                     Task { await shop.restore() }
@@ -52,7 +64,7 @@ struct ShopView: View {
                     .font(.system(.title3, design: .rounded).weight(.bold))
                     .accessibilityIdentifier("shop.garden_pack")
                 Spacer()
-                if shop.owned {
+                if shop.owned, !shop.savePending {
                     Text(L10n.text("shop.owned"))
                         .font(.caption.weight(.bold))
                         .padding(.horizontal, 8).padding(.vertical, 4)
@@ -62,7 +74,9 @@ struct ShopView: View {
             }
             Text(L10n.text("shop.garden_description"))
                 .font(.subheadline)
-            if shop.owned {
+            if shop.savePending {
+                EmptyView()   // 写盘完成前不显示“已拥有”或购买按钮，只显示下方的提示与重试
+            } else if shop.owned {
                 ownedActions
             } else {
                 purchaseActions

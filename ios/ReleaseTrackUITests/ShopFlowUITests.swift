@@ -10,8 +10,8 @@ final class ShopFlowUITests: XCTestCase {
         app = XCUIApplication()
     }
 
-    private func launch(_ scenario: String, store: String) {
-        app.launchArguments = ["-ak-scenario", scenario, "-ak-store", store]
+    private func launch(_ scenario: String, store: String, extra: [String] = []) {
+        app.launchArguments = ["-ak-scenario", scenario, "-ak-store", store] + extra
         app.launch()
         XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 20))
     }
@@ -28,6 +28,26 @@ final class ShopFlowUITests: XCTestCase {
         XCTAssertTrue(entry.waitForExistence(timeout: 5), "shop entry appears after the first Pantry")
         entry.tap()
         XCTAssertTrue(app.staticTexts["shop.garden_pack"].waitForExistence(timeout: 5))
+    }
+
+    /// R03：购买已验证但权益写盘失败——显示英文提示与 Try Again，不显示 Owned、不再显示购买按钮。
+    /// 存储恢复后的重试与“只完成一次”由 ShopModelTests 覆盖。
+    func testSaveFailureShowsThePromptInsteadOfSuccess() {
+        launch("pantry_built", store: "ok", extra: ["-ak-fail-writes"])
+        openShop()
+        let buy = app.buttons["shop.buy"]
+        XCTAssertTrue(buy.waitForExistence(timeout: 5))
+        buy.tap()
+        let note = app.staticTexts["shop.message"]
+        XCTAssertTrue(note.waitForExistence(timeout: 10))
+        XCTAssertEqual(note.label, "Purchase received but not saved yet. Tap Try Again. You won't be charged twice.")
+        XCTAssertTrue(app.buttons["shop.retry_save"].exists)
+        XCTAssertFalse(app.staticTexts["shop.owned"].exists, "not shown as delivered")
+        XCTAssertFalse(app.buttons["shop.buy"].exists, "no second purchase")
+        screenshot("R03-shop-save-failed")
+        app.buttons["shop.retry_save"].tap()
+        XCTAssertTrue(note.waitForExistence(timeout: 5), "storage still failing: prompt stays")
+        XCTAssertFalse(app.staticTexts["shop.owned"].exists)
     }
 
     func testNoShopEntryBeforeTheFirstPantry() {
