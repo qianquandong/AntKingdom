@@ -312,6 +312,8 @@ python tools/check_strings.py
 | `action.confirm` | Confirm | 16 | 确认按钮 |
 | `action.cancel` | Cancel | 16 | 取消按钮 |
 | `action.close` | Close | 16 | 关闭面板/设置（C04 新增） |
+| `action.ok` | OK | 12 | 关闭离线结果（C06 新增） |
+| `action.retry` | Try Again | 16 | 存档不可用时重试读取（C06 新增） |
 | `action.pause_hatching` | Pause Hatching | 24 | 暂停按钮 |
 | `action.resume_hatching` | Resume Hatching | 24 | 恢复按钮 |
 | `action.reset` | Start Over | 20 | 重置按钮 |

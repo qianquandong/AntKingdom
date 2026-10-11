@@ -61,6 +61,18 @@
         }
       }
     },
+    "action.ok" : {
+      "comment" : "max 12 chars; 关闭离线结果（C06 新增）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
     "action.pause_hatching" : {
       "comment" : "max 24 chars; 暂停按钮",
       "extractionState" : "manual",
@@ -93,6 +105,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resume Hatching"
+          }
+        }
+      }
+    },
+    "action.retry" : {
+      "comment" : "max 16 chars; 存档不可用时重试读取（C06 新增）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try Again"
           }
         }
       }
