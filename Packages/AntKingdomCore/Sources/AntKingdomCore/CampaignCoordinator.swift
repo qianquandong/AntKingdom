@@ -16,6 +16,18 @@ public enum CampaignLaunchResult {
     case progressUnavailable(SaveError)
 }
 
+/// 奖励广告“已赚得”回调的处理结果（R04）。
+public enum RewardGrantResult: Equatable, Sendable {
+    /// 已授予并已写盘
+    case granted
+    /// 已授予（boost、当日次数、冷却已记入账本并在本次运行中生效），但写盘失败。
+    /// 用同一请求 ID 再次回调或 `retryRewardSave()` 只重试写盘：不重复授予、不再占用次数，玩家不必再看广告。
+    /// 纯本地存档的边界：写盘持续失败期间进程被杀，这次未写盘的奖励无法恢复（也不占用当日次数）。
+    case savePending
+    /// 同一请求已授予且已写盘：不重复授予
+    case duplicate
+}
+
 public enum CampaignError: Error, Equatable {
     case unknownChapter(String)
     case locked(String)
@@ -38,6 +50,9 @@ public final class CampaignCoordinator {
     private let wallClock: WallClock
     private let progressRepository: ProgressRepository
     public private(set) var lastSaveError: SaveError?
+    /// 已授予但尚未写盘的奖励请求 ID；任何一次成功的全局进度写盘（含自动保存）都会清空
+    public private(set) var unsavedRewardRequests: Set<String> = []
+    public var hasUnsavedReward: Bool { !unsavedRewardRequests.isEmpty }
 
     public var session: GameSession { lifecycle.session }
 
@@ -205,16 +220,26 @@ public final class CampaignCoordinator {
                                        day: RewardLedger.utcDay(wallClock.now()), adAvailable: adAvailable)
     }
 
-    /// 广告 SDK 的“已赚得奖励”回调：授予一次（同一请求重复回调不再授予），立即保存再恢复游戏。
+    /// 广告 SDK 的“已赚得奖励”回调：授予一次并立即写盘，返回是否已写盘（R04）。
+    /// 同一请求重复回调不再授予；但该请求若已授予而未写盘，去重不阻断写盘重试。
     @discardableResult
-    public func grantReward(requestId: String) -> Bool {
+    public func grantReward(requestId: String) -> RewardGrantResult {
         syncRewards()
-        guard progress.rewards.grant(requestId: requestId, day: RewardLedger.utcDay(wallClock.now())) else {
-            return false
+        if progress.rewards.processedRequests.contains(requestId) {
+            return unsavedRewardRequests.contains(requestId) ? retryRewardSave() : .duplicate
         }
+        progress.rewards.grant(requestId: requestId, day: RewardLedger.utcDay(wallClock.now()))
         session.boostRemaining = progress.rewards.boostRemaining
-        saveProgress()
-        return true
+        unsavedRewardRequests.insert(requestId)
+        return saveProgress() ? .granted : .savePending
+    }
+
+    /// 重试写入已授予但未写盘的奖励（界面 Try Again）。没有待写盘的奖励时返回 `.granted`。
+    @discardableResult
+    public func retryRewardSave() -> RewardGrantResult {
+        guard hasUnsavedReward else { return .granted }
+        syncRewards()
+        return saveProgress() ? .granted : .savePending
     }
 
     #if DEBUG
@@ -313,6 +338,7 @@ public final class CampaignCoordinator {
         do {
             try progressRepository.save(&progress, now: wallClock.now())
             lastSaveError = nil
+            unsavedRewardRequests.removeAll()
             return true
         } catch let error as SaveError {
             lastSaveError = error

@@ -153,15 +153,81 @@ final class RewardTests: XCTestCase {
         let store = MemorySaveStore(), wall = FakeWall(86_400 * 3)
         let c = try readyCampaign(store, wall)
         XCTAssertEqual(c.rewardStatus(adAvailable: true), .ready)
-        XCTAssertTrue(c.grantReward(requestId: "ad-1"))
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .granted)
         XCTAssertEqual(c.session.boostRemaining, BoostRules.duration)
-        XCTAssertFalse(c.grantReward(requestId: "ad-1"), "double earned callback")
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .duplicate, "double earned callback")
         // 没有其他保存：崩溃后重开，奖励状态来自授予时的立即保存
         let reopened = try campaign(store, wall)
         XCTAssertEqual(reopened.progress.rewards.boostRemaining, BoostRules.duration)
         XCTAssertEqual(reopened.session.boostRemaining, BoostRules.duration)
-        XCTAssertFalse(reopened.grantReward(requestId: "ad-1"))
+        XCTAssertEqual(reopened.grantReward(requestId: "ad-1"), .duplicate)
         XCTAssertEqual(reopened.rewardStatus(adAvailable: true), .active)
+    }
+
+    /// R04：写盘失败不报告“已保存”，错误可见；同一请求或 Try Again 只重试写盘——不重复授予、不再占用次数、
+    /// 不重置 boost；存储恢复后写入原请求 ID、boost、次数与冷却；成功写盘后重启，相同回调不再授予。
+    func testSaveFailureIsVisibleAndRetriedWithoutAnotherAd() throws {
+        let store = MemorySaveStore(), wall = FakeWall(86_400 * 3)
+        let c = try readyCampaign(store, wall)
+        XCTAssertEqual(c.rewardStatus(adAvailable: true), .ready)
+        let grantedAt = c.progress.rewards.foreground
+        store.failWrites = true
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .savePending)
+        XCTAssertNotNil(c.lastSaveError)
+        XCTAssertTrue(c.hasUnsavedReward)
+        XCTAssertEqual(c.session.boostRemaining, BoostRules.duration, "boost is on for this run")
+        XCTAssertEqual(c.progress.rewards.dayCount, 1)
+
+        for _ in 0..<40 { c.session.tick(frameDelta: Rules.tick) }   // 10 秒前台
+        XCTAssertEqual(c.retryRewardSave(), .savePending, "storage still failing")
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .savePending, "duplicate callback only retries the save")
+        XCTAssertEqual(c.progress.rewards.dayCount, 1, "no extra daily use")
+        XCTAssertEqual(c.session.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9, "boost not reset or stacked")
+
+        store.failWrites = false
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .granted, "same request ID completes the save")
+        XCTAssertFalse(c.hasUnsavedReward)
+        XCTAssertNil(c.lastSaveError)
+        XCTAssertEqual(c.retryRewardSave(), .granted)
+
+        let reopened = try campaign(store, wall)
+        let ledger = reopened.progress.rewards
+        XCTAssertEqual(ledger.processedRequests, ["ad-1"])
+        XCTAssertEqual(ledger.dayCount, 1)
+        XCTAssertEqual(ledger.dayIndex, 3)
+        XCTAssertEqual(try XCTUnwrap(ledger.lastGrantForeground), grantedAt, accuracy: 1e-9)
+        XCTAssertEqual(ledger.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9)
+        XCTAssertEqual(reopened.session.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9)
+        XCTAssertEqual(reopened.grantReward(requestId: "ad-1"), .duplicate)
+        XCTAssertEqual(reopened.progress.rewards.dayCount, 1)
+        XCTAssertEqual(reopened.session.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9, "not reset")
+    }
+
+    /// 自动保存（saveAll）成功也完成待写盘的奖励，不需要玩家操作。
+    func testAutosaveCompletesAPendingRewardSave() throws {
+        let store = MemorySaveStore(), wall = FakeWall(86_400 * 3)
+        let c = try readyCampaign(store, wall)
+        store.failWrites = true
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .savePending)
+        store.failWrites = false
+        XCTAssertTrue(c.saveAll())
+        XCTAssertFalse(c.hasUnsavedReward)
+        XCTAssertEqual(try campaign(store, wall).progress.rewards.dayCount, 1)
+    }
+
+    /// 纯本地存档的边界（如实记录，不声称无条件可恢复）：写盘持续失败期间进程被杀，未写盘的奖励丢失，
+    /// 但也不占用当日次数，玩家可以再次领取。
+    func testKillWhileSaveStillFailingLosesOnlyTheUnsavedGrant() throws {
+        let store = MemorySaveStore(), wall = FakeWall(86_400 * 3)
+        let c = try readyCampaign(store, wall)
+        XCTAssertTrue(c.saveAll())
+        store.failWrites = true
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .savePending)
+        store.failWrites = false
+        let relaunched = try campaign(store, wall)   // 进程被杀后重启
+        XCTAssertEqual(relaunched.progress.rewards.dayCount, 0)
+        XCTAssertEqual(relaunched.session.boostRemaining, 0)
+        XCTAssertEqual(relaunched.rewardStatus(adAvailable: true), .ready)
     }
 
     func testBoostIsGlobalAcrossChapterSwitchReplayAndResetAll() throws {
@@ -171,7 +237,7 @@ final class RewardTests: XCTestCase {
         try DebugScenario.replay600.apply(to: c.session)
         c.evaluate()
         c.progress.rewards.foreground = BoostRules.unlockForeground
-        XCTAssertTrue(c.grantReward(requestId: "ad-1"))
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .granted)
         for _ in 0..<40 { c.session.tick(frameDelta: Rules.tick) }   // 10 秒前台
         c.syncRewards()
         XCTAssertEqual(c.progress.rewards.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9)
@@ -186,7 +252,7 @@ final class RewardTests: XCTestCase {
         c.resetAllProgress()
         XCTAssertEqual(c.progress.rewards.dayCount, 1, "reset all does not refill daily boosts")
         XCTAssertEqual(c.session.boostRemaining, BoostRules.duration - 10, accuracy: 1e-9)
-        XCTAssertFalse(c.grantReward(requestId: "ad-1"), "same request after reset")
+        XCTAssertEqual(c.grantReward(requestId: "ad-1"), .duplicate, "same request after reset")
     }
 
     func testStorageFullHidesTheOffer() throws {
