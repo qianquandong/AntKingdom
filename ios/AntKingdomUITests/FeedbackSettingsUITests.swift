@@ -31,9 +31,11 @@ final class FeedbackSettingsUITests: XCTestCase {
             .tap()
     }
 
+    /// CI 的 macOS runner 上单次元素查询可达约 2 秒（run 38164033504：录像里 Haptics 已切到 Off，
+    /// 3 秒等待内只完成一次查询即超时，T-03），等待放宽到 10 秒；断言内容不变。
     private func waitSelected(_ element: XCUIElement) -> Bool {
         let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isSelected == true"), object: element)
-        return XCTWaiter().wait(for: [selected], timeout: 3) == .completed
+        return XCTWaiter().wait(for: [selected], timeout: 10) == .completed
     }
 
     private func screenshot(_ name: String) {
