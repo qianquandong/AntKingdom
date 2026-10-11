@@ -56,6 +56,13 @@ jobs:
       - name: 核心包测试（macOS）
         run: swift test --package-path Packages/AntKingdomCore
 
+      - name: Python ↔ Swift 差分报告
+        run: |
+          mkdir -p build
+          swift run --package-path Packages/AntKingdomCore ak-sim > build/swift_core.json
+          python3 tools/diff_core.py build/swift_core.json build/core-diff.md > /dev/null
+          cat build/core-diff.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: 列出 scheme
         run: xcodebuild -list -project ios/AntKingdom.xcodeproj
 
@@ -91,6 +98,8 @@ jobs:
           name: ios-evidence-${{ github.run_number }}
           path: |
             build/environment.md
+            build/core-diff.md
+            build/swift_core.json
             build/screenshots
             build/attachments
             build/logs
