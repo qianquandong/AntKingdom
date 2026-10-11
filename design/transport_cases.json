@@ -1,0 +1,26 @@
+[
+  {
+    "id": "shorten_route",
+    "description": "固定 5 只：挖通直线，单程路径长度从 6 格减到 4 格。",
+    "before": {"walkable": [[0,0],[0,1],[1,1],[2,1],[3,1],[4,1],[4,0]], "sinks": [[4,0]]},
+    "after": {"walkable": [[0,0],[0,1],[1,1],[2,1],[3,1],[4,1],[4,0],[1,0],[2,0],[3,0]], "sinks": [[4,0]]},
+    "demands": [{"id": "food", "starts": [[0,0]], "ants": 5}],
+    "expected": {"before_food_per_min": 66.6666666667, "after_food_per_min": 85.7142857143, "gain_percent": 28.5714285714}
+  },
+  {
+    "id": "parallel_bypass",
+    "description": "固定 16 只：两条等长 8 格路线只共用装卸点，自动分为 8 + 8 只。",
+    "before": {"walkable": [[1,2],[7,2],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1]], "sinks": [[7,2]]},
+    "after": {"walkable": [[1,2],[7,2],[1,1],[2,1],[3,1],[4,1],[5,1],[6,1],[7,1],[1,3],[2,3],[3,3],[4,3],[5,3],[6,3],[7,3]], "sinks": [[7,2]]},
+    "demands": [{"id": "food", "starts": [[1,2]], "ants": 16}],
+    "expected": {"before_food_per_min": 106.6666666667, "after_food_per_min": 174.5454545455, "gain_percent": 63.6363636364, "before_max_load": 16, "after_max_load": 8}
+  },
+  {
+    "id": "move_pantry",
+    "description": "固定 7 只：移动卸货边界，距离 3 格变为 1 格；占地合法性另由 Colony 测试验证。",
+    "before": {"walkable": [[0,0],[1,0],[2,0],[3,0]], "sinks": [[3,0]]},
+    "after": {"walkable": [[0,0],[1,0],[2,0],[3,0]], "sinks": [[1,0]]},
+    "demands": [{"id": "food", "starts": [[0,0]], "ants": 7}],
+    "expected": {"before_food_per_min": 140.0, "after_food_per_min": 210.0, "gain_percent": 50.0}
+  }
+]

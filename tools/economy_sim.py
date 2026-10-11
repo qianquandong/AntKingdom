@@ -1,536 +1,409 @@
-"""Crumb Kingdom (一厘米蚂蚁王国) - MVP economy check (design tool, not game code).
+"""Crumb Kingdom v0.2 核心验证工具；不再预测 D8 通关或付费收益。
 
-Re-computes the numbers in docs/PRD.md section 6 from the same initial design values.
-  python tools/economy_sim.py                 # reference growth path (engaged, good layout)
-  python tools/economy_sim.py --tables        # PRD 6.3 tables
-  python tools/economy_sim.py --check         # storage-vs-cost deadlock check (PRD 6.5)
-  options: --layout poor | --casual | --ads | --crew 3 | --days N | --log
-
-Model (matches PRD section 4/6):
-- Hauling is route-level: each source has a route length L (tiles), a hauler
-  cap, optional extra off-screen time. Trip time T = 2L / (v * m) + load + unload + extra,
-  m = congestion multiplier = min(1, TILE_CAP * L / n), floored at 0.25.
-- Haulers fill sources in order of shortest single-ant trip time.
-- Queen lays an egg whenever a larva slot is free, food >= larva cost and
-  adults + larvae < population cap. Larvae hatch after hatch_time.
-- Rooms cost food up front and take a build crew for build time.
-- Offline: same rules at OFFLINE_EFF hauling, no purchases, economy runs only up to
-  the offline cap; build timers use wall clock.
+真实格网 -> 候选路线 -> 共享路段负载 -> 确定性分流 -> 资源守恒。
+仅依赖标准库。python tools/economy_sim.py --check / --tables / --json
+规则、局限和单位见 docs/PRD.md 第 4、6 章。
 """
+from __future__ import annotations
+
 import argparse
+from collections import Counter, deque
+from dataclasses import dataclass, field
+import json
 import math
+from pathlib import Path
 
-# ---------------- initial design values (keep in sync with PRD section 6) -------------
-def nice(x):
-    """round to 2 significant figures (used for every cost/capacity table)."""
-    if x < 100:
-        return int(round(x))
-    p = 10 ** (len(str(int(x))) - 2)
-    return int(round(x / p) * p)
-
-
-def geo(base, g, n_from, n_to):
-    """[cost to reach level n] for n in n_from..n_to: base * g^(n - n_from)."""
-    return [nice(base * g ** (n - n_from)) for n in range(n_from, n_to + 1)]
-
-
-SPEED = [2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8]             # tiles/s, 2.0 * (1 + 0.1 (lv-1))
-CARRY = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12]                                # food/trip
-DIG = [1, 2, 3, 4, 5, 7, 9, 11, 13, 15]                                 # damage/tap
-G = 3.6                                     # shared growth per level
-CARRY_COST = [0] + geo(100, G, 2, 10)       # index = current level -> cost of next level
-SPEED_COST = [0] + geo(150, G, 2, 10)
-DIG_COST = [0] + geo(80, G, 2, 10)
-QUEEN_COST = [0] + geo(200, G, 2, 10)       # QUEEN_COST[q] = cost to go from Q(q) to Q(q+1)
-QUEEN_TIME = [0, 0, 120, 900, 2 * 3600, 4 * 3600, 6 * 3600, 8 * 3600, 12 * 3600, 16 * 3600]  # [q] = Q(q)->Q(q+1)
-QUEEN_REQ_ANTS = [0, 10, 18, 30, 45, 60, 80, 100, 125, 150]
-# Depth/treasure milestones are approximated by a minimum of active play minutes
-# (digging to the layer + finding treasures). See PRD 6.4.
-QUEEN_REQ_ACTIVE_MIN = [0, 0, 12, 18, 26, 40, 60, 80, 110, 140]
-
-PANTRY_CAP = geo(1000, 6, 1, 5)
-DEN_CAP = [10, 15, 20, 25, 30]
-NURSERY_SLOTS = [3, 4, 5, 6, 8]
-RG = 8                                      # room growth per step
-PANTRY_BUILD = geo(50, RG, 1, 5)            # n-th pantry
-DEN_BUILD = geo(30, RG, 1, 6)
-NURSERY_BUILD = geo(40, 10, 1, 3)
-PANTRY_UP = [0] + geo(300, RG, 2, 5)        # index = current level -> cost of next level
-DEN_UP = [0] + geo(200, RG, 2, 5)
-NURSERY_UP = [0] + geo(200, RG, 2, 5)
-
-MAX_COUNT = {  # index = queen level - 1
-    "pantry": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
-    "den": [1, 2, 2, 3, 3, 4, 4, 5, 5, 6],
-    "nursery": [1, 1, 1, 2, 2, 2, 3, 3, 3, 3],
-}
-BUILD_TIME_NTH = [10, 120, 1200, 3600, 3 * 3600, 6 * 3600]   # seconds, n-th room of a type
-UPGRADE_TIME = [0, 60, 900, 3600, 3 * 3600]                  # index = current level
-
-QUEEN_STORE = 100
-BASE_POP = 10
-QUEEN_SLOTS = 2
-START_ANTS = 5
-LOAD, UNLOAD = 2.0, 1.0
-TILE_CAP = 4
-OFFLINE_EFF = 0.25
-OFFLINE_CAP_H = [2, 2, 2, 2, 3, 3, 3, 4, 4, 4]
-GOLDEN_BONUS_ACTIVE = 0.12      # Golden Crumb: 20 s of income every ~120 s, 70% tapped -> +11.7%
-# Treasure bonuses, applied from the queen level by which the reference player has found them:
-# Bottle Cap  Q2 pantry +10% | Lost Button Q4 speed +5% | Tin Soldier Q4 Golden Crumb +50%
-# Glass Marble Q6 hatch -10% | Old Coin Q8 offline x1.2 | Amber Drop Q8 carry +10%
-TREASURE_FROM = {"pantry": 2, "speed": 4, "golden": 4, "hatch": 6, "offline": 8, "carry": 8}
-DOUBLE_IT_PER_DAY = 3
-# Scripted tutorial (PRD 3): earliest second at which each action is offered in session 1.
-TUTORIAL_UNLOCK_S = {"pantry": 150, "nursery": 210, "den": 300, "queen": 510, "upgrades": 540}
-NURSE_PER_LARVAE = 3
-BUILDERS_PER_CREW = 2
-DIGGERS_FROM_Q3 = 2
-DROP_EVERY_S = 30 * 60
-DROP_AMOUNT = [nice(300 * 2 ** (q - 1)) for q in range(1, 11)]   # Falling Treat size by queen level
+ROOT = Path(__file__).resolve().parent.parent
+SPEED = 2.0                 # 格/秒
+CARRY = 2.0                 # Food/次完整运输
+HANDLING = 3.0              # 装货 2 秒 + 卸货 1 秒
+LANE_CAPACITY = 8.0         # 路段服务的搬运工预算，不是瞬时物理密度
+MAX_PATHS = 4
+MAX_MOVES = 256
+EPSILON = 1e-10
+TICK = 0.25                 # 秒；经济基准积分步长
+OFFLINE_EFFICIENCY = 0.25
+OFFLINE_CAP = 3600.0        # 秒；生产和孵化共同封顶
+BASE_STORAGE = 100.0
+PANTRY_STORAGE = 1000.0
+PANTRY_COST = 50.0
+HATCH_COST = 20.0
+HATCH_SECONDS = 30.0
+POP_CAP = 24
+LARVA_SLOTS = 2
+REFILL_SECONDS = 60.0
+Point = tuple[int, int]
+PathCells = tuple[Point, ...]
 
 
-def room_max_level(q):
-    return min(5, 1 + q // 2)
+def point_key(p: Point):
+    return p[1], p[0]
 
 
-def larva_cost(adults):
-    return 10 + round(0.4 * adults)
+def neighbors(p: Point):
+    x, y = p
+    return ((x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1))
 
 
-def hatch_time(adults, q):
-    return 45 * (1 + adults / 20) * (1 - 0.04 * (q - 1))
+def shortest_path(walkable: set[Point], starts: set[Point], sinks: set[Point],
+                  blocked: frozenset[Point] = frozenset()) -> PathCells | None:
+    """四邻 BFS；起点先行后列，邻居上左右下，固定顺序消除抖动。"""
+    available = walkable - blocked
+    queue = deque(p for p in sorted(starts & available, key=point_key))
+    parent = {p: None for p in queue}
+    while queue:
+        p = queue.popleft()
+        if p in sinks:
+            path = []
+            while p is not None:
+                path.append(p)
+                p = parent[p]
+            return tuple(reversed(path))
+        for q in neighbors(p):
+            if q in available and q not in parent:
+                parent[q] = p
+                queue.append(q)
+    return None
 
 
-# Sources on map 1 "Backyard" with a reasonable (good) layout.
-# (name, queen level when the player typically connects it, L, hauler cap, amount or None, extra s)
-SOURCES = [
-    ("Surface Forage", 1, 2, 10, None, 12),
-    ("Giant Cookie", 1, 3, 8, 600, 0),
-    ("Sugar Cube r2", 1, 3, 4, 150, 0),
-    ("Seed Piles x3", 1, 5, 3, 180, 0),
-    ("Sap Root (topsoil)", 1, 5, 8, None, 0),
-    ("Sugar Cube r9", 2, 6, 4, 150, 0),
-    ("Apple Core", 2, 5, 10, 1500, 0),
-    ("Sap Root (clay) A", 2, 6, 12, None, 0),
-    ("Sap Root (clay) B", 3, 6, 12, None, 0),
-    ("Sugar Cubes clay x2", 3, 6, 8, 300, 0),
-    ("Bread Crust A", 5, 6, 10, 4000, 0),
-    ("Sap Root (gravel) A", 5, 7, 20, None, 0),
-    ("Sap Root (gravel) B", 6, 7, 20, None, 0),
-    ("Bread Crust B", 6, 7, 10, 4000, 0),
-    ("Sap Root (gravel) C", 6, 8, 20, None, 0),
-    ("Candy Bar A", 7, 7, 12, 12000, 0),
-    ("Sap Root (deep) A", 7, 8, 36, None, 0),
-    ("Candy Bar B", 8, 8, 12, 12000, 0),
-    ("Sap Root (deep) B", 8, 9, 36, None, 0),
-]
+def candidate_paths(walkable: set[Point], starts: set[Point], sinks: set[Point]):
+    """主路径 + 逐一避开主路径非终点格的替代 BFS；去重保留最短四条。
+
+    有界候选搜索，不声称找到所有路线或全局最优运输方案。
+    """
+    primary = shortest_path(walkable, starts, sinks)
+    if primary is None:
+        return ()
+    found = {primary}
+    for p in primary[:-1]:
+        alternate = shortest_path(walkable, starts, sinks, frozenset({p}))
+        if alternate is not None:
+            found.add(alternate)
+    ordered = sorted(found, key=lambda route: (len(route), tuple(map(point_key, route))))
+    return tuple(ordered[:MAX_PATHS])
 
 
-class Sim:
-    def __init__(self, layout="good", crews_iap=False, ads=False, verbose=False):
-        self.lmul = 1.0 if layout == "good" else 1.5
-        self.crews_iap = crews_iap
-        self.ads = ads
-        self.verbose = verbose
-        self.t = 0.0
-        self.food = 0.0
-        self.adults = START_ANTS
-        self.larvae = []                # remaining seconds, larvae in Queen's Chamber first
-        self.q = 1
-        self.lv = {"speed": 1, "carry": 1, "dig": 1}
-        self.rooms = {"pantry": [], "den": [], "nursery": []}  # list of levels (built)
-        self.builds = []                # [finish_time, kind, idx or None (new), level]
-        self.queen_done = None          # finish time of Royal Growth
-        self.sources = []
-        self.connected = set()
-        self.drop_next = DROP_EVERY_S
-        self.active_s = 0.0
-        self.ads_used = {}
-        self.log = []
-        self.offline_lost = 0.0
-        self.offline_total = 0.0
-        self.idle_peak = 0
-        self.spent = {}
-        self.refresh_sources()
+@dataclass
+class Demand:
+    id: str
+    starts: set[Point]
+    ants: int
+    extra_seconds: float = 0.0
 
-    # ---------- derived ----------
-    def has(self, t):
-        return self.q >= TREASURE_FROM[t]
 
-    def store_cap(self):
-        mult = 1.1 if self.has("pantry") else 1.0
-        return QUEEN_STORE + int(sum(PANTRY_CAP[l - 1] for l in self.rooms["pantry"]) * mult)
+@dataclass
+class Route:
+    source_id: str
+    cells: PathCells
+    ants: int = 0
+    extra_seconds: float = 0.0
 
-    def pop_cap(self):
-        return BASE_POP + sum(DEN_CAP[l - 1] for l in self.rooms["den"])
+    @property
+    def distance(self):
+        return max(1, len(self.cells) - 1)
 
-    def larva_slots(self):
-        return QUEEN_SLOTS + sum(NURSERY_SLOTS[l - 1] for l in self.rooms["nursery"])
+    @property
+    def transit(self):
+        # 装卸在 HANDLING 中计算，不制造一格路线的伪拥堵。
+        return self.cells[1:-1]
 
-    def crews(self):
-        return 1 + (1 if self.q >= 4 else 0) + (1 if self.crews_iap else 0)
 
-    def refresh_sources(self):
-        for s in SOURCES:
-            if s[0] not in self.connected and s[1] <= self.q:
-                self.connected.add(s[0])
-                self.sources.append({"name": s[0], "L": s[2] * self.lmul, "cap": s[3],
-                                     "left": s[4], "extra": s[5]})
+@dataclass
+class Plan:
+    routes: list[Route]
+    loads: dict[Point, int]
+    trip_seconds: list[float]
+    source_rates: dict[str, float]
+    moves: int
+    converged: bool
+    improvements: list[float] = field(default_factory=list)
 
-    def haul_rate(self):
-        """food per second from current assignment."""
-        nurses = math.ceil(max(0, len(self.larvae) - QUEEN_SLOTS) / NURSE_PER_LARVAE)
-        builders = BUILDERS_PER_CREW * len(self.builds)
-        diggers = DIGGERS_FROM_Q3 if self.q >= 3 else 0
-        haulers = max(0, self.adults - nurses - builders - diggers)
-        v = SPEED[self.lv["speed"] - 1] * (1.05 if self.has("speed") else 1.0)
-        c = CARRY[self.lv["carry"] - 1] * (1.1 if self.has("carry") else 1.0)
-        live = [s for s in self.sources if s["left"] is None or s["left"] > 0]
-        live.sort(key=lambda s: 2 * s["L"] / v + s["extra"])
-        rate, per = 0.0, []
-        for s in live:
-            n = min(s["cap"], haulers)
-            haulers -= n
-            if n <= 0:
-                per.append((s, 0.0))
+    @property
+    def rate(self):
+        return sum(self.source_rates.values())
+
+
+def evaluate(routes: list[Route], speed=SPEED, carry=CARRY):
+    if speed <= 0 or carry <= 0:
+        raise ValueError("speed and carry must be positive")
+    loads = Counter()
+    for route in routes:
+        for p in route.transit:
+            loads[p] += route.ants
+    trips, rates = [], {}
+    for route in routes:
+        extra = sum(max(0.0, loads[p] / LANE_CAPACITY - 1.0) for p in route.transit)
+        trip = 2.0 * (route.distance + extra) / speed + HANDLING + route.extra_seconds
+        trips.append(trip)
+        rates[route.source_id] = rates.get(route.source_id, 0.0) + route.ants * carry / trip
+    return dict(loads), trips, rates
+
+
+def plan_transport(walkable: set[Point], sinks: set[Point], demands: list[Demand],
+                   speed=SPEED, carry=CARRY) -> Plan:
+    """逐只改道，严格增加全体 Food/s；比较改道后的全部共享负载。
+
+    不使用 15% 门槛。同状态从主路径重算得到同一结果，避免逐秒翻转。
+    """
+    routes = []
+    for demand in sorted(demands, key=lambda d: d.id):
+        if demand.ants < 0:
+            raise ValueError("negative haulers")
+        for index, path in enumerate(candidate_paths(walkable, demand.starts, sinks)):
+            routes.append(Route(demand.id, path, demand.ants if index == 0 else 0,
+                                demand.extra_seconds))
+    score = sum(evaluate(routes, speed, carry)[2].values())
+    improvements = [score]
+    moves, converged = 0, False
+    while moves < MAX_MOVES:
+        best_score, best = score, None
+        for i, origin in enumerate(routes):
+            if origin.ants == 0:
                 continue
-            m = max(0.25, min(1.0, TILE_CAP * s["L"] / n))
-            trip = 2 * s["L"] / (v * m) + LOAD + UNLOAD + s["extra"]
-            r = n * c / trip
-            per.append((s, r))
-            rate += r
-        self.idle_peak = max(self.idle_peak, haulers)
-        return rate, per, haulers
-
-    # ---------- simulation step ----------
-    def step(self, dt, online, eff=1.0):
-        # builds (wall clock handled by caller for offline)
-        self.finish_builds()
-        rate, per, idle = self.haul_rate()
-        golden = GOLDEN_BONUS_ACTIVE * (1.5 if self.has("golden") else 1.0)
-        mult = (1 + golden) if online else eff * (1.2 if self.has("offline") else 1.0)
-        cap = self.store_cap()
-        for s, r in per:
-            got = r * mult * dt
-            if s["left"] is not None:
-                got = min(got, s["left"])
-                s["left"] -= got
-            room = cap - self.food
-            if got > room:
-                if not online:
-                    self.offline_lost += got - room
-                got = max(0.0, room)
-            if not online:
-                self.offline_total += got
-            self.food += got
-        # larvae
-        self.larvae = [x - dt for x in self.larvae]
-        hatched = sum(1 for x in self.larvae if x <= 0)
-        self.larvae = [x for x in self.larvae if x > 0]
-        self.adults += hatched
-        while (len(self.larvae) < self.larva_slots()
-               and self.adults + len(self.larvae) < self.pop_cap()
-               and self.food >= larva_cost(self.adults)):
-            self.food -= larva_cost(self.adults)
-            self.spend("larvae", larva_cost(self.adults))
-            self.larvae.append(hatch_time(self.adults, self.q) * (0.9 if self.has("hatch") else 1.0))
-        self.t += dt
-
-    def finish_builds(self):
-        if self.queen_done is not None and self.queen_done <= self.t:
-            self.queen_done = None
-            self.q += 1
-            self.note(f"QUEEN -> Q{self.q}")
-            self.refresh_sources()
-        done = [b for b in self.builds if b[0] <= self.t]
-        for b in done:
-            _, kind, idx, level = b
-            if idx is None:
-                self.rooms[kind].append(1)
-            else:
-                self.rooms[kind][idx] = level
-        self.builds = [b for b in self.builds if b[0] > self.t]
-
-    def spend(self, k, v):
-        self.spent[k] = self.spent.get(k, 0) + v
-
-    # ---------- player policy (active only) ----------
-    def room_actions(self, kind):
-        """possible actions for a room type: (cost, label, fn)."""
-        acts = []
-        busy = {(b[1], b[2]) for b in self.builds}
-        n_built = len(self.rooms[kind]) + sum(1 for b in self.builds if b[1] == kind and b[2] is None)
-        tables = {"pantry": (PANTRY_BUILD, PANTRY_UP), "den": (DEN_BUILD, DEN_UP),
-                  "nursery": (NURSERY_BUILD, NURSERY_UP)}
-        build, up = tables[kind]
-        if self.t < TUTORIAL_UNLOCK_S[kind]:
-            return acts
-        if n_built < MAX_COUNT[kind][self.q - 1]:
-            cost = build[n_built]
-            acts.append((cost, f"build {kind} #{n_built + 1}", (kind, None, 1, BUILD_TIME_NTH[n_built])))
-        for i, l in enumerate(self.rooms[kind]):
-            if l < room_max_level(self.q) and (kind, i) not in busy:
-                acts.append((up[l], f"upgrade {kind} #{i + 1} to Lv{l + 1}", (kind, i, l + 1, UPGRADE_TIME[l])))
-        acts.sort(key=lambda a: a[0])
-        return acts
-
-    def do_room(self, act):
-        cost, label, (kind, idx, level, bt) = act
-        self.food -= cost
-        self.spend("rooms", cost)
-        self.builds.append([self.t + bt, kind, idx, level])
-        self.note(label)
-
-    def queen_ready(self):
-        return (self.q < 10 and self.queen_done is None and self.adults >= QUEEN_REQ_ANTS[self.q]
-                and self.active_s >= QUEEN_REQ_ACTIVE_MIN[self.q] * 60)
-
-    def act(self):
-        for _ in range(6):
-            if not self.act_once():
-                break
-
-    def act_once(self):
-        qcost = QUEEN_COST[self.q] if self.q < 10 else None
-        if self.queen_ready() and self.food >= qcost and self.t >= TUTORIAL_UNLOCK_S["queen"]:
-            self.food -= qcost
-            self.spend("queen", qcost)
-            self.queen_done = self.t + QUEEN_TIME[self.q]
-            self.note(f"Royal Growth to Q{self.q + 1} started")
-            self.finish_builds()
-            return True
-        free_crew = len(self.builds) < self.crews()
-        saving = self.queen_ready() and qcost is not None and qcost <= self.store_cap()
-        budget = self.food if not saving else max(0.0, self.food - qcost)
-        if free_crew:
-            # storage first when the next queen cost does not fit
-            if qcost is not None and self.store_cap() < qcost * 1.1:
-                for a in self.room_actions("pantry"):
-                    if a[0] <= self.food:
-                        self.do_room(a)
-                        return True
-                    break
-            if self.adults + len(self.larvae) >= self.pop_cap() - 2:
-                for a in self.room_actions("den"):
-                    if a[0] <= budget:
-                        self.do_room(a)
-                        return True
-                    break
-            for kind in ("nursery", "den", "pantry"):
-                for a in self.room_actions(kind):
-                    if a[0] <= budget * 0.5:
-                        self.do_room(a)
-                        return True
-                    break
-        # colony upgrades: cheapest first, capped at queen level
-        opts = []
-        if self.t < TUTORIAL_UNLOCK_S["upgrades"]:
-            return False
-        for k, table in (("carry", CARRY_COST), ("speed", SPEED_COST), ("dig", DIG_COST)):
-            l = self.lv[k]
-            if l < 10 and l < self.q:
-                opts.append((table[l], k))
-        opts.sort()
-        for cost, k in opts:
-            if cost <= budget:
-                self.food -= cost
-                self.spend("upgrades", cost)
-                self.lv[k] += 1
-                self.note(f"{k} -> Lv{self.lv[k]}")
-                return True
+            for j, target in enumerate(routes):
+                if i == j or origin.source_id != target.source_id:
+                    continue
+                origin.ants -= 1
+                target.ants += 1
+                candidate = sum(evaluate(routes, speed, carry)[2].values())
+                origin.ants += 1
+                target.ants -= 1
+                if candidate > best_score + EPSILON:
+                    best_score, best = candidate, (i, j)
+        if best is None:
+            converged = True
             break
-        return False
-
-    def note(self, msg):
-        if self.verbose:
-            self.log.append(f"{fmt_t(self.t)}  {msg}")
-
-    # ---------- drivers ----------
-    def online(self, seconds):
-        end = self.t + seconds
-        while self.t < end:
-            if self.t >= self.drop_next:
-                self.drop_next += DROP_EVERY_S
-                self.add_drop()
-            self.act()
-            self.step(1.0, True)
-            self.active_s += 1
-
-    def offline(self, seconds):
-        cap = OFFLINE_CAP_H[self.q - 1] * 3600
-        sim_s = min(seconds, cap)
-        start_food = self.food
-        start = self.t
-        self.offline_total = 0.0
-        self.offline_lost = 0.0
-        step = 10.0
-        while self.t < start + sim_s:
-            self.step(step, False, OFFLINE_EFF)
-        # beyond cap: only wall-clock build timers advance
-        self.t = start + seconds
-        self.finish_builds()
-        pending = False
-        while self.drop_next <= self.t:      # at most one pending drop is kept
-            self.drop_next += DROP_EVERY_S
-            pending = True
-        gained = self.food - start_food
-        day = int(self.t // 86400)
-        used = self.ads_used.get(day, 0)
-        if self.ads and gained > 0 and seconds >= 600 and used < DOUBLE_IT_PER_DAY:
-            self.ads_used[day] = used + 1
-            bonus = min(self.offline_total, self.store_cap() - self.food)
-            self.food += max(0.0, bonus)
-        if pending:
-            self.add_drop()
-        return gained
-
-    def add_drop(self):
-        self.sources.append({"name": f"Falling Treat Q{self.q}", "L": 7 * self.lmul, "cap": 12,
-                             "left": DROP_AMOUNT[self.q - 1], "extra": 0})
+        routes[best[0]].ants -= 1
+        routes[best[1]].ants += 1
+        score = best_score
+        improvements.append(score)
+        moves += 1
+    loads, trips, rates = evaluate(routes, speed, carry)
+    return Plan(routes, loads, trips, rates, moves, converged, improvements)
 
 
-def check_caps():
-    """Deadlock check: every cost unlocked at queen level q must fit in the max storage
-    reachable at q (all allowed pantries at the max allowed level, no treasure bonus)."""
-    problems = []
-    for q in range(1, 11):
-        store = QUEEN_STORE + MAX_COUNT["pantry"][q - 1] * PANTRY_CAP[room_max_level(q) - 1]
-        costs = []
-        if q < 10:
-            costs.append(("Queen to Q%d" % (q + 1), QUEEN_COST[q]))
-        for name, table in (("Carry", CARRY_COST), ("Speed", SPEED_COST), ("Dig", DIG_COST)):
-            if q >= 2:
-                costs.append((f"{name} Lv{q}", table[q - 1]))
-        for kind, build, up in (("Pantry", PANTRY_BUILD, PANTRY_UP), ("Den", DEN_BUILD, DEN_UP),
-                                ("Nursery", NURSERY_BUILD, NURSERY_UP)):
-            n = MAX_COUNT[kind.lower()][q - 1]
-            costs.append((f"{kind} #{n}", build[n - 1]))
-            ml = room_max_level(q)
-            if ml >= 2:
-                costs.append((f"{kind} Lv{ml}", up[ml - 1]))
-        worst = max(costs, key=lambda c: c[1])
-        ok = worst[1] <= store
-        problems.append((q, store, worst, ok))
-    return problems
+@dataclass
+class Source:
+    id: str
+    cells: set[Point]
+    remaining: float | None
+    priority: int
+    extra_seconds: float = 0.0
 
 
-def trip(L, v, c, extra=0.0):
-    t = 2 * L / v + LOAD + UNLOAD + extra
-    return t, c / t
+class Colony:
+    """P0 小地图经济状态；食物必须真的挖通，没有广告或付费推算。"""
+
+    def __init__(self, map_path: Path | None = None):
+        self.grid = (map_path or ROOT / "design/map_prototype.txt").read_text(encoding="utf-8").splitlines()
+        if len(self.grid) != 10 or any(len(row) != 9 for row in self.grid):
+            raise ValueError("prototype map must be 9 x (surface + 9)")
+        self.tiles = {(x, y): c for y, row in enumerate(self.grid) for x, c in enumerate(row)}
+        self.walkable = {p for p, c in self.tiles.items() if c in ".QE"}
+        self.queen = {p for p, c in self.tiles.items() if c == "Q"}
+        self.pantry: set[Point] = set()
+        self.sources = [
+            Source("cookie", {p for p, c in self.tiles.items() if c == "C"}, 600.0, 0),
+            Source("sugar", {p for p, c in self.tiles.items() if c == "S"}, 0.0, 0),
+            Source("sap", {p for p, c in self.tiles.items() if c == "R"}, None, 1),
+            Source("surface", {(4, 0)}, None, 2, 12.0),
+        ]
+        self.food = 0.0
+        self.ants = 5
+        self.larvae: list[float] = []
+        self.hatching = True
+        self.elapsed = 0.0
+        self.refill_left = REFILL_SECONDS
+        self.next_patch = 1       # Cookie -> Sugar -> Cookie
+        self.refills = 0
+        self.hauled = 0.0
+        self.spent = 0.0
+        self._cached_key = None
+        self._cached_plan = None
+
+    @property
+    def capacity(self):
+        return BASE_STORAGE + (PANTRY_STORAGE if self.pantry else 0)
+
+    @property
+    def sinks(self):
+        return self.queen | self.pantry
+
+    def dig(self, p: Point):
+        # 基准工具按“完成一格”操作；客户端先累计三次有效点击。
+        if self.tiles.get(p) != "#" or p in self.walkable:
+            raise ValueError("not undug soil")
+        if not any(q in self.walkable for q in neighbors(p)):
+            raise ValueError("not frontier")
+        self.walkable.add(p)
+
+    def place_pantry(self, top_left: Point):
+        x, y = top_left
+        cells = {(x + dx, y + dy) for dx in (0, 1) for dy in (0, 1)}
+        if not cells <= self.walkable or cells & self.queen or (4, 0) in cells:
+            raise ValueError("invalid Pantry footprint")
+        if not self.pantry:
+            if self.food < PANTRY_COST:
+                raise ValueError("not enough Food")
+            self.food -= PANTRY_COST
+            self.spent += PANTRY_COST
+        self.pantry = cells
+
+    def plan(self):
+        active = []
+        for source in self.sources:
+            if source.remaining is not None and source.remaining <= EPSILON:
+                continue
+            starts = ({(4, 0)} if source.id == "surface" else
+                      {q for p in source.cells for q in neighbors(p) if q in self.walkable})
+            route = shortest_path(self.walkable, starts, self.sinks)
+            if route is not None:
+                free_trip = 2 * max(1, len(route) - 1) / SPEED + HANDLING + source.extra_seconds
+                active.append((source.priority, free_trip, source.id, starts, source.extra_seconds))
+        active.sort(key=lambda row: row[:3])
+        # P0 全员服务一个源：已连通补给 > 树液根 > 地面兜底。
+        # 多源共享负载仍有独立测试，扩展版不能退回各算各的。
+        demands = [] if not active else [Demand(active[0][2], active[0][3], self.ants, active[0][4])]
+        key = (frozenset(self.walkable), frozenset(self.sinks),
+               tuple((d.id, frozenset(d.starts), d.ants, d.extra_seconds) for d in demands))
+        if key != self._cached_key:
+            self._cached_plan = plan_transport(self.walkable, self.sinks, demands)
+            if not self._cached_plan.converged:
+                raise RuntimeError("transport solver exceeded move budget")
+            self._cached_key = key
+        return self._cached_plan
+
+    def harvest(self, seconds: float, efficiency: float):
+        """仅按实际入库量扣有限源；满仓时源和库存均不变。"""
+        available = max(0.0, self.capacity - self.food)
+        if available <= EPSILON:
+            return 0.0
+        rates = self.plan().source_rates
+        desired = []
+        for source in self.sources:
+            amount = rates.get(source.id, 0.0) * seconds * efficiency
+            if source.remaining is not None:
+                amount = min(amount, source.remaining)
+            desired.append((source, amount))
+        total = sum(amount for _, amount in desired)
+        scale = min(1.0, available / total) if total > 0 else 0.0
+        credited = 0.0
+        for source, amount in desired:
+            amount *= scale
+            if source.remaining is not None:
+                source.remaining = max(0.0, source.remaining - amount)
+            credited += amount
+        self.food = min(self.capacity, self.food + credited)
+        self.hauled += credited
+        return credited
+
+    def advance(self, seconds: float, efficiency=1.0):
+        if not math.isfinite(seconds) or seconds < 0 or not 0 <= efficiency <= 1:
+            raise ValueError("invalid duration or efficiency")
+        end = self.elapsed + seconds
+        while self.elapsed < end - EPSILON:
+            dt = min(TICK, end - self.elapsed)
+            if self.larvae:
+                dt = min(dt, min(self.larvae))
+            patches_empty = all(s.remaining <= EPSILON for s in self.sources[:2])
+            if patches_empty:
+                dt = min(dt, self.refill_left)
+            self.harvest(dt, efficiency)
+            self.larvae = [remaining - dt for remaining in self.larvae]
+            self.ants += sum(remaining <= EPSILON for remaining in self.larvae)
+            self.larvae = [remaining for remaining in self.larvae if remaining > EPSILON]
+            if self.hatching:
+                while (len(self.larvae) < LARVA_SLOTS and self.ants + len(self.larvae) < POP_CAP
+                       and self.food >= HATCH_COST):
+                    self.food -= HATCH_COST
+                    self.spent += HATCH_COST
+                    self.larvae.append(HATCH_SECONDS)
+            if patches_empty:
+                self.refill_left -= dt
+                if self.refill_left <= EPSILON:
+                    self.sources[self.next_patch].remaining = 600.0 if self.next_patch == 0 else 150.0
+                    self.next_patch = 1 - self.next_patch
+                    self.refills += 1
+                    self.refill_left = REFILL_SECONDS
+            self.elapsed += dt
+
+    def offline(self, seconds: float):
+        if not math.isfinite(seconds) or seconds < 0:
+            raise ValueError("invalid offline duration")
+        before, hauled_before = self.food, self.hauled
+        self.advance(min(seconds, OFFLINE_CAP), OFFLINE_EFFICIENCY)
+        return {"net_food": self.food - before, "hauled_food": self.hauled - hauled_before,
+                "simulated_seconds": min(seconds, OFFLINE_CAP)}
 
 
-def print_tables():
-    print("Lv | Carry | cost | Speed | cost | Dig | cost | needs Queen")
-    for i in range(10):
-        print(f"{i + 1:>2} | {CARRY[i]:>5} | {CARRY_COST[i]:>9,} | {SPEED[i]:.1f} | {SPEED_COST[i]:>9,} | "
-              f"{DIG[i]:>3} | {DIG_COST[i]:>9,} | Q{i + 1}")
-    print("\nQueen | cost to next | ants | royal growth s | offline cap h | max pantry/den/nursery | room max lv")
-    for q in range(1, 11):
-        print(f"Q{q:<2} | {QUEEN_COST[q] if q < 10 else '-':>10} | {QUEEN_REQ_ANTS[q] if q < 10 else '-':>4} | "
-              f"{QUEEN_TIME[q] if q < 10 else '-':>6} | {OFFLINE_CAP_H[q - 1]} | "
-              f"{MAX_COUNT['pantry'][q - 1]}/{MAX_COUNT['den'][q - 1]}/{MAX_COUNT['nursery'][q - 1]} | {room_max_level(q)}")
-    print("\nRoom tables")
-    print("pantry cap", PANTRY_CAP, "build", PANTRY_BUILD, "up", PANTRY_UP[1:])
-    print("den cap", DEN_CAP, "build", DEN_BUILD, "up", DEN_UP[1:])
-    print("nursery slots", NURSERY_SLOTS, "build", NURSERY_BUILD, "up", NURSERY_UP[1:])
-    print("build time nth", BUILD_TIME_NTH, "upgrade time", UPGRADE_TIME[1:])
-    print("\nants | larva cost | hatch s (Q1) | hatch s (Q5) | hatch s (Q10)")
-    for a in (5, 10, 20, 40, 60, 100, 150, 190):
-        print(f"{a:>4} | {larva_cost(a):>3} | {hatch_time(a, 1):6.0f} | {hatch_time(a, 5):6.0f} | {hatch_time(a, 10):6.0f}")
-    print("\nhaul: L | lv | trip s | food/s per ant")
-    for L in (3, 6, 10):
-        for lv in (1, 3, 5, 7, 10):
-            t, r = trip(L, SPEED[lv - 1], CARRY[lv - 1])
-            print(f"L={L:<2} | Lv{lv:<2} | {t:5.2f} | {r:.3f}")
-    print("drop", DROP_AMOUNT)
+def fixture_results():
+    data = json.loads((ROOT / "design/transport_cases.json").read_text(encoding="utf-8"))
+    results = []
+    for case in data:
+        plans = []
+        for variant in ("before", "after"):
+            state = case[variant]
+            plans.append(plan_transport({tuple(p) for p in state["walkable"]},
+                         {tuple(p) for p in state["sinks"]},
+                         [Demand(d["id"], {tuple(p) for p in d["starts"]}, d["ants"])
+                          for d in case["demands"]]))
+        before, after = plans
+        results.append({"case": case["id"], "before_food_per_min": round(before.rate * 60, 6),
+                        "after_food_per_min": round(after.rate * 60, 6),
+                        "gain_percent": round((after.rate / before.rate - 1) * 100, 6),
+                        "before_max_load": max(before.loads.values(), default=0),
+                        "after_max_load": max(after.loads.values(), default=0),
+                        "after_allocations": [r.ants for r in after.routes],
+                        "converged": before.converged and after.converged})
+    return results
 
 
-START_HOUR = 9   # first launch at D1 09:00 local (PRD 6.4)
-
-
-def fmt_t(t):
-    """local clock label, e.g. D8 14:00, assuming first launch at D1 09:00."""
-    t = t + START_HOUR * 3600
-    d = int(t // 86400)
-    h = int(t % 86400 // 3600)
-    m = int(t % 3600 // 60)
-    return f"D{d + 1} {h:02d}:{m:02d}"
-
-
-def schedule(days, casual=False):
-    """list of (kind, seconds). t=0 is D1 09:00.
-    engaged: D1 tutorial 10 min + 4 x 4 min; D2+ 5 x 4 min at 08:00, 11:00, 14:00, 18:00, 22:00.
-    casual:  D1 tutorial 10 min + 2 x 4 min; D2+ 3 x 4 min at 08:00, 13:00, 21:00."""
-    plan = []
-    t = 0
-    if casual:
-        d1 = [(0, 600), (4 * 3600, 240), (12 * 3600, 240)]
-        later = [(23 * 3600, 240), (28 * 3600, 240), (36 * 3600, 240)]
-    else:
-        d1 = [(0, 600), (2 * 3600, 240), (4.5 * 3600, 240), (8 * 3600, 240), (12 * 3600, 240)]
-        later = [(23 * 3600, 240), (26 * 3600, 240), (29 * 3600, 240), (33 * 3600, 240), (37 * 3600, 240)]
-    sessions = list(d1)
-    for d in range(days - 1):
-        sessions += [(s + d * 86400, l) for s, l in later]
-    for start, length in sessions:
-        if start > t:
-            plan.append(("off", start - t))
-            t = start
-        plan.append(("on", length))
-        t += length
-    return plan
-
-
-def run(layout="good", crews_iap=False, ads=False, days=16, verbose=False, casual=False):
-    sim = Sim(layout, crews_iap, ads, verbose)
-    active = 0
-    rows = []
-    last_q = 1
-    for kind, sec in schedule(days, casual):
-        if kind == "on":
-            sim.online(sec)
-            active += sec
-        else:
-            sim.offline(sec)
-        if sim.q != last_q:
-            rate, _, idle = sim.haul_rate()
-            rows.append((sim.q, fmt_t(sim.t), active / 60, sim.adults, rate, sim.store_cap(),
-                         dict(sim.lv), idle))
-            last_q = sim.q
-    return sim, rows
+def scripted_session():
+    """600秒固定操作回放，仅用于回归验证，绝不是玩家行为预测。"""
+    colony = Colony()
+    actions = {30: [(2, 4), (2, 5), (2, 6)], 150: [(1, 4), (1, 5)],
+               300: [(6, 3), (6, 2)], 360: [(6, 4), (6, 5), (6, 6), (7, 6)]}
+    for second in range(600):
+        for p in actions.get(second, []):
+            colony.dig(p)
+        if second >= 150 and not colony.pantry and colony.food >= PANTRY_COST:
+            colony.place_pantry((1, 4))
+        colony.advance(1)
+    return {"seconds": 600, "ants": colony.ants, "larvae": len(colony.larvae),
+            "food": round(colony.food, 6), "capacity": colony.capacity,
+            "hauled": round(colony.hauled, 6), "spent": colony.spent,
+            "refills": colony.refills,
+            "food_conservation_error": round(colony.hauled - colony.spent - colony.food, 9)}
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--layout", default="good", choices=["good", "poor"])
-    ap.add_argument("--crew", type=int, default=2, help="3 = with Extra Build Crew IAP")
-    ap.add_argument("--ads", action="store_true", help="watch Double It after every return")
-    ap.add_argument("--days", type=int, default=16)
-    ap.add_argument("--log", action="store_true")
-    ap.add_argument("--casual", action="store_true", help="3 sessions/day instead of 5")
-    ap.add_argument("--check", action="store_true", help="print storage-vs-cost deadlock check")
-    ap.add_argument("--tables", action="store_true", help="print the PRD section 6 tables")
-    a = ap.parse_args()
-    if a.tables:
-        print_tables()
-        return
-    if a.check:
-        for q, store, worst, ok in check_caps():
-            print(f"Q{q:<2} max storage {store:>9,} | biggest cost {worst[0]:<14} {worst[1]:>9,} "
-                  f"| {worst[1] / store:5.0%} {'OK' if ok else 'DEADLOCK'}")
-        return
-    sim, rows = run(a.layout, a.crew >= 3, a.ads, a.days, a.log, a.casual)
-    if a.log:
-        print("\n".join(sim.log))
-    print(f"layout={a.layout} crew_iap={a.crew >= 3} ads={a.ads} casual={a.casual}")
-    print("Q  | reached (local) | active min | ants | food/s | storage | carry/speed/dig | idle")
-    for q, when, act, ants, rate, cap, lv, idle in rows:
-        print(f"Q{q:<2}| {when} | {act:10.1f} | {ants:4d} | {rate:6.1f} | {cap:7d} | "
-              f"{lv['carry']}/{lv['speed']}/{lv['dig']} | {idle}")
-    print("spent:", {k: round(v) for k, v in sim.spent.items()})
-    print("final:", fmt_t(sim.t), "Q", sim.q, "ants", sim.adults, "food", round(sim.food),
-          "rooms", sim.rooms, "idle peak", sim.idle_peak)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check", action="store_true", help="验证夹具预期值和资源守恒")
+    parser.add_argument("--tables", action="store_true", help="打印 PRD 对照场景")
+    parser.add_argument("--json", action="store_true", help="机器可读结果")
+    args = parser.parse_args()
+    cases, session = fixture_results(), scripted_session()
+    if args.check:
+        fixtures = json.loads((ROOT / "design/transport_cases.json").read_text(encoding="utf-8"))
+        for actual, fixture in zip(cases, fixtures):
+            for key, expected in fixture["expected"].items():
+                if not math.isclose(actual[key], expected, rel_tol=1e-6, abs_tol=1e-6):
+                    raise SystemExit(f"FAILED: {fixture['id']} {key}: {actual[key]} != {expected}")
+            if not actual["converged"] or actual["gain_percent"] <= 0:
+                raise SystemExit(f"FAILED: {fixture['id']} did not converge/improve")
+        if abs(session["food_conservation_error"]) > 1e-6 or session["food"] > session["capacity"]:
+            raise SystemExit("FAILED: food conservation/capacity")
+        print("OK: 3 actual-grid transport cases; 600s replay conserves Food")
+    elif args.json:
+        print(json.dumps({"cases": cases, "scripted_session": session}, ensure_ascii=False, indent=2))
+    else:
+        print("真实格网运输对照（Food/min；假设验证，非玩家留存/付费预测）")
+        for row in cases:
+            print(f"{row['case']}: {row['before_food_per_min']:.3f} -> "
+                  f"{row['after_food_per_min']:.3f}; +{row['gain_percent']:.2f}%; "
+                  f"分流={row['after_allocations']}")
+        if not args.tables:
+            print("固定600秒操作回放：", session)
 
 
 if __name__ == "__main__":

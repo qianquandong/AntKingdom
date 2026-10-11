@@ -1,60 +1,71 @@
-"""Validate design/map_backyard.txt against PRD 4.2 / 5.1 (design tool).
-
-  python tools/check_map.py
-
-Checks: 9 columns x 37 rows (surface + 36), 2x2 / 3x2 footprints are complete,
-every non-rock tile is reachable from the entrance, the Heart Geode is reachable
-without digging roots, and prints the per-symbol counts used in the PRD legend.
-"""
+"""检查当前验证版地图；旧四地层地图仅存档。失败返回非零退出码。"""
 from collections import Counter, deque
 from pathlib import Path
+import sys
 
-MAP = Path(__file__).resolve().parent.parent / "design" / "map_backyard.txt"
-FOOTPRINTS = {"C": (2, 2), "A": (2, 2), "B": (2, 2), "K": (2, 2), "Q": (3, 2)}
+MAP = Path(__file__).resolve().parents[1] / "design/map_prototype.txt"
 ENTRANCE = (4, 0)
 
 
-def reachable(grid, blocked):
-    seen, queue = {ENTRANCE}, deque([ENTRANCE])
+def flood(cells, start=ENTRANCE):
+    seen, queue = {start}, deque([start])
     while queue:
         x, y = queue.popleft()
-        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < 9 and 1 <= ny < len(grid) and (nx, ny) not in seen and grid[ny][nx] not in blocked:
-                seen.add((nx, ny))
-                queue.append((nx, ny))
+        for p in ((x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1)):
+            if p in cells and p not in seen:
+                seen.add(p)
+                queue.append(p)
     return seen
 
 
+def validate(grid):
+    if len(grid) != 10 or any(len(row) != 9 for row in grid):
+        return ["size must be 9 columns x 10 rows"]
+    errors = []
+    tiles = {(x, y): ch for y, row in enumerate(grid) for x, ch in enumerate(row)}
+    unknown = set(tiles.values()) - set("~E.#QCSRX")
+    if unknown:
+        errors.append(f"unknown symbols: {sorted(unknown)}")
+    if grid[0] != "~~~~E~~~~" or any(ch in "~E" for row in grid[1:] for ch in row):
+        errors.append("invalid surface/entrance")
+    for symbol, (width, height) in {"Q": (3, 2), "C": (2, 2), "S": (1, 1), "R": (1, 1)}.items():
+        cells = {p for p, ch in tiles.items() if ch == symbol}
+        if not cells:
+            errors.append(f"missing {symbol}")
+            continue
+        x, y = min(p[0] for p in cells), min(p[1] for p in cells)
+        expected = {(x + dx, y + dy) for dx in range(width) for dy in range(height)}
+        if cells != expected:
+            errors.append(f"invalid {symbol} footprint")
+    initial = {p for p, ch in tiles.items() if ch in ".QE"}
+    if not initial <= flood(initial):
+        errors.append("initial tunnels/Queen are disconnected")
+    potential = {p for p, ch in tiles.items() if ch in "#.QE"}
+    seen = flood(potential)
+    if seen != potential:
+        errors.append("some legal soil cannot be reached by digging")
+    for symbol in "CSR":
+        cells = {p for p, ch in tiles.items() if ch == symbol}
+        if not any((x + dx, y + dy) in seen for x, y in cells
+                   for dx, dy in ((0, -1), (-1, 0), (1, 0), (0, 1))):
+            errors.append(f"source {symbol} has no reachable loading edge")
+    room_cells = {p for p in potential if tiles[p] in "#."}
+    if not any({(x + dx, y + dy) for dx in (0, 1) for dy in (0, 1)} <= room_cells
+               for x, y in room_cells):
+        errors.append("no legal 2 x 2 Pantry space")
+    return errors
+
+
 def main():
-    grid = [r for r in MAP.read_text(encoding="utf-8").splitlines() if r]
-    ok = True
-    if len(grid) != 37 or {len(r) for r in grid} != {9}:
-        print(f"FAIL size: {len(grid)} rows, widths {set(len(r) for r in grid)}")
-        ok = False
-    for ch, (w, h) in FOOTPRINTS.items():
-        seen = set()
-        for y, row in enumerate(grid):
-            for x, c in enumerate(row):
-                if c != ch or (x, y) in seen:
-                    continue
-                cells = [(x + dx, y + dy) for dy in range(h) for dx in range(w)]
-                if not all(cx < 9 and cy < len(grid) and grid[cy][cx] == ch for cx, cy in cells):
-                    print(f"FAIL footprint {ch} at ({x},{y})")
-                    ok = False
-                seen.update(cells)
-    seen = reachable(grid, "X")
-    lost = [(x, y) for y in range(1, len(grid)) for x in range(9) if grid[y][x] != "X" and (x, y) not in seen]
-    if lost:
-        print("FAIL unreachable:", lost)
-        ok = False
-    geode = next((x, y) for y, r in enumerate(grid) for x, c in enumerate(r) if c == "G")
-    if geode not in reachable(grid, "Xr"):
-        print("FAIL Heart Geode needs roots dug")
-        ok = False
+    grid = MAP.read_text(encoding="utf-8").splitlines()
+    errors = validate(grid)
+    if errors:
+        print("FAILED: " + "; ".join(errors))
+        return 1
+    print("OK: prototype map; dimensions, footprints, connectivity, sources, Pantry space")
     print("counts:", dict(sorted(Counter("".join(grid[1:])).items())))
-    print("OK" if ok else "FAILED")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
