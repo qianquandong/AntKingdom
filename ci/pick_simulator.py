@@ -2,7 +2,8 @@
 
 用法：python3 ci/pick_simulator.py [small|standard]
   standard：最新 iOS 运行时上的非 Pro/Plus/Max 标准机型（约 393×852pt）。
-  small：优先 iPhone SE（375×667pt 级）；没有则退回 standard 并在 stderr 说明。
+  small：iPhone SE（375×667pt 级），取已安装的最旧 iOS 运行时（尽量接近部署目标 iOS 17.0，
+         一次覆盖小屏与较旧系统）；没有 SE 则退回 standard 并在 stderr 说明。
 不假定 runner 装了某个具体机型；实际选择写入环境记录。
 """
 import json
@@ -33,7 +34,8 @@ def main():
     current = [p for p in phones if p[0] == newest]
     chosen = None
     if kind == "small":
-        chosen = next((p for p in current if "SE" in p[1]), None) or next((p for p in phones if "SE" in p[1]), None)
+        # phones 已按运行时版本升序：第一台 SE 就在最旧的运行时上
+        chosen = next((p for p in phones if "SE" in p[1] and p[0] >= (17, 0)), None)
         if chosen is None:
             print("no iPhone SE simulator; falling back to standard", file=sys.stderr)
     if chosen is None:

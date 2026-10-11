@@ -72,7 +72,8 @@ jobs:
 
       - name: 单元 + UI 测试（标准尺寸模拟器）
         run: |
-          udid=$(python3 ci/pick_simulator.py standard)
+          udid=$(python3 ci/pick_simulator.py standard 2>build/sim-standard.txt)
+          echo "- 标准尺寸模拟器：$(cat build/sim-standard.txt)" >> "$GITHUB_STEP_SUMMARY"
           echo "SIM_STANDARD=$udid" >> "$GITHUB_ENV"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$udid" \
@@ -103,10 +104,11 @@ jobs:
           ls -la build/videos
           exit $status
 
-      - name: UI 测试（小屏模拟器，375×667pt 级）
+      - name: UI 测试（小屏 iPhone SE，最旧已安装 iOS 运行时）
         timeout-minutes: 20
         run: |
-          small=$(python3 ci/pick_simulator.py small)
+          small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
+          echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$small" \
             -derivedDataPath build/DerivedData \
