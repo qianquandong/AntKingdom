@@ -81,7 +81,7 @@ if [ "$track" = "--release-track" ]; then
   fi
   for framework in AdSupport AppTrackingTransparency; do
     if grep -q "/$framework.framework/" <<< "$linked"; then
-      notes="$notes 链接了 $framework（AdMob SDK 依赖；不弹 ATT、不读取 IDFA 前须用户授权）。"
+      notes="$notes 链接了 ${framework}（AdMob SDK 依赖；不弹 ATT、不读取 IDFA 前须用户授权）。"
     fi
   done
 fi
