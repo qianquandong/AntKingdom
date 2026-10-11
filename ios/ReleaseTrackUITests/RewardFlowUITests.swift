@@ -10,8 +10,8 @@ final class RewardFlowUITests: XCTestCase {
         app = XCUIApplication()
     }
 
-    private func launch(_ scenario: String, ads: String, ready: Bool = true) {
-        app.launchArguments = ["-ak-scenario", scenario, "-ak-ads", ads] + (ready ? ["-ak-reward-ready"] : [])
+    private func launch(_ scenario: String, ads: String, ready: Bool = true, extra: [String] = []) {
+        app.launchArguments = ["-ak-scenario", scenario, "-ak-ads", ads] + (ready ? ["-ak-reward-ready"] : []) + extra
         app.launch()
         XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 20))
     }
@@ -51,6 +51,23 @@ final class RewardFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["reward.active"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["reward.watch"].exists, "no stacking while active")
         screenshot("C12-reward-active-panel")
+    }
+
+    /// R04：已赚得奖励但写盘失败——boost 生效，面板不关闭，显示英文提示与 Try Again（只重试写盘，不再看广告）。
+    /// 存储恢复后的写入、次数与冷却由 RewardModelTests / RewardTests 覆盖。
+    func testSaveFailureKeepsTheBoostAndOffersRetry() {
+        launch("pantry_built", ads: "earn", extra: ["-ak-fail-writes"])
+        openReward()
+        app.buttons["reward.watch"].tap()
+        let note = app.staticTexts["reward.message"]
+        XCTAssertTrue(note.waitForExistence(timeout: 10))
+        XCTAssertEqual(note.label, "Your boost is on, but it couldn't be saved. Tap Try Again.")
+        XCTAssertTrue(app.buttons["reward.retry_save"].exists)
+        XCTAssertTrue(app.staticTexts["reward.active"].exists, "the earned boost is active")
+        XCTAssertFalse(app.buttons["reward.watch"].exists, "no second ad needed")
+        screenshot("R04-reward-save-failed")
+        app.buttons["reward.retry_save"].tap()
+        XCTAssertTrue(note.waitForExistence(timeout: 5), "storage still failing: prompt stays")
     }
 
     func testClosingEarlyGivesNothingAndFreePlayContinues() {

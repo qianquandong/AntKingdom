@@ -104,7 +104,10 @@ final class CampaignModel: ObservableObject {
             self?.campaign?.rewardStatus(adAvailable: available) ?? .locked
         }
         rewards.ledgerProvider = { [weak self] in self?.campaign?.progress.rewards }
-        rewards.grant = { [weak self] requestId in self?.campaign?.grantReward(requestId: requestId) ?? false }
+        // 没有活动进度（存档错误页）时不会展示广告；万一回调到达也不授予任何东西
+        rewards.grant = { [weak self] requestId in self?.campaign?.grantReward(requestId: requestId) ?? .duplicate }
+        rewards.retrySaveHandler = { [weak self] in self?.campaign?.retryRewardSave() ?? .savePending }
+        rewards.pendingProvider = { [weak self] in self?.campaign?.hasUnsavedReward ?? false }
         rewards.suspend = { [weak self] suspended in
             if case .running(let controller)? = self?.phase { controller.isSuspended = suspended }
         }

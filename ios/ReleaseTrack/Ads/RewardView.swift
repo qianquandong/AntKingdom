@@ -25,6 +25,17 @@ struct RewardView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityIdentifier("reward.message")
             }
+            if rewards.savePending {
+                // 已赚得奖励写盘失败（R04）：只重试写盘，不需要再看广告
+                Button {
+                    rewards.retrySave()
+                } label: {
+                    Text(L10n.text("action.retry")).frame(maxWidth: .infinity, minHeight: 44)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(Theme.connected)
+                .accessibilityIdentifier("reward.retry_save")
+            }
             Button {
                 dismiss()
             } label: {
@@ -35,7 +46,7 @@ struct RewardView: View {
         }
         .padding(22)
         .foregroundStyle(Theme.ink)
-        .presentationDetents([.height(340)])
+        .presentationDetents([.height(rewards.savePending ? 440 : 340)])
         .onAppear { rewards.open() }
         .onChange(of: rewards.justEarned) { _, earned in
             if earned { dismiss() }
