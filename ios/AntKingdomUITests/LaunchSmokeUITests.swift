@@ -48,7 +48,10 @@ final class LaunchSmokeUITests: XCTestCase {
 
     func testColdLaunchShowsEnglishHUD() {
         launch()
-        XCTAssertEqual(app.staticTexts["hud.food"].label, "Food: 0/100")
+        // 开局 0 Food，但地面兜底立刻开始搬运，读到 HUD 时可能已有几粒
+        let food = app.staticTexts["hud.food"].label
+        XCTAssertTrue(food.hasPrefix("Food: ") && food.hasSuffix("/100"), food)
+        XCTAssertLessThan(Int(food.dropFirst(6).prefix { $0.isNumber }) ?? 999, 20)
         XCTAssertEqual(app.staticTexts["hud.ants"].label, "Ants: 5/24")
         XCTAssertEqual(app.staticTexts["hud.eggs"].label, "Eggs: 0")
         XCTAssertTrue(app.staticTexts["hint.tutorial.dig"].exists || app.otherElements["hint.tutorial.dig"].exists)
