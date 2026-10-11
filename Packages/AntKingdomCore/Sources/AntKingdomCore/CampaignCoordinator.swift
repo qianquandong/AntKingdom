@@ -187,12 +187,13 @@ public final class CampaignCoordinator {
 
     // MARK: 外观与权益（C11）
 
-    /// StoreKit 当前已验证权益 → 缓存；失去权益的外观回退默认（返回 true）。立即保存。
+    /// StoreKit 当前已验证权益 → 缓存（失去权益的外观回退默认），并立即写盘。
+    /// 返回是否已写盘：只有写盘成功后，调用方才可以完成（finish）对应交易。写盘失败时内存中的权益已更新，
+    /// 交易保持未完成，可再次调用本方法或 `saveProgress()` 重试（同一权益集合重复写入结果相同）。
     @discardableResult
     public func updateEntitlements(_ owned: Set<String>, bundleId: String) -> Bool {
-        let reverted = progress.setEntitlements(owned, bundleId: bundleId)
-        saveProgress()
-        return reverted
+        progress.setEntitlements(owned, bundleId: bundleId)
+        return saveProgress()
     }
 
     /// 启用已拥有的外观；未拥有返回 false，不改变任何东西。

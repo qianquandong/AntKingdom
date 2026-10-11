@@ -89,6 +89,51 @@ final class CosmeticsTests: XCTestCase {
         XCTAssertFalse(c.progress.firstPantryBuilt)
     }
 
+    /// R03：权益写盘失败时如实返回 false（调用方据此不完成交易）；存储恢复后重试成功，重启后权益仍在；
+    /// 同一权益重复交付结果相同。
+    func testEntitlementSaveFailureIsReportedAndRetryable() throws {
+        let store = MemorySaveStore()
+        let (campaign, _) = CampaignCoordinator.launch(store: store, appVersion: "t", wallClock: FakeWall(1),
+                                                       catalog: try twoChapterCatalog())
+        let c = try XCTUnwrap(campaign)
+        store.failWrites = true
+        XCTAssertFalse(c.updateEntitlements([garden], bundleId: bundleId), "write failed: must not report saved")
+        XCTAssertNotNil(c.lastSaveError)
+        XCTAssertTrue(c.progress.owns(.garden, bundleId: bundleId), "kept in memory for the retry")
+        // 写盘失败时重启：磁盘上没有这项权益（交易未完成，StoreKit 会再次交付）
+        let (lost, _) = CampaignCoordinator.launch(store: store, appVersion: "t", wallClock: FakeWall(2),
+                                                   catalog: try twoChapterCatalog())
+        XCTAssertFalse(try XCTUnwrap(lost).progress.owns(.garden, bundleId: bundleId))
+
+        store.failWrites = false
+        XCTAssertTrue(c.updateEntitlements([garden], bundleId: bundleId), "retry after storage recovers")
+        XCTAssertTrue(c.updateEntitlements([garden], bundleId: bundleId), "idempotent redelivery")
+        XCTAssertNil(c.lastSaveError)
+        let (reopened, _) = CampaignCoordinator.launch(store: store, appVersion: "t", wallClock: FakeWall(3),
+                                                       catalog: try twoChapterCatalog())
+        let r = try XCTUnwrap(reopened)
+        XCTAssertTrue(r.progress.owns(.garden, bundleId: bundleId))
+        XCTAssertEqual(r.progress.ownedProducts, [garden])
+    }
+
+    /// 退款/撤销：权益移除并回退默认外观，地图与进度不动；写盘失败同样如实返回。
+    func testRevocationRevertsStyleAndReportsSave() throws {
+        let store = MemorySaveStore()
+        let (campaign, _) = CampaignCoordinator.launch(store: store, appVersion: "t", wallClock: FakeWall(1),
+                                                       catalog: try twoChapterCatalog())
+        let c = try XCTUnwrap(campaign)
+        XCTAssertTrue(c.updateEntitlements([garden], bundleId: bundleId))
+        XCTAssertTrue(c.selectRoomStyle(.garden, bundleId: bundleId))
+        try DebugScenario.pantryBuilt.apply(to: c.session)
+        let before = c.session.makeState()
+        store.failWrites = true
+        XCTAssertFalse(c.updateEntitlements([], bundleId: bundleId))
+        XCTAssertEqual(c.progress.selectedRoomStyle, .standard)
+        store.failWrites = false
+        XCTAssertTrue(c.updateEntitlements([], bundleId: bundleId))
+        XCTAssertEqual(c.session.makeState(), before, "refund never touches the colony")
+    }
+
     /// QA T39：购买/启用外观前后，600 秒固定回放的经济状态逐字段相同。
     func testStyleHasZeroEconomicEffect() throws {
         func run(style: RoomStyle) throws -> GameState {
