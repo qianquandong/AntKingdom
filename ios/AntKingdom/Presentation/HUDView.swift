@@ -1,5 +1,6 @@
 import AntKingdomCore
 import SwiftUI
+import UIKit
 
 enum Theme {
     static let paper = Color(red: 0.965, green: 0.925, blue: 0.847)
@@ -27,8 +28,7 @@ struct HUDView: View {
                 Button {
                     controller.showSettings = true
                 } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 20, weight: .semibold))
+                    AssetIcon(name: "ui_core_settings", fallback: "gearshape.fill", size: 20)
                         .frame(width: 44, height: 44)
                 }
                 .accessibilityLabel(L10n.text("settings.title"))
@@ -49,6 +49,28 @@ struct HUDView: View {
             .lineLimit(1)
             .minimumScaleFactor(0.8)
             .accessibilityIdentifier(id)
+    }
+}
+
+/// A03 图标：Codex 交付的 ui_core_* 存在时用位图，否则用 SF Symbol 占位（文字始终原生）。
+struct AssetIcon: View {
+    let name: String
+    let fallback: String
+    var size: CGFloat = 18
+
+    var body: some View {
+        Group {
+            if let image = UIImage(named: name) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size + 4, height: size + 4)
+            } else {
+                Image(systemName: fallback)
+                    .font(.system(size: size, weight: .semibold))
+            }
+        }
+        .accessibilityHidden(true)   // 装饰图标；按钮的可读名称来自英文文案
     }
 }
 
@@ -89,6 +111,8 @@ struct RouteStatusBar: View {
 /// 短暂提示条，叠在 HUD 下方，不遮挡底部操作。
 struct ToastStack: View {
     let toasts: [Toast]
+    /// 减少动态：提示只淡入淡出，不从上方滑入
+    var reduceMotion = false
 
     var body: some View {
         VStack(spacing: 6) {
@@ -101,7 +125,7 @@ struct ToastStack: View {
                     .background(background(toast.style), in: Capsule())
                     .foregroundStyle(toast.style == .info ? Theme.ink : .white)
                     .accessibilityIdentifier("toast.\(toast.identifier)")
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .transition(reduceMotion ? AnyTransition.opacity : AnyTransition.move(edge: .top).combined(with: .opacity))
             }
         }
         .animation(.easeOut(duration: 0.2), value: toasts)

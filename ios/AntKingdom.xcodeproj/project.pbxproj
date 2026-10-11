@@ -13,19 +13,24 @@
 		1D4ADA72153D3BE4DAA6E59E /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
 		2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
 		30A44CFA38615D653C6EC1B8 /* LifecycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */; };
+		427F6927A4725868A1799876 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A427BAB9E5A691739E2C2A /* Feedback.swift */; };
 		43CC1E75DEA37B319F086AA7 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481AE54E930CF5CFCE79C5B6 /* HUDView.swift */; };
 		51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */; };
 		53261ABA3C645BABD70E09EE /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */; };
 		6E5B47D6069905CD759887C7 /* AntKingdomCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9981BA22E18B195D8173322 /* AntKingdomCore */; };
 		6FA9E3AAFE09B7A8BD8FDBE5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */; };
+		75296A77078E6D2DE3749F3B /* asset_runtime_names.json in Resources */ = {isa = PBXBuildFile; fileRef = 6FBDD03F678AE0B96A5FC18E /* asset_runtime_names.json */; };
 		78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */; };
+		79507EE3877DBAC4BE2C6BB5 /* FeedbackSettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */; };
 		7D4262B832572A1085A165A6 /* AntSwarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */; };
+		83445FD63AFFB0E3B8EE521E /* FeedbackAndAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */; };
 		83CF72B8EFBDB471F8F6558C /* LifecycleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD459B95B2E87AA2529D7A9 /* LifecycleViews.swift */; };
 		89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
 		994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		9E2F2A640F124D68A6FBB5C7 /* BottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46655BCDA18D4B2831BF3884 /* BottomPanel.swift */; };
 		9FD961D3AD5BF223332B3964 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E9C27AC7A4781AED0D672 /* DebugMenu.swift */; };
+		A9186BF85C3EBB899CE40080 /* AssetNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D22135A456EE1FB87CC7DA /* AssetNames.swift */; };
 		B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647B87EE8765C3C300BAEDA /* L10n.swift */; };
 		BD7A72609D2B40466C9E1FE3 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
 		C7193A8A6B4E8803646867A2 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
@@ -56,6 +61,7 @@
 /* Begin PBXFileReference section */
 		0408614A7C162CB5C9689C1B /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		1647B87EE8765C3C300BAEDA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackSettingsUITests.swift; sourceTree = "<group>"; };
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		382E9C27AC7A4781AED0D672 /* DebugMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
 		3E1A073027F0CE7292F95A4E /* AntKingdomCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AntKingdomCore; path = ../Packages/AntKingdomCore; sourceTree = SOURCE_ROOT; };
@@ -73,10 +79,14 @@
 		61B70D1626E7C44AB4980112 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		675B34722EA6717625FAB89B /* transport_cases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = transport_cases.json; sourceTree = "<group>"; };
 		68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntKingdomApp.swift; sourceTree = "<group>"; };
+		6FBDD03F678AE0B96A5FC18E /* asset_runtime_names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = asset_runtime_names.json; sourceTree = "<group>"; };
+		71A427BAB9E5A691739E2C2A /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		77412A7A3D1820AE92346F4A /* GameController+Placement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameController+Placement.swift"; sourceTree = "<group>"; };
+		7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackAndAssetTests.swift; sourceTree = "<group>"; };
 		9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSmokeUITests.swift; sourceTree = "<group>"; };
 		9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryFlowUITests.swift; sourceTree = "<group>"; };
 		B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleUITests.swift; sourceTree = "<group>"; };
+		B8D22135A456EE1FB87CC7DA /* AssetNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNames.swift; sourceTree = "<group>"; };
 		BCC52BE7B1F9722360442BFE /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextPanels.swift; sourceTree = "<group>"; };
 		CADB3D4C007669C66FE7EB17 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
@@ -134,6 +144,7 @@
 		3C45C7E234B5E50A2D077E88 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				71A427BAB9E5A691739E2C2A /* Feedback.swift */,
 				5361185EA03C5A9E5E1622F1 /* Haptics.swift */,
 			);
 			path = Services;
@@ -168,6 +179,7 @@
 			children = (
 				56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */,
 				5085D0CA597EE4F428448C80 /* ArtLibrary.swift */,
+				B8D22135A456EE1FB87CC7DA /* AssetNames.swift */,
 				4125C63167FB727DDB70C304 /* GameMapView.swift */,
 				4C1D48483C2DBD31DFBB1557 /* GameScene.swift */,
 				BCC52BE7B1F9722360442BFE /* MapGeometry.swift */,
@@ -209,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */,
+				7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */,
 				47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */,
 			);
 			path = AntKingdomTests;
@@ -217,6 +230,7 @@
 		D99A8405C0C78191214531AA /* design */ = {
 			isa = PBXGroup;
 			children = (
+				6FBDD03F678AE0B96A5FC18E /* asset_runtime_names.json */,
 				675B34722EA6717625FAB89B /* transport_cases.json */,
 			);
 			name = design;
@@ -226,6 +240,7 @@
 		E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */ = {
 			isa = PBXGroup;
 			children = (
+				2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */,
 				9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */,
 				B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */,
 				9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */,
@@ -259,6 +274,7 @@
 			buildConfigurationList = F15A308F2830660A5C2799B1 /* Build configuration list for PBXNativeTarget "AntKingdomTests" */;
 			buildPhases = (
 				A27AC626A1C8314F15A62354 /* Sources */,
+				937209674724420D52F2B7CA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -350,6 +366,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		937209674724420D52F2B7CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75296A77078E6D2DE3749F3B /* asset_runtime_names.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -361,9 +385,11 @@
 				7D4262B832572A1085A165A6 /* AntSwarm.swift in Sources */,
 				2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */,
 				0B11F8333EB64F9ACAAB971F /* ArtLibrary.swift in Sources */,
+				A9186BF85C3EBB899CE40080 /* AssetNames.swift in Sources */,
 				9E2F2A640F124D68A6FBB5C7 /* BottomPanel.swift in Sources */,
 				F947E3D3E5F7A7ED0F8D6399 /* ContextPanels.swift in Sources */,
 				9FD961D3AD5BF223332B3964 /* DebugMenu.swift in Sources */,
+				427F6927A4725868A1799876 /* Feedback.swift in Sources */,
 				53261ABA3C645BABD70E09EE /* Format.swift in Sources */,
 				CE8C9DB163685993F3DD3978 /* GameController+Placement.swift in Sources */,
 				BD7A72609D2B40466C9E1FE3 /* GameController.swift in Sources */,
@@ -383,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79507EE3877DBAC4BE2C6BB5 /* FeedbackSettingsUITests.swift in Sources */,
 				D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */,
 				30A44CFA38615D653C6EC1B8 /* LifecycleUITests.swift in Sources */,
 				FC0615DA35BD1EED6D087D1D /* PantryFlowUITests.swift in Sources */,
@@ -394,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */,
+				83445FD63AFFB0E3B8EE521E /* FeedbackAndAssetTests.swift in Sources */,
 				51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,7 +455,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -507,7 +535,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = TestFlight;
@@ -524,7 +552,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = TestFlight;
@@ -612,7 +640,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = TestFlight;
 		};
@@ -628,7 +656,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = AppStore;
@@ -645,7 +673,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = AppStore;
@@ -662,7 +690,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = Debug;
@@ -744,7 +772,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = AppStore;
 		};
@@ -760,7 +788,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = Debug;

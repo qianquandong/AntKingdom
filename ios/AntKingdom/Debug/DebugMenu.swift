@@ -5,7 +5,8 @@ import SwiftUI
 /// 开发调试入口（只编译进 Debug）：载入调试场景、查看三组固定夹具的求解结果。
 /// 文字是开发者用的英文/ID，不属于玩家文案，不进入 TestFlight/AppStore 构建。
 struct DebugMenu: View {
-    @ObservedObject var controller: GameController
+    /// 只发命令，不需要随快照刷新（理由同 SettingsView）
+    let controller: GameController
     @State private var fixtures: [FixtureResult] = []
 
     var body: some View {

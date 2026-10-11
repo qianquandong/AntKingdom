@@ -77,9 +77,12 @@ struct PantryPanel: View {
                                         "capacity": Format.food(controller.snapshot.capacity)]))
                 .font(.system(.body, design: .rounded).monospacedDigit())
             Button(action: controller.beginMove) {
-                Text(L10n.text("action.move"))
-                    .font(.system(.body, design: .rounded).weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: 44)
+                HStack(spacing: 8) {
+                    AssetIcon(name: "ui_core_move", fallback: "arrow.up.and.down.and.arrow.left.and.right", size: 16)
+                    Text(L10n.text("action.move"))
+                }
+                .font(.system(.body, design: .rounded).weight(.semibold))
+                .frame(maxWidth: .infinity, minHeight: 44)
             }
             .buttonStyle(.borderedProminent)
             .tint(Theme.food)

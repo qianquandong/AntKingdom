@@ -24,7 +24,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private var sourceNodes: [String: SKShapeNode] = [:]
     private var pantryNode: SKNode?
     private var selectionNode: SKShapeNode?
-    private var eggNodes: [SKShapeNode] = []
+    private var eggNodes: [SKNode] = []
 
     private var renderedWalkable: Set<GridPoint> = []
     private var renderedDigTaps: [GridPoint: Int] = [:]
@@ -103,29 +103,57 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                 let node = SKSpriteNode(color: baseColor(map, p, walkable: map.initialWalkable.contains(p)),
                                         size: CGSize(width: tile, height: tile))
                 node.position = MapGeometry.center(of: p)
-                if map.tile(at: p) == .soil, let texture = ArtLibrary.texture("terrain_soil") {
-                    node.texture = texture
-                }
                 tileNodes[p] = node
                 tileLayer.addChild(node)
-                if map.tile(at: p) == .stone { node.addChild(stoneMarks()) }
+                applyTileTexture(p, map: map, walkable: map.initialWalkable)
+                if map.tile(at: p) == .stone, node.texture == nil { node.addChild(stoneMarks()) }
                 if map.tile(at: p) == .entrance { node.addChild(entranceMark()) }
             }
         }
-        let queen = roomNode(cells: map.queenCells, color: ArtLibrary.Palette.room, assetID: "room_queen")
+        addSurfaceBackdrop(map)
+        let queen = roomNode(cells: map.queenCells, color: ArtLibrary.Palette.room, assetID: AssetNames.queen)
         entityLayer.addChild(queen)
         for source in map.sources where source.kind != .surface {
-            let (color, asset): (UIColor, String) = {
+            let color: UIColor = {
                 switch source.id {
-                case "cookie": return (ArtLibrary.Palette.food, "source_cookie")
-                case "sugar": return (UIColor(hex: 0xFFF4DD), "source_sugar")
-                default: return (ArtLibrary.Palette.connected, "source_sap")
+                case "cookie": return ArtLibrary.Palette.food
+                case "sugar": return UIColor(hex: 0xFFF4DD)
+                default: return ArtLibrary.Palette.connected
                 }
             }()
-            let node = roomNode(cells: source.cells, color: color, assetID: asset)
+            let node = roomNode(cells: source.cells, color: color, assetID: AssetNames.source(source.id, empty: false))
             sourceNodes[source.id] = node
             entityLayer.addChild(node)
         }
+    }
+
+    /// 正式地形资源（有则用，无则保持占位色块）：土块三变化、石块、隧道 16 种遮罩。
+    /// 隧道遮罩依赖四邻，所以开格时要连同邻格一起重算。
+    private func applyTileTexture(_ p: GridPoint, map: MapDefinition, walkable: Set<GridPoint>) {
+        guard let node = tileNodes[p] else { return }
+        switch map.tile(at: p) {
+        case .surface?:
+            return
+        case .stone?:
+            node.texture = ArtLibrary.texture(AssetNames.stone)
+        case .soil? where !walkable.contains(p):
+            node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+        default:
+            let mask = AssetNames.tunnelMask(at: p, open: walkable)
+            node.texture = walkable.contains(p) ? ArtLibrary.texture(AssetNames.tunnel(mask: mask)) : nil
+        }
+    }
+
+    /// 地表背景（1296×288 可裁切）：铺在地表行下面，地表格改为透明。
+    private func addSurfaceBackdrop(_ map: MapDefinition) {
+        let cells = Set(tileNodes.keys.filter { map.tile(at: $0) == .surface })
+        guard !cells.isEmpty, let texture = ArtLibrary.texture(AssetNames.surface) else { return }
+        let frame = MapGeometry.frame(of: cells)
+        let backdrop = SKSpriteNode(texture: texture, size: frame.size)
+        backdrop.position = CGPoint(x: frame.midX, y: frame.midY)
+        backdrop.zPosition = -1
+        tileLayer.addChild(backdrop)
+        for p in cells { tileNodes[p]?.color = .clear }
     }
 
     private func baseColor(_ map: MapDefinition, _ p: GridPoint, walkable: Bool) -> UIColor {
@@ -149,6 +177,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         node.lineWidth = 2
         if let texture = ArtLibrary.texture(assetID) {
             let sprite = SKSpriteNode(texture: texture, size: frame.size)
+            sprite.name = "art"
             node.addChild(sprite)
             node.fillColor = .clear
         } else if let label = ArtLibrary.placeholderLabel(assetID, in: frame.size) {
@@ -180,11 +209,14 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private func render(_ snapshot: SessionSnapshot, selection: Selection?, time: TimeInterval) {
         let map = controller!.session.map
         if snapshot.walkable != renderedWalkable {
-            for p in snapshot.walkable.symmetricDifference(renderedWalkable) {
+            let changed = snapshot.walkable.symmetricDifference(renderedWalkable)
+            var retexture = changed
+            for p in changed {
                 tileNodes[p]?.color = baseColor(map, p, walkable: snapshot.walkable.contains(p))
-                tileNodes[p]?.texture = snapshot.walkable.contains(p) ? nil : tileNodes[p]?.texture
+                retexture.formUnion(p.neighbors)
                 if snapshot.walkable.contains(p), renderedWalkable.isEmpty == false { burst(at: p) }
             }
+            for p in retexture { applyTileTexture(p, map: map, walkable: snapshot.walkable) }
             renderedWalkable = snapshot.walkable
         }
         if snapshot.digTaps != renderedDigTaps {
@@ -201,7 +233,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
         let empty = Dictionary(uniqueKeysWithValues: snapshot.sources.map { ($0.id, $0.isEmptyPatch) })
         if empty != renderedEmpty {
-            for (id, isEmpty) in empty { sourceNodes[id].map { styleSource($0, empty: isEmpty) } }
+            for (id, isEmpty) in empty { sourceNodes[id].map { styleSource($0, id: id, empty: isEmpty) } }
             renderedEmpty = empty
         }
         if snapshot.routes != renderedRoutes {
@@ -226,8 +258,11 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             renderedValidity = controller.placementValidity
         }
         ants.update(layer: antLayer, snapshot: snapshot, queen: map.queenCells, time: time)
+        updateEggStates(snapshot.eggs)
+        // 可挖前沿呼吸提示；减少动态时保持静态（虚线框仍在，不只靠动画）
+        let still = controller?.reduceMotion ?? false
         for (index, node) in frontierNodes.values.enumerated() {
-            node.alpha = 0.55 + 0.25 * CGFloat(sin(time * 3 + Double(index % 3)))
+            node.alpha = still ? 0.75 : 0.55 + 0.25 * CGFloat(sin(time * 3 + Double(index % 3)))
         }
     }
 
@@ -240,6 +275,12 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             crackNodes[cell]?.removeFromParent()
             let node = SKNode()
             node.position = MapGeometry.center(of: cell)
+            crackLayer.addChild(node)
+            crackNodes[cell] = node
+            if let texture = ArtLibrary.texture(AssetNames.crack(level: count)) {
+                node.addChild(SKSpriteNode(texture: texture, size: CGSize(width: MapGeometry.tile, height: MapGeometry.tile)))
+                continue
+            }
             let path = CGMutablePath()
             path.move(to: CGPoint(x: -16, y: 12)); path.addLine(to: CGPoint(x: -2, y: 2)); path.addLine(to: CGPoint(x: 6, y: 14))
             if count >= 2 {
@@ -250,7 +291,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             crack.strokeColor = ArtLibrary.Palette.soilDeep
             crack.lineWidth = count >= 2 ? 3 : 2
             node.addChild(crack)
-            if ArtLibrary.texture("dig_feedback") == nil, count >= 2 {
+            if count >= 2 {
                 for offset in [CGPoint(x: -8, y: -16), CGPoint(x: 12, y: 4), CGPoint(x: -18, y: 0)] {
                     let crumb = SKShapeNode(circleOfRadius: 2.5)
                     crumb.position = offset
@@ -259,8 +300,6 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                     node.addChild(crumb)
                 }
             }
-            crackLayer.addChild(node)
-            crackNodes[cell] = node
         }
     }
 
@@ -300,9 +339,15 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         pantryNode = node
     }
 
-    private func styleSource(_ node: SKShapeNode, empty: Bool) {
-        node.alpha = empty ? 0.45 : 1
+    private func styleSource(_ node: SKShapeNode, id: String, empty: Bool) {
         node.childNode(withName: "emptyMark")?.removeFromParent()
+        if let art = node.childNode(withName: "art") as? SKSpriteNode,
+           let texture = ArtLibrary.texture(AssetNames.source(id, empty: empty)) {
+            art.texture = texture
+            node.alpha = 1
+            return
+        }
+        node.alpha = empty ? 0.45 : 1
         guard empty else { return }
         // 空盘标记：虚线框 + 斜线，不只靠颜色
         let frame = node.frame
@@ -360,13 +405,30 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         eggNodes = []
         let frame = MapGeometry.frame(of: queen)
         for index in 0..<count {
-            let egg = SKShapeNode(ellipseOf: CGSize(width: 12, height: 16))
-            egg.fillColor = UIColor(hex: 0xFFF8EC)
-            egg.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.6)
+            let egg: SKNode
+            if let texture = ArtLibrary.texture(AssetNames.egg(ready: false)) {
+                egg = SKSpriteNode(texture: texture, size: CGSize(width: 24, height: 24))
+            } else {
+                let shape = SKShapeNode(ellipseOf: CGSize(width: 12, height: 16))
+                shape.fillColor = UIColor(hex: 0xFFF8EC)
+                shape.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.6)
+                egg = shape
+            }
             egg.position = CGPoint(x: frame.minX + 22 + CGFloat(index) * 18, y: frame.maxY - 22)
             egg.zPosition = 2
             entityLayer.addChild(egg)
             eggNodes.append(egg)
+        }
+    }
+
+    /// 卵的“将孵化”态（只在有正式资源时切图；阈值为表现层暂定值，待 Codex 确认）。
+    private static let eggReadySeconds = 2.0
+
+    private func updateEggStates(_ remaining: [Double]) {
+        guard let ready = ArtLibrary.texture(AssetNames.egg(ready: true)),
+              let normal = ArtLibrary.texture(AssetNames.egg(ready: false)) else { return }
+        for (node, seconds) in zip(eggNodes, remaining) {
+            (node as? SKSpriteNode)?.texture = seconds <= GameScene.eggReadySeconds ? ready : normal
         }
     }
 
@@ -431,12 +493,24 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     // MARK: 一次性视觉反馈
 
     private func burst(at cell: GridPoint) {
-        for index in 0..<6 {
-            let crumb = SKShapeNode(circleOfRadius: 3)
-            crumb.fillColor = ArtLibrary.Palette.soil
-            crumb.strokeColor = .clear
+        let still = controller?.reduceMotion ?? false
+        for index in 0..<(still ? 1 : 6) {
+            let crumb: SKNode
+            if let texture = ArtLibrary.texture(AssetNames.crumb) {
+                crumb = SKSpriteNode(texture: texture, size: CGSize(width: 12, height: 12))
+            } else {
+                let shape = SKShapeNode(circleOfRadius: 3)
+                shape.fillColor = ArtLibrary.Palette.soil
+                shape.strokeColor = .clear
+                crumb = shape
+            }
             crumb.position = MapGeometry.center(of: cell)
             overlayLayer.addChild(crumb)
+            if still {
+                // 减少动态：只淡出，不飞散
+                crumb.run(.sequence([.fadeOut(withDuration: 0.35), .removeFromParent()]))
+                continue
+            }
             let angle = Double(index) / 6 * 2 * .pi
             let move = SKAction.moveBy(x: CGFloat(cos(angle)) * 22, y: CGFloat(sin(angle)) * 22, duration: 0.35)
             crumb.run(.sequence([.group([move, .fadeOut(withDuration: 0.35)]), .removeFromParent()]))
@@ -454,6 +528,17 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
 
     private func shake(_ cell: GridPoint) {
         guard let node = tileNodes[cell] else { return }
+        if controller?.reduceMotion ?? false {
+            // 减少动态：橙色闪框代替左右抖动
+            let tile = MapGeometry.tile
+            let flash = SKShapeNode(rectOf: CGSize(width: tile - 6, height: tile - 6), cornerRadius: 6)
+            flash.position = MapGeometry.center(of: cell)
+            flash.strokeColor = ArtLibrary.Palette.busy
+            flash.lineWidth = 3
+            overlayLayer.addChild(flash)
+            flash.run(.sequence([.wait(forDuration: 0.25), .fadeOut(withDuration: 0.2), .removeFromParent()]))
+            return
+        }
         let center = MapGeometry.center(of: cell)
         node.removeAction(forKey: "shake")
         node.run(.sequence([.moveBy(x: 4, y: 0, duration: 0.04), .moveBy(x: -8, y: 0, duration: 0.08),

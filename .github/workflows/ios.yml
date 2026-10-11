@@ -2,7 +2,12 @@ name: iOS 工程与核心包
 
 on:
   push:
+    # 只改文档/报告时不占用 macOS runner；PRD 文案变化由 validate.yml 的 export_strings --check 把关
+    paths-ignore: ['docs/**', '*.md']
+  # 堆叠 PR（基于 claude/* 分支）由 push 运行覆盖，PR 页面同样显示该 commit 的检查；
+  # 只有合入 main 的 PR 另跑一次合并结果，避免每个 PR 重复占用 macOS runner。
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -72,7 +77,8 @@ jobs:
 
       - name: 单元 + UI 测试（标准尺寸模拟器）
         run: |
-          udid=$(python3 ci/pick_simulator.py standard)
+          udid=$(python3 ci/pick_simulator.py standard 2>build/sim-standard.txt)
+          echo "- 标准尺寸模拟器：$(cat build/sim-standard.txt)" >> "$GITHUB_STEP_SUMMARY"
           echo "SIM_STANDARD=$udid" >> "$GITHUB_ENV"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$udid" \
@@ -103,10 +109,11 @@ jobs:
           ls -la build/videos
           exit $status
 
-      - name: UI 测试（小屏模拟器，375×667pt 级）
+      - name: UI 测试（小屏 iPhone SE，最旧已安装 iOS 运行时）
         timeout-minutes: 20
         run: |
-          small=$(python3 ci/pick_simulator.py small)
+          small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
+          echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$small" \
             -derivedDataPath build/DerivedData \
@@ -132,6 +139,18 @@ jobs:
           # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "offline-900s" -ak-scenario connected -ak-away 900
 
+      - name: TestFlight 配置无签名编译（真机架构；调试入口已剔除、未接广告/内购）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail   # 检查失败不能被 tee 吞掉
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -configuration TestFlight -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-release \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO build
+          bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app \
+            | tee build/release-check.md >> "$GITHUB_STEP_SUMMARY"
+          cat build/release-check.md
+
       - name: 上传证据
         if: always()
         uses: actions/upload-artifact@v4
@@ -140,6 +159,7 @@ jobs:
           path: |
             build/environment.md
             build/core-diff.md
+            build/release-check.md
             build/swift_core.json
             build/screenshots
             build/attachments

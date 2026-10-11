@@ -1,6 +1,6 @@
 import UIKit
 
-/// 触觉反馈。设置关闭时不触发；关闭反馈不影响任何核心状态（QA T31）。
+/// 触觉反馈。是否触发由 FeedbackPlayer 按设置决定；关闭反馈不影响任何核心状态（QA T31）。
 @MainActor
 final class Haptics {
     private let light = UIImpactFeedbackGenerator(style: .light)
@@ -10,28 +10,13 @@ final class Haptics {
 
     init() {}
 
-    func dig(enabled: Bool) {
-        guard enabled else { return }
-        light.impactOccurred(intensity: 0.6)
-    }
-
-    func cellOpened(enabled: Bool) {
-        guard enabled else { return }
-        medium.impactOccurred()
-    }
-
-    func selection(enabled: Bool) {
-        guard enabled else { return }
-        selectionGenerator.selectionChanged()
-    }
-
-    func success(enabled: Bool) {
-        guard enabled else { return }
-        notification.notificationOccurred(.success)
-    }
-
-    func rejected(enabled: Bool) {
-        guard enabled else { return }
-        notification.notificationOccurred(.warning)
+    func play(_ cue: HapticCue) {
+        switch cue {
+        case .light: light.impactOccurred(intensity: 0.6)
+        case .medium: medium.impactOccurred()
+        case .selection: selectionGenerator.selectionChanged()
+        case .success: notification.notificationOccurred(.success)
+        case .warning: notification.notificationOccurred(.warning)
+        }
     }
 }

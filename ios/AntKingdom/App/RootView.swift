@@ -4,6 +4,7 @@ import SwiftUI
 /// 主界面：地图铺底，顶部 HUD，底部上下文面板，提示条浮在 HUD 下方。
 struct RootView: View {
     @ObservedObject var controller: GameController
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
 
     var body: some View {
         GeometryReader { proxy in
@@ -14,7 +15,8 @@ struct RootView: View {
                     .ignoresSafeArea()
                 VStack(spacing: 8) {
                     HUDView(controller: controller)
-                    ToastStack(toasts: controller.toasts)
+                    ToastStack(toasts: controller.toasts,
+                               reduceMotion: systemReduceMotion || controller.forceReduceMotion)
                     Spacer(minLength: 0)
                     BottomPanel(controller: controller)
                 }
@@ -24,9 +26,6 @@ struct RootView: View {
                 DebugProbeView(text: controller.debugProbe)
                 #endif
             }
-        }
-        .sheet(isPresented: $controller.showSettings) {
-            SettingsView(controller: controller)
         }
     }
 }

@@ -70,17 +70,24 @@ targets:
         # 占位 Bundle ID（example.com 保留域名），签名/TestFlight 前由用户确定真实值。
         PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom
         PRODUCT_NAME: AntKingdom
+        # 仅 iPhone。XcodeGen 的 iOS target 默认 "1,2"，会覆盖项目级设置（D-07），必须在 target 上写明
+        TARGETED_DEVICE_FAMILY: "1"
   AntKingdomTests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - path: AntKingdomTests
+      # 资源运行时名称约定：单元测试校验与 AssetNames.swift 一致
+      - path: ../design/asset_runtime_names.json
+        buildPhase: resources
+        createIntermediateGroups: false
     dependencies:
       - target: AntKingdom
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom.tests
         GENERATE_INFOPLIST_FILE: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
   AntKingdomUITests:
     type: bundle.ui-testing
     platform: iOS
@@ -92,6 +99,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom.uitests
         GENERATE_INFOPLIST_FILE: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
   AntKingdom:
     build:

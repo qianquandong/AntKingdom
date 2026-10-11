@@ -16,16 +16,19 @@ struct AntKingdomApp: App {
     }
 }
 
-/// 启动参数（仅 Debug 解释）：
+#if DEBUG
+/// 启动参数（只编译进 Debug；TestFlight/AppStore 二进制中不存在，CI 用 check-release-binary.sh 检查）：
 /// - `-ak-scenario <name>`：载入调试场景（内存存档，不碰真实存档）
 /// - `-ak-ephemeral`：使用内存存档的新档
 /// - `-ak-away <seconds>`：先在“过去”保存，再冷启动，预览离线结算
 /// - `-ak-reset-save`：启动前删除本机存档，之后照常持久化（杀进程恢复测试用）
+/// - `-ak-reduce-motion`：强制“减少动态”（模拟器测试 QA T31，不改系统设置）
 struct LaunchOptions {
     var scenario: DebugScenario?
     var ephemeral = false
     var simulatedAwaySeconds: Double?
     var resetSave = false
+    var reduceMotion = false
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -36,5 +39,7 @@ struct LaunchOptions {
         ephemeral = arguments.contains("-ak-ephemeral")
         simulatedAwaySeconds = value(after: "-ak-away").flatMap(Double.init)
         resetSave = arguments.contains("-ak-reset-save")
+        reduceMotion = arguments.contains("-ak-reduce-motion")
     }
 }
+#endif
