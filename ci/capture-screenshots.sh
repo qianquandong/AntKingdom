@@ -24,19 +24,19 @@ log() { echo "[$(date -u +%H:%M:%S)] $*"; }
 
 if ! xcrun simctl list devices | grep -q "$udid) (Booted)"; then
   log "boot $udid"
-  with_timeout 240 xcrun simctl boot "$udid" || true
-  for _ in $(seq 1 120); do
+  with_timeout 300 xcrun simctl boot "$udid" || true
+  for _ in $(seq 1 150); do
     xcrun simctl list devices | grep -q "$udid) (Booted)" && break
     sleep 2
   done
 fi
-with_timeout 30 xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 \
+with_timeout 90 xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 \
   --cellularBars 4 --wifiBars 3 2>/dev/null || log "status_bar override skipped"
 log "install"
-with_timeout 180 xcrun simctl install "$udid" "$app"
+with_timeout 300 xcrun simctl install "$udid" "$app"
 with_timeout 30 xcrun simctl terminate "$udid" "$bundle_id" 2>/dev/null || true
 log "launch $*"
-with_timeout 60 xcrun simctl launch "$udid" "$bundle_id" "$@" >/dev/null
+with_timeout 240 xcrun simctl launch "$udid" "$bundle_id" "$@" >/dev/null
 sleep "${SCREENSHOT_DELAY:-6}"
-with_timeout 60 xcrun simctl io "$udid" screenshot "$outdir/$name.png" >/dev/null
+with_timeout 120 xcrun simctl io "$udid" screenshot "$outdir/$name.png" >/dev/null
 log "screenshot: $outdir/$name.png"

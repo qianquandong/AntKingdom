@@ -79,7 +79,7 @@ jobs:
           ls -la build/attachments || true
 
       - name: 模拟器截图
-        timeout-minutes: 10
+        timeout-minutes: 20
         run: |
           app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots launch-standard
