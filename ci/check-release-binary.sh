@@ -38,7 +38,8 @@ row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 # 调试入口（启动参数、探针、调试菜单、测试地图）只能存在于 Debug 构建
 markers=("-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: ")
 if [ "$track" = "--release-track" ]; then
-  markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture" "-ak-store" "FakeStoreService")
+  markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture" "-ak-store" "FakeStoreService"
+            "-ak-fail-writes" "XCTestConfigurationFilePath")
 fi
 for marker in "${markers[@]}"; do
   if has_string "$marker"; then

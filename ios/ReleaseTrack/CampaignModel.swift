@@ -66,6 +66,12 @@ final class CampaignModel: ObservableObject {
             let bundle = Bundle.main.bundleIdentifier ?? "com.example.CrumbKingdom"
             storeService = FakeStoreService(mode: mode, productId: RoomStyle.garden.productId(bundleId: bundle) ?? "")
         }
+        if CampaignModel.isUnitTestHost {
+            // 单元测试宿主：不监听真实 StoreKit、不写真实存档。否则宿主 App 的交易监听会抢先交付并完成
+            // 测试里创建的交易（CI 38170353463 的 StoreKitServiceTests 时好时坏）
+            store = MemorySaveStore()
+            storeService = FakeStoreService(mode: .unavailable, productId: "")
+        }
         #endif
         self.store = store
         self.wallClock = SystemWallClock()
@@ -92,6 +98,13 @@ final class CampaignModel: ObservableObject {
         #endif
         shop.start()
     }
+
+    #if DEBUG
+    /// 作为单元测试宿主运行（XCTest 注入的环境变量；UI 测试启动的 App 没有它）
+    static var isUnitTestHost: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+    #endif
 
     /// 地图上的房间外观：预览优先，其次已启用的外观（只影响绘制）。
     private func applyRoomStyle() {
