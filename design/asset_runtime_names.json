@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "description": "资源 ID → 客户端运行时名称（Assets.xcassets imageset 名，或 Resources/Audio 下的文件名，不含扩展名）。由 Claude 维护，与 ios/AntKingdom/Scene/AssetNames.swift 一致（AntKingdomTests 校验）。Codex 可按此命名交付，导入时不再改名。",
+  "audio_extensions": [
+    "caf",
+    "wav",
+    "m4a"
+  ],
+  "not_runtime": [
+    "art_keyframe"
+  ],
+  "names": {
+    "terrain_soil": [
+      "terrain_soil_1",
+      "terrain_soil_2",
+      "terrain_soil_3"
+    ],
+    "terrain_tunnel_masks": [
+      "terrain_tunnel_masks_0",
+      "terrain_tunnel_masks_1",
+      "terrain_tunnel_masks_2",
+      "terrain_tunnel_masks_3",
+      "terrain_tunnel_masks_4",
+      "terrain_tunnel_masks_5",
+      "terrain_tunnel_masks_6",
+      "terrain_tunnel_masks_7",
+      "terrain_tunnel_masks_8",
+      "terrain_tunnel_masks_9",
+      "terrain_tunnel_masks_10",
+      "terrain_tunnel_masks_11",
+      "terrain_tunnel_masks_12",
+      "terrain_tunnel_masks_13",
+      "terrain_tunnel_masks_14",
+      "terrain_tunnel_masks_15"
+    ],
+    "terrain_stone": [
+      "terrain_stone"
+    ],
+    "surface_backdrop": [
+      "surface_backdrop"
+    ],
+    "room_queen": [
+      "room_queen"
+    ],
+    "room_pantry": [
+      "room_pantry"
+    ],
+    "source_cookie": [
+      "source_cookie_full",
+      "source_cookie_empty"
+    ],
+    "source_sugar": [
+      "source_sugar_full",
+      "source_sugar_empty"
+    ],
+    "source_sap": [
+      "source_sap"
+    ],
+    "ant_worker": [
+      "ant_worker_idle_1",
+      "ant_worker_idle_2",
+      "ant_worker_walk_1",
+      "ant_worker_walk_2",
+      "ant_worker_walk_3",
+      "ant_worker_walk_4",
+      "ant_worker_walk_5",
+      "ant_worker_walk_6",
+      "ant_worker_carry_1",
+      "ant_worker_carry_2",
+      "ant_worker_carry_3",
+      "ant_worker_carry_4",
+      "ant_worker_carry_5",
+      "ant_worker_carry_6"
+    ],
+    "ant_cargo": [
+      "ant_cargo"
+    ],
+    "egg_states": [
+      "egg_states_normal",
+      "egg_states_ready"
+    ],
+    "dig_feedback": [
+      "dig_feedback_crack_1",
+      "dig_feedback_crack_2",
+      "dig_feedback_crumb"
+    ],
+    "route_markers": [
+      "route_markers_normal",
+      "route_markers_busy",
+      "route_markers_selected"
+    ],
+    "ui_core": [
+      "ui_core_food",
+      "ui_core_ant",
+      "ui_core_egg",
+      "ui_core_move",
+      "ui_core_settings"
+    ],
+    "audio_core": [
+      "audio_core_dig",
+      "audio_core_tunnel_open",
+      "audio_core_build",
+      "audio_core_move",
+      "audio_core_hatch",
+      "audio_core_refill",
+      "audio_core_ui"
+    ]
+  }
+}

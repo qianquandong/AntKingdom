@@ -9,6 +9,8 @@ import UIKit
 struct AntSwarm {
     private struct Ant {
         let node: SKNode
+        /// 正式帧资源存在时的身体精灵（idle2 / walk6 / carry6）；占位时为 nil
+        let body: SKSpriteNode?
         let cargo: SKNode
         let route: Int
         let phase: Double
@@ -34,23 +36,41 @@ struct AntSwarm {
                                             y: queenFrame.midY + CGFloat(sin(angle * 1.3)) * 12)
                 ant.node.zRotation = CGFloat(angle) + .pi / 2
                 ant.cargo.isHidden = true
+                animate(ant, pose: .walk, time: time)
                 continue
             }
             let route = routes[ant.route]
             if snapshot.isStorageFull {
                 place(ant, fraction: 0, carrying: false, returning: false)
+                animate(ant, pose: .idle, time: time)
                 continue
             }
             let trip = max(route.tripSeconds, 3.01)
             let move = (trip - 3) / 2
             let t = (time / trip + ant.phase).truncatingRemainder(dividingBy: 1) * trip
             switch t {
-            case ..<2: place(ant, fraction: 0, carrying: t > 1.2, returning: false)
-            case ..<(2 + move): place(ant, fraction: (t - 2) / move, carrying: true, returning: false)
-            case ..<(3 + move): place(ant, fraction: 1, carrying: t < 2.6 + move, returning: true)
-            default: place(ant, fraction: 1 - (t - 3 - move) / move, carrying: false, returning: true)
+            case ..<2:
+                place(ant, fraction: 0, carrying: t > 1.2, returning: false)
+                animate(ant, pose: .idle, time: time)
+            case ..<(2 + move):
+                place(ant, fraction: (t - 2) / move, carrying: true, returning: false)
+                animate(ant, pose: .carry, time: time)
+            case ..<(3 + move):
+                place(ant, fraction: 1, carrying: t < 2.6 + move, returning: true)
+                animate(ant, pose: .idle, time: time)
+            default:
+                place(ant, fraction: 1 - (t - 3 - move) / move, carrying: false, returning: true)
+                animate(ant, pose: .walk, time: time)
             }
         }
+    }
+
+    /// 按姿态播帧（idle 4fps，walk/carry 10fps）。缺任何一帧时保持当前图，不混用占位。
+    private func animate(_ ant: Ant, pose: AssetNames.AntPose, time: TimeInterval) {
+        guard let body = ant.body else { return }
+        let fps = pose == .idle ? 4.0 : 10.0
+        let frame = Int((time + ant.phase) * fps) % pose.frameCount + 1
+        if let texture = ArtLibrary.texture(AssetNames.ant(pose, frame: frame)) { body.texture = texture }
     }
 
     private func place(_ ant: Ant, fraction: Double, carrying: Bool, returning: Bool) {
@@ -107,8 +127,11 @@ struct AntSwarm {
 
     private func makeAnt(layer: SKNode, route: Int, phase: Double, lateral: CGFloat) -> Ant {
         let node = SKNode()
-        if let texture = ArtLibrary.texture("ant_worker") {
-            node.addChild(SKSpriteNode(texture: texture, size: CGSize(width: 32, height: 32)))
+        var body: SKSpriteNode?
+        if let texture = ArtLibrary.texture(AssetNames.ant(.walk, frame: 1)) {
+            let sprite = SKSpriteNode(texture: texture, size: CGSize(width: 32, height: 32))
+            node.addChild(sprite)
+            body = sprite
         } else {
             // 占位：三节身体 + 触角，朝右
             for (x, w, h) in [(-6.0, 9.0, 7.0), (0.0, 6.0, 5.0), (5.0, 6.0, 6.0)] {
@@ -126,14 +149,20 @@ struct AntSwarm {
             antennae.lineWidth = 1
             node.addChild(antennae)
         }
-        let cargo = SKShapeNode(circleOfRadius: 3.5)
+        let cargo: SKNode
+        if let texture = ArtLibrary.texture(AssetNames.cargo) {
+            cargo = SKSpriteNode(texture: texture, size: CGSize(width: 16, height: 16))
+        } else {
+            let shape = SKShapeNode(circleOfRadius: 3.5)
+            shape.fillColor = ArtLibrary.Palette.food
+            shape.strokeColor = ArtLibrary.Palette.soilDeep
+            shape.lineWidth = 0.5
+            cargo = shape
+        }
         cargo.position = CGPoint(x: 11, y: 0)
-        cargo.fillColor = ArtLibrary.Palette.food
-        cargo.strokeColor = ArtLibrary.Palette.soilDeep
-        cargo.lineWidth = 0.5
         cargo.isHidden = true
         node.addChild(cargo)
         layer.addChild(node)
-        return Ant(node: node, cargo: cargo, route: route, phase: phase, lateral: lateral)
+        return Ant(node: node, body: body, cargo: cargo, route: route, phase: phase, lateral: lateral)
     }
 }

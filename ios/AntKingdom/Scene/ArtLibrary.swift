@@ -20,10 +20,15 @@ enum ArtLibrary {
         static let selection = UIColor(hex: 0xFFF3B0)
     }
 
-    /// 正式资源存在时返回纹理；否则返回 nil，调用方画占位。
-    static func texture(_ assetID: String) -> SKTexture? {
-        guard UIImage(named: assetID) != nil else { return nil }
-        return SKTexture(imageNamed: assetID)
+    @MainActor private static var cache: [String: SKTexture?] = [:]
+
+    /// 正式资源存在时返回纹理；否则返回 nil，调用方画占位。结果缓存（蚂蚁帧每帧都会查询）。
+    /// 名称见 AssetNames（资源 ID → 运行时 imageset 名）。
+    @MainActor static func texture(_ name: String) -> SKTexture? {
+        if let hit = cache[name] { return hit }
+        let texture = UIImage(named: name) != nil ? SKTexture(imageNamed: name) : nil
+        cache[name] = .some(texture)
+        return texture
     }
 
     /// 是否显示占位资源 ID（仅 Debug）

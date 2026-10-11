@@ -75,6 +75,10 @@ targets:
     platform: iOS
     sources:
       - path: AntKingdomTests
+      # 资源运行时名称约定：单元测试校验与 AssetNames.swift 一致
+      - path: ../design/asset_runtime_names.json
+        buildPhase: resources
+        createIntermediateGroups: false
     dependencies:
       - target: AntKingdom
     settings:

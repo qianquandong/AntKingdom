@@ -61,6 +61,28 @@ CI 会用锁定的 XcodeGen 重新生成并比对，若有差异则失败，防�
 
 调试入口只编译进 Debug。Bundle ID 当前是占位值 `com.example.CrumbKingdom`，Team 为空；签名前由用户提供真实值（见 [执行看板](EXECUTION_BOARD.md) 第 3 节）。
 
+Debug 启动参数（Xcode Scheme → Run → Arguments，或 UI 测试 `launchArguments`；Release 二进制中不存在）：
+
+| 参数 | 作用 |
+|---|---|
+| `-ak-scenario <fresh\|connected\|busy\|pantry_ready\|pantry_built\|replay300\|replay600>` | 载入调试场景，使用内存存档，不碰真实存档 |
+| `-ak-ephemeral` | 内存存档的新档 |
+| `-ak-away <秒>` | 先在“过去”保存，再冷启动，走真实离线结算（不改系统时间） |
+| `-ak-reset-save` | 启动前删除本机存档，之后照常保存（杀进程恢复测试） |
+| `-ak-reduce-motion` | 强制“减少动态” |
+
+## 4a. 正式资源导入约定
+
+每个资源 ID 在客户端对应的运行时名称见 [`design/asset_runtime_names.json`](../design/asset_runtime_names.json)
+（与 `ios/AntKingdom/Scene/AssetNames.swift` 一致，单元测试校验）。图片放入
+`ios/AntKingdom/Resources/Assets.xcassets/<名称>.imageset`，音效放入 `ios/AntKingdom/Resources/Audio/<名称>.{caf,wav,m4a}`。
+
+- 某资源的名称**全部**存在时客户端才整组使用正式图，缺任何一个就整组保留占位（单元测试禁止半套导入）。
+- 隧道遮罩 `terrain_tunnel_masks_<0–15>`：数字为四邻相通位之和，N1 E2 S4 W8（N 为地图上方）。
+- 蚂蚁帧 `ant_worker_{idle_1–2, walk_1–6, carry_1–6}`，中心锚点、朝右；`ant_cargo` 为独立叠加层。
+- 有限源有货/空盘：`source_cookie_full/_empty`、`source_sugar_full/_empty`；卵 `egg_states_normal/_ready`。
+- 导入后运行 `python3 tools/check_assets.py`，并把 manifest 状态从 `approved` 改为 `integrated`（真机确认后 `verified_on_device`）。
+
 ## 5. 文案
 
 玩家可见英文只来自 PRD 附录 A。修改文案先改 PRD，再运行：
@@ -76,6 +98,6 @@ python3 tools/export_strings.py
 | 工作流 | 运行环境 | 内容 |
 |---|---|---|
 | `validate.yml` | Ubuntu，Python 3.11 / 3.14 | 规则、地图、文案、String Catalog 同步 |
-| `ios.yml` | Ubuntu `swift:6.2` 容器 + `macos-15` runner | 核心包测试（Linux 与 macOS）、工程漂移检查、模拟器单元/UI 测试、截图、环境记录 |
+| `ios.yml` | Ubuntu `swift:6.2` 容器 + `macos-15` runner | 核心包测试（Linux 与 macOS）、Python↔Swift 差分报告、工程漂移检查、模拟器单元/UI 测试（标准 + 小屏）、操作录像、场景与离线截图、环境记录 |
 
 `ios.yml` 的证据（环境记录、截图、UI 附件、日志、xcresult）作为 Actions artifact 保存。它们来自 GitHub 托管 runner 与模拟器，**不是真机证据**，也不代表用户本人的 Mac 已验证。

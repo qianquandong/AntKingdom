@@ -44,7 +44,7 @@ extension GameController {
     /// 摆放模式下，点击的格作为 2×2 预览的左上角。
     func movePlacement(to cell: GridPoint) {
         placement?.topLeft = cell
-        haptics.selection(enabled: latest.settings.haptics)
+        feedback.play(.select, settings: latest.settings)
     }
 
     var placementValidity: PlacementValidity {
@@ -58,14 +58,13 @@ extension GameController {
     /// 确认：只有合法时才发命令；失败不扣费、保持摆放模式并给出英文提示。
     func confirmPlacement() {
         guard let placement, let topLeft = placement.topLeft, placementValidity == .ok else {
-            haptics.rejected(enabled: latest.settings.haptics)
+            feedback.play(.rejected, settings: latest.settings)
             return
         }
         let result = send(placement.kind == .build ? .buildPantry(topLeft: topLeft) : .movePantry(topLeft: topLeft))
         switch result {
         case .pantryBuilt, .pantryMoved:
-            self.placement = nil
-            haptics.success(enabled: latest.settings.haptics)
+            self.placement = nil   // 建造/移动音效与触觉由 pantryBuilt/pantryMoved 事件统一发出
         case .rejected(.notEnoughFood):
             show("error.not_enough_food", style: .warning)
         default:

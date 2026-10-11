@@ -66,6 +66,9 @@ final class AppModel: ObservableObject {
             }
             #endif
             let controller = GameController(session: session)
+            #if DEBUG
+            controller.forceReduceMotion = LaunchOptions(arguments: arguments).reduceMotion
+            #endif
             wire(controller)
             if let offline, offline.isWorthShowing { controller.offlineSummary = offline }
             phase = .running(controller)

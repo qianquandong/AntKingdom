@@ -1,6 +1,7 @@
 import AntKingdomCore
 import Combine
 import SwiftUI
+import UIKit
 
 /// 当前选中的地图实体（底部面板显示详情）。
 enum Selection: Equatable {
@@ -24,7 +25,12 @@ struct Toast: Identifiable, Equatable {
 final class GameController: ObservableObject {
     let session: GameSession
     private let clock: MonotonicClock
-    let haptics: Haptics
+    /// 声音与触觉（按设置过滤）
+    let feedback = FeedbackPlayer()
+    /// Debug 启动参数 -ak-reduce-motion 强制“减少动态”，便于模拟器测试
+    var forceReduceMotion = false
+    /// 减少动态：系统设置或调试强制；场景与提示据此去掉位移/抖动类动画
+    var reduceMotion: Bool { forceReduceMotion || UIAccessibility.isReduceMotionEnabled }
 
     /// SwiftUI 使用的快照（节流发布）
     @Published private(set) var snapshot: SessionSnapshot
@@ -63,7 +69,6 @@ final class GameController: ObservableObject {
     init(session: GameSession, clock: MonotonicClock = SystemMonotonicClock()) {
         self.session = session
         self.clock = clock
-        self.haptics = Haptics()
         let first = session.snapshot()
         self.snapshot = first
         self.latest = first
@@ -147,12 +152,12 @@ final class GameController: ObservableObject {
         }
         if let entity = entity(at: cell) {
             selection = (selection == entity) ? nil : entity
-            haptics.selection(enabled: latest.settings.haptics)
+            feedback.play(.select, settings: latest.settings)
             return
         }
         if session.map.tile(at: cell) == .soil, !latest.walkable.contains(cell) {
             onRejectedTap?(cell)
-            haptics.rejected(enabled: latest.settings.haptics)
+            feedback.play(.rejected, settings: latest.settings)
         }
         selection = nil
     }
@@ -160,11 +165,11 @@ final class GameController: ObservableObject {
     private func dig(_ cell: GridPoint) {
         let result = send(.tapSoil(cell))
         switch result {
-        case .tapAccepted: haptics.dig(enabled: latest.settings.haptics)
-        case .cellOpened: haptics.cellOpened(enabled: latest.settings.haptics)
+        case .tapAccepted: feedback.play(.dig, settings: latest.settings)
+        case .cellOpened: feedback.play(.tunnelOpen, settings: latest.settings)
         case .rejected:
             onRejectedTap?(cell)
-            haptics.rejected(enabled: latest.settings.haptics)
+            feedback.play(.rejected, settings: latest.settings)
         default: break
         }
     }
@@ -198,7 +203,7 @@ final class GameController: ObservableObject {
             current.applied += 1
             let result = session.apply(.tapSoil(current.cell))
             if case .cellOpened = result {
-                haptics.cellOpened(enabled: latest.settings.haptics)
+                feedback.play(.tunnelOpen, settings: latest.settings)
                 hold = nil
                 refresh()
                 saveNow()
@@ -209,7 +214,7 @@ final class GameController: ObservableObject {
                 hold = nil
                 return
             }
-            haptics.dig(enabled: latest.settings.haptics)
+            feedback.play(.dig, settings: latest.settings)
         }
         hold = current
     }
@@ -239,13 +244,20 @@ final class GameController: ObservableObject {
             switch event {
             case .sourceConnected:
                 show("feedback.connected", style: .success)
-                haptics.success(enabled: latest.settings.haptics)
+                feedback.play(.connected, settings: latest.settings)
                 onRoutePulse?()
             case .routeImproved(_, let percent):
                 show("feedback.route_better", ["percent": Format.oneDecimal(percent)], style: .success)
                 onRoutePulse?()
             case .foodArrived:
                 show("event.food_arrived", style: .info)
+                feedback.play(.refill, settings: latest.settings)
+            case .pantryBuilt:
+                feedback.play(.build, settings: latest.settings)
+            case .pantryMoved:
+                feedback.play(.move, settings: latest.settings)
+            case .antsHatched:
+                feedback.play(.hatch, settings: latest.settings)
             case .storageFullChanged(true):
                 show("state.storage_full", style: .warning)
             case .prototypeComplete:
