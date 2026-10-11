@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "delivery": "A01-01",
+  "version": "1.0.0",
+  "created_at": "2026-10-11",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status": "reviewed",
+  "source": "OpenAI 内置 image_gen；本项目原创文字提示词。未使用外部照片、字体或第三方素材。AI 生成栅格原稿，不宣称独占版权；本记录不是第三方许可证。",
+  "generation_tool": "image_gen.imagegen (built-in)",
+  "export": "Sharp：只做等比尺寸导出、sRGB 编码，保留生成的 alpha；未重新绘制或去背。",
+  "runtime_mapping_reference": "86a7654ed346d0f8533649d4088c64a2d4e40ea3:design/asset_runtime_names.json",
+  "assets": [
+    {
+      "id": "terrain_soil_1",
+      "group": "terrain_soil",
+      "master": "assets/source/a01-01/masters/terrain_soil_1.png",
+      "output": "assets/game/terrain/soil/terrain_soil_1.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-12cde08a-0bad-48c7-b6be-a6274610431a.png",
+      "prompt_id": "soil1",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "b5bd4bb7c2cdddb71813ec7493f96f27d91da73c4bef58adff1328cb48c10e49",
+      "output_sha256": "8522fff0579e0b3d9742b1893dbc9bb589e3b967bbc1176a4f0d0a577733b9c6"
+    },
+    {
+      "id": "terrain_soil_2",
+      "group": "terrain_soil",
+      "master": "assets/source/a01-01/masters/terrain_soil_2.png",
+      "output": "assets/game/terrain/soil/terrain_soil_2.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-afc17eff-262f-45ea-a394-70dc9fe7f157.png",
+      "prompt_id": "soil2",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "ae30e2f6b51ff7d76b5528bc14c1ccf295012464887cf7fdb7776fd4b2007544",
+      "output_sha256": "f86b06a809db369de105865c860c1e2e66ea4da6c2e48dc0d7843451e39032e8"
+    },
+    {
+      "id": "terrain_soil_3",
+      "group": "terrain_soil",
+      "master": "assets/source/a01-01/masters/terrain_soil_3.png",
+      "output": "assets/game/terrain/soil/terrain_soil_3.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-7b8aabd5-7d24-45f3-80b1-bb21a1543782.png",
+      "prompt_id": "soil3",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "11ec935812c0889e983bd2eadecec5f0a0b5aaf24cdf85eecefd778bd876c258",
+      "output_sha256": "c5513182568ca16901cbfe8c8a3df09b9b68c0b13749f0b502fb74e1f7424492"
+    },
+    {
+      "id": "terrain_stone",
+      "group": "terrain_stone",
+      "master": "assets/source/a01-01/masters/terrain_stone.png",
+      "output": "assets/game/terrain/stone/terrain_stone.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-a3ff003c-c5a7-4e90-85ac-fc36451ba936.png",
+      "prompt_id": "stone",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "f4a82b81b7d2d1d60cb219f23362c54ca5e9a0944de955e4a0252d73fb672b29",
+      "output_sha256": "0748e034b1cce76ea404a35122f5131fe26a6c85a2795152f6de76d216fdffc0"
+    },
+    {
+      "id": "source_cookie_full",
+      "group": "source_cookie",
+      "master": "assets/source/a01-01/masters/source_cookie_full.png",
+      "output": "assets/game/sources/cookie/source_cookie_full.png",
+      "pixels": [
+        288,
+        288
+      ],
+      "logical_points": [
+        96,
+        96
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-18d22d32-fc69-45ac-a363-d8cc557b6d27.png",
+      "prompt_id": "cookie_full",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "8c1e3b2b8ebc863005e0c534e9e6ee685c3c13610ebbde5e57d2af6fdf9fe82d",
+      "output_sha256": "4e5b55f2d6632b8e5c25ecf2d80596dd253856b22df48dc19c1d6f41740da854"
+    },
+    {
+      "id": "source_cookie_empty",
+      "group": "source_cookie",
+      "master": "assets/source/a01-01/masters/source_cookie_empty.png",
+      "output": "assets/game/sources/cookie/source_cookie_empty.png",
+      "pixels": [
+        288,
+        288
+      ],
+      "logical_points": [
+        96,
+        96
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-a9df1fad-5982-4668-b2ec-d6c243d469a2.png",
+      "prompt_id": "cookie_empty",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "7c39c34d2a28b7694e13861ec5e079416ea34fbd328b304df9d4d04d6109a827",
+      "output_sha256": "ab1fb937a6f920bd89eb6bbdbaa021670abfade39f949f9a9b78512329437067"
+    },
+    {
+      "id": "source_sugar_full",
+      "group": "source_sugar",
+      "master": "assets/source/a01-01/masters/source_sugar_full.png",
+      "output": "assets/game/sources/sugar/source_sugar_full.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-96a18a91-112f-4857-b7ee-849f32b2c9d5.png",
+      "prompt_id": "sugar_full",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "1cae58e8a19ba1caf965ec1f52d1c1983b17760e210448784a161600ecfef929",
+      "output_sha256": "15a37cc196ddfea0d45f2809c24bf54cce88127bfde4e1165cb0a223673dfb01"
+    },
+    {
+      "id": "source_sugar_empty",
+      "group": "source_sugar",
+      "master": "assets/source/a01-01/masters/source_sugar_empty.png",
+      "output": "assets/game/sources/sugar/source_sugar_empty.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-217104c6-2be9-4384-9aca-d854cb895e8b.png",
+      "prompt_id": "sugar_empty",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "90fdeded39d7e97ae38068977674fcae51a6ed87f38d760b2f0146a1f30f0e72",
+      "output_sha256": "61618d1ccfd6e1ea5fee5b6492751dd8b25141e623750b2cfdc73012594407f1"
+    },
+    {
+      "id": "source_sap",
+      "group": "source_sap",
+      "master": "assets/source/a01-01/masters/source_sap.png",
+      "output": "assets/game/sources/sap/source_sap.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-40785403-f230-4672-ab55-2f8a5d5a0089.png",
+      "prompt_id": "sap",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c2066fcb37486c58bddcba032422c437fc079999347533c8660d1fa5d4e6d58e",
+      "output_sha256": "3dc7b8be5f29a70aa7cc8eb8154eb1bfb362f5dae10d44877d73ab0d10888e1c"
+    }
+  ]
+}

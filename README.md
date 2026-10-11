@@ -16,13 +16,15 @@
 | [技术交接](docs/TECHNICAL_HANDOFF.md) | Swift/SpriteKit 工程、模块、差分验证与保存契约 |
 | [美术规范](docs/ART_DIRECTION.md) | 风格、尺寸、UI 状态、制作批次、商店素材 |
 | [Claude 修复清单](https://github.com/qianquandong/AntKingdom/issues/6) | 编译、测试登记、购买/广告持久化和交付证据的验收条件 |
+| [D-13 优先修复与真机包](docs/reviews/2026-10-11-d13-handoff.md) | Issue #11：离线收益漏算、确定性回归、模拟器与真机测试、可安装包交付 |
 | [A00 主界面样张](assets/source/keyframe/README.md) | 英文主界面预览、无文字底稿、提示词与接入约束；draft |
+| [A01-01 正式资源首批](assets/source/a01-01/README.md) | 9 张地形/食物源 PNG、原稿、提示词、QA 与接入标准；reviewed |
 | [资源清单](design/asset_manifest.json) | Codex 待制作资源 ID 与交付状态 |
 | [测试计划](docs/QA_TEST_PLAN.md) | 48 条客户端用例、真机矩阵、观察试玩、发行门槛 |
 | [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |
 | [App Store 手册](docs/APP_STORE_RUNBOOK.md) | 签名、TestFlight、隐私/IAP、商店资料、提审与上线后处理 |
 
-最新评审见 [2026-10-11 修复与验收交接](docs/reviews/2026-10-11-claude-review.md)。Claude 应先处理 Issue #6，并补齐核心交付证据；Codex 的 A00 已开始制作，正式资源、真实支付/广告与真机测试仍待验收。
+Claude 下一项优先执行 [D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)：先定位并修复离线收益漏算，完成规定回归，交付可安装的核心 iPhone 测试包。要求见 [本轮交接](docs/reviews/2026-10-11-d13-handoff.md)，此前评审保留在 [Issue #6 交接](docs/reviews/2026-10-11-claude-review.md)。Codex 已交付 A01-01 的 9 张环境贴图；其余资源、运行时接入、真实支付/广告和真机测试仍待验收。
 
 ## 核心规则资料
 

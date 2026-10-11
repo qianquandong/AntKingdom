@@ -1,6 +1,6 @@
 # 美术方向与资源交付规范
 
-主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)已制作，状态 draft；运行时正式图片/音频尚未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张的英文文字仅用于组合预览，正式贴图仍须无烘焙文字。
+主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)为 draft；[A01-01 地形/食物源首批](../assets/source/a01-01/README.md)已交付 9 张运行时 PNG，5 个资源组状态 reviewed，待客户端接入与真机终验。其余图片/音频未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张英文文字仅用于组合预览，正式贴图无烘焙文字。
 
 ## 1. 视觉目标
 
@@ -41,7 +41,7 @@
 | 通路边缘 | 16 种四邻遮罩，每种 144×144px | 位序 N=1/E=2/S=4/W=8；只影响绘制，不影响通行 |
 | Queen Chamber | 432×288px | 占 3×2 格，基准锚点中心 |
 | Pantry / Cookie 区 | 288×288px | 占 2×2 格，不能画出误导性的额外入口 |
-| Sugar / Sap / Stone | 144×144px | 1×1；补给有有货/空两种状态 |
+| Sugar / Sap / Stone | 144×144px | 1×1；Sugar 有货/空两态，Sap 连续源单态，Stone 单态 |
 | 蚂蚁帧 | 96×96px 透明画布，主体约 60×36px | 统一中心锚点；基础朝右，四向由运行时旋转 |
 | 蚂蚁动作 | idle 2 帧、walk 6 帧、carry 6 帧 | 帧间主体位置一致；所运食物保持独立可叠加 |
 | UI 图标 | 96×96px 画布，显示约 24–32pt | 面板/文字由原生组件绘制 |
