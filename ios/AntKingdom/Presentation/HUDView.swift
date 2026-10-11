@@ -33,6 +33,12 @@ struct HUDView: View {
                             eggsStat
                         }
                     }
+                    // 奖励入口（含剩余时间）也在时两行仍放不下：每项一行（CI 38168148851 截图 “Ants: 5/...”）
+                    VStack(alignment: .leading, spacing: 0) {
+                        foodStat
+                        antsStat
+                        eggsStat
+                    }
                 }
                 Spacer(minLength: 0)
                 if let openReward = controller.openReward {
