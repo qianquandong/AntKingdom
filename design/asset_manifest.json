@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "updated_at": "2026-10-11",
-  "description": "美术制作任务清单；所有资源当前均未制作。planned_output 是未来交付位置，不表示文件已存在。",
+  "description": "美术制作任务清单；A00 主界面与无文字方向稿为 draft，其余运行时资源尚待制作。planned_output 不表示已可用于运行时。",
   "owner": "Codex",
   "integrator": "Claude",
   "status_values": ["planned", "draft", "reviewed", "approved", "integrated", "verified_on_device"],
   "assets": [
-    {"id":"art_keyframe","batch":"A00","phase":"core","planned_output":"assets/source/keyframe","spec":"主界面与小屏稿，无烘焙文字","status":"planned","license_or_source":null},
+    {"id":"art_keyframe","batch":"A00","phase":"core","planned_output":"assets/source/keyframe","spec":"主界面与小屏稿，无烘焙文字","status":"draft","license_or_source":"内置 image_gen，本项目原创文字及本次生成图；详见 assets/source/keyframe/metadata.json","draft_outputs":["assets/source/keyframe/main-screen-v2.png","assets/source/keyframe/world-plate-v1.png"],"delivery_notes":"assets/source/keyframe/README.md","metadata":"assets/source/keyframe/metadata.json","approval_status":"待方向确认、近景与小屏验证；非运行时素材"},
     {"id":"terrain_soil","batch":"A01","phase":"core","planned_output":"assets/game/terrain/soil","spec":"144x144 PNG，3 种无缝变化","status":"planned","license_or_source":null},
     {"id":"terrain_tunnel_masks","batch":"A01","phase":"core","planned_output":"assets/game/terrain/tunnel","spec":"144x144 PNG x16，四邻位序 N1 E2 S4 W8","status":"planned","license_or_source":null},
     {"id":"terrain_stone","batch":"A01","phase":"core","planned_output":"assets/game/terrain/stone","spec":"144x144 PNG","status":"planned","license_or_source":null},

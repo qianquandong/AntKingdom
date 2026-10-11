@@ -1,0 +1,39 @@
+{
+  "asset_id": "art_keyframe",
+  "batch": "A00",
+  "created_at": "2026-10-11",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status": "draft",
+  "generator": "built-in image_gen",
+  "source": "原创文本生成；定向编辑仅使用本次生成图",
+  "runtime_ready": false,
+  "user_approved": false,
+  "device_verified": false,
+  "source_layers_available": false,
+  "prompt_file": "prompts.md",
+  "files": [
+    {
+      "path": "main-screen-v2.png",
+      "width_px": 853,
+      "height_px": 1844,
+      "format": "PNG",
+      "background": "opaque",
+      "purpose": "英文主界面组合预览；非运行时素材",
+      "status": "draft",
+      "sha256": "393809476fdba56b6029862e79bbb483d2d6c60b1cd37dd5893412d43ace2e6a",
+      "byte_size": 2294019
+    },
+    {
+      "path": "world-plate-v1.png",
+      "width_px": 853,
+      "height_px": 1844,
+      "format": "PNG",
+      "background": "opaque",
+      "purpose": "无文字方向底稿；非可铺设背景或独立贴图",
+      "status": "draft",
+      "sha256": "25ee8370a5b289fcabf71f7ffc6f5142a40dfcc9a4da8cad73060edafa2f24cd",
+      "byte_size": 2213485
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 竖屏 iPhone 点击与放置游戏：挖出通路，看蚂蚁搬运，通过捷径、旁路和仓库位置改变效率。
 
-当前仓库提供 **v0.2 核心验证版 PRD 与 Python 数值工具**，尚无 iPhone 客户端。文档使用中文，玩家文案使用英文。首版聚焦一张小地图、24 只蚂蚁和一个可移动仓库；商业化与四地层暂缓。
+`main` 提供 **v0.2 核心验证版 PRD、Python 数值工具与制作资料**；Claude 已在开发分支实现 iOS 核心客户端，尚未合入主分支或完成真机验收。文档使用中文，玩家文案使用英文。核心版聚焦一张小地图、24 只蚂蚁和一个可移动仓库。
 
 ## 从这里交给 Claude
 
@@ -15,12 +15,14 @@
 | [执行看板](docs/EXECUTION_BOARD.md) | 当前状态、待定资料、报告模板、可复制给 Claude 的消息 |
 | [技术交接](docs/TECHNICAL_HANDOFF.md) | Swift/SpriteKit 工程、模块、差分验证与保存契约 |
 | [美术规范](docs/ART_DIRECTION.md) | 风格、尺寸、UI 状态、制作批次、商店素材 |
+| [Claude 修复清单](https://github.com/qianquandong/AntKingdom/issues/6) | 编译、测试登记、购买/广告持久化和交付证据的验收条件 |
+| [A00 主界面样张](assets/source/keyframe/README.md) | 英文主界面预览、无文字底稿、提示词与接入约束；draft |
 | [资源清单](design/asset_manifest.json) | Codex 待制作资源 ID 与交付状态 |
 | [测试计划](docs/QA_TEST_PLAN.md) | 48 条客户端用例、真机矩阵、观察试玩、发行门槛 |
 | [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |
 | [App Store 手册](docs/APP_STORE_RUNBOOK.md) | 签名、TestFlight、隐私/IAP、商店资料、提审与上线后处理 |
 
-当前已经交付的是规则工具与计划文档；客户端、最终美术、真实支付/广告与真机测试尚待执行。Claude 从 C00 开始即可。
+最新评审见 [2026-10-11 修复与验收交接](docs/reviews/2026-10-11-claude-review.md)。Claude 应先处理 Issue #6，并补齐核心交付证据；Codex 的 A00 已开始制作，正式资源、真实支付/广告与真机测试仍待验收。
 
 ## 核心规则资料
 

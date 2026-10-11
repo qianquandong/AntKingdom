@@ -2,6 +2,8 @@
 
 更新：2026-10-11。Claude 开工先更新本表，不把任务列表当完成清单。
 
+本轮交接：[Issue #6 修复与验收清单](https://github.com/qianquandong/AntKingdom/issues/6)；[评审记录](reviews/2026-10-11-claude-review.md)；[Codex A00 样张](../assets/source/keyframe/README.md)。本次仅同步已知概况与 Codex 美术进度，下方 Claude 任务的初始排队状态仍需由 Claude 按实际 SHA/测试证据逐项回填（R05），不能作为当前完成度。
+
 ## 1. 当前事实
 
 | 项目 | 状态 | 证据/下一步 |
@@ -9,8 +11,8 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | NOT_STARTED | 从 C00 开始 |
-| Codex 正式美术资源 | PLANNED | manifest 全部 planned；先做 A00 样张 |
+| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / PARTIALLY_TESTED | C06 分支 2351f27 模拟器 CI 通过；评审时最新广告分支 3a6f5f9 编译失败，见 Issue #6；未合入 main、真机未验收 |
+| Codex 正式美术资源 | A00_DRAFT / RUNTIME_PLANNED | 主界面预览与无文字底稿已交付；其余运行时资源仍 planned；A00 小屏/近景/方向确认待完成 |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
@@ -22,7 +24,7 @@
 | 顺序 | ID | 主责 | 初始状态 | 下一项完成动作 |
 |---|---|---|---|---|
 | 1 | C00 | Claude | READY | 基线检查、环境记录、可构建工程 |
-| 并行 | A00 | Codex | PLANNED | 主界面与风格样张，用户确认方向 |
+| 并行 | A00 | Codex | DRAFT | 主界面样张已交付；补小屏/角色近景并完成方向确认 |
 | 2 | C01–C04 | Claude | WAITING_C00 | 规则移植与可操作灰盒 |
 | 并行 | A01–A03 | Codex | WAITING_A00 | 环境、角色、核心 UI/音效 |
 | 3 | C05–C08 | Claude | WAITING_M1 | 核心循环、保存、集成、内部包 |

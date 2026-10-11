@@ -1,6 +1,6 @@
 # 美术方向与资源交付规范
 
-主责：Codex。运行时集成主责：Claude。状态：制作规范与清单已定义，正式图片/音频尚未制作。资源状态见 [manifest](../design/asset_manifest.json)。
+主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)已制作，状态 draft；运行时正式图片/音频尚未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张的英文文字仅用于组合预览，正式贴图仍须无烘焙文字。
 
 ## 1. 视觉目标
 
