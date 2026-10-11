@@ -41,6 +41,22 @@ final class LifecycleUITests: XCTestCase {
         XCTAssertEqual(XCTWaiter().wait(for: [gone], timeout: 5), .completed, "OK must close the summary")
     }
 
+    /// 回前台路径：后台超过 60 秒再回来，弹出离线总结且 OK 能关闭（QA T23 的模拟器部分，真实等待 65 秒）。
+    func testSummaryAppearsAfterReturningFromBackground() {
+        app.launchArguments = ["-ak-scenario", "connected"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 15))
+        XCUIDevice.shared.press(.home)
+        sleep(65)
+        app.activate()
+        let title = app.staticTexts["offline.title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 10), "returning after 65 s must show the summary")
+        screenshot("C06-offline-after-background")
+        app.buttons["offline.ok"].tap()
+        let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: title)
+        XCTAssertEqual(XCTWaiter().wait(for: [gone], timeout: 5), .completed, "OK must close the summary")
+    }
+
     func testBackgroundForegroundCyclesStayResponsive() {
         app.launchArguments = ["-ak-scenario", "connected"]
         app.launch()

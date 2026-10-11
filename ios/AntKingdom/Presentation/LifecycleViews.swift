@@ -8,14 +8,24 @@ struct AppRootView: View {
     var body: some View {
         switch model.phase {
         case .running(let controller):
-            RootView(controller: controller)
-                .sheet(item: Binding(get: { controller.offlineSummary.map(IdentifiedSummary.init) },
-                                     set: { if $0 == nil { controller.offlineSummary = nil } })) { item in
-                    OfflineSummaryView(summary: item.summary) { controller.offlineSummary = nil }
-                }
+            RunningGameView(controller: controller)
         case .saveUnavailable:
             SaveErrorView(retry: model.launch, startOver: model.startOverAfterSaveError)
         }
+    }
+}
+
+/// 游戏主界面 + 离线结果。离线结果由 controller 发布（冷启动、回前台），必须在观察 controller 的视图上挂 sheet：
+/// 挂在只观察 AppModel 的父视图上时，OK 关不掉、回前台也不会弹出。
+private struct RunningGameView: View {
+    @ObservedObject var controller: GameController
+
+    var body: some View {
+        RootView(controller: controller)
+            .sheet(item: Binding(get: { controller.offlineSummary.map(IdentifiedSummary.init) },
+                                 set: { if $0 == nil { controller.offlineSummary = nil } })) { item in
+                OfflineSummaryView(summary: item.summary) { controller.offlineSummary = nil }
+            }
     }
 }
 
