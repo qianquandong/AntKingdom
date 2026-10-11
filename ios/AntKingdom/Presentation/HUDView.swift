@@ -25,6 +25,15 @@ struct HUDView: View {
                      id: "hud.ants")
                 stat(L10n.text("hud.eggs", ["eggs": String(snapshot.eggs.count)]), id: "hud.eggs")
                 Spacer(minLength: 0)
+                if let openChapters = controller.openChapters {
+                    Button(action: openChapters) {
+                        Image(systemName: "map.fill")
+                            .font(.system(size: 18, weight: .semibold))
+                            .frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel(L10n.text("chapter.select"))
+                    .accessibilityIdentifier("hud.chapters")
+                }
                 Button {
                     controller.showSettings = true
                 } label: {

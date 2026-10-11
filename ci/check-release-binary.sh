@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # 检查 TestFlight/AppStore 配置编出的 .app：版本信息、最低系统、仅 iPhone，
 # 调试入口已剔除，M0–M3 未链接广告/内购/追踪框架。输出 Markdown（写入 Step Summary）。
-# 用法：bash ci/check-release-binary.sh path/to/AntKingdom.app
+# 用法：bash ci/check-release-binary.sh path/to/AntKingdom.app [--release-track]
+#   --release-track：发行轨 CrumbKingdom.app，另查 Debug 测试地图已剔除、章节数据已打包。
 set -uo pipefail
 app="$1"
+track="${2:-}"
 plist="$app/Info.plist"
 binary="$app/$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$plist")"
 fail=0
@@ -33,8 +35,12 @@ row "MinimumOSVersion" "$minos" "$([ "$minos" = "17.0" ] && echo PASS || echo FA
 row "UIDeviceFamily" "$family" "$([ "$family" = "Array{1}" ] && echo PASS || echo FAIL)"
 row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 
-# 调试入口（启动参数、探针、调试菜单）只能存在于 Debug 构建
-for marker in "-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: "; do
+# 调试入口（启动参数、探针、调试菜单、测试地图）只能存在于 Debug 构建
+markers=("-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: ")
+if [ "$track" = "--release-track" ]; then
+  markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture")
+fi
+for marker in "${markers[@]}"; do
   if has_string "$marker"; then
     row "无调试入口：$marker" "found" "FAIL"
   else
@@ -51,6 +57,13 @@ for framework in StoreKit AdSupport AppTrackingTransparency GoogleMobileAds; do
     row "未链接 $framework" "not linked" "PASS"
   fi
 done
+
+if [ "$track" = "--release-track" ]; then
+  for resource in chapters.json map_prototype.txt Release.strings; do
+    found=$(find "$app" -name "$resource" -print -quit)
+    if [ -n "$found" ]; then row "已打包 $resource" "${found#$app/}" "PASS"; else row "已打包 $resource" "missing" "FAIL"; fi
+  done
+fi
 
 echo
 if [ $fail -ne 0 ]; then

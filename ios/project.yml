@@ -105,7 +105,98 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom.uitests
         GENERATE_INFOPLIST_FILE: "YES"
         TARGETED_DEVICE_FAMILY: "1"
+  # 发行轨（C10 起）：同一份 App 源码 + ReleaseTrack/，编译条件 RELEASE_TRACK。
+  # 章节、正式版内容（以及 M5 的商品与奖励广告）只进这个 target；核心验证版 AntKingdom 不含它们。
+  CrumbKingdom:
+    type: application
+    platform: iOS
+    sources:
+      - path: AntKingdom
+        excludes:
+          - "Resources/**"
+          - "Info.plist"
+      - path: AntKingdom/Resources
+        buildPhase: resources
+      - path: ReleaseTrack
+        excludes:
+          - "Resources/**"
+          - "Info.plist"
+      - path: ReleaseTrack/Resources
+        buildPhase: resources
+      - path: ../design/transport_cases.json
+        buildPhase: resources
+        createIntermediateGroups: false
+      # 章节清单与已交付的地图（第二、三章待 Codex A04；新增地图在这里登记）
+      - path: ../design/chapters.json
+        buildPhase: resources
+        createIntermediateGroups: false
+      - path: ../design/map_prototype.txt
+        buildPhase: resources
+        createIntermediateGroups: false
+    dependencies:
+      - package: AntKingdomCore
+        product: AntKingdomCore
+    info:
+      path: ReleaseTrack/Info.plist
+      properties:
+        CFBundleDisplayName: Crumb Kingdom
+        CFBundleDevelopmentRegion: en
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        # 与核心版同一个占位 Bundle ID：正式版是同一款 App 的后续版本（升级沿用存档）
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom
+        PRODUCT_NAME: CrumbKingdom
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) RELEASE_TRACK"
+        TARGETED_DEVICE_FAMILY: "1"
+  CrumbKingdomTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ReleaseTrackTests
+    dependencies:
+      - target: CrumbKingdom
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom.releasetests
+        GENERATE_INFOPLIST_FILE: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
+  CrumbKingdomUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: ReleaseTrackUITests
+    dependencies:
+      - target: CrumbKingdom
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.CrumbKingdom.releaseuitests
+        GENERATE_INFOPLIST_FILE: "YES"
+        TARGETED_DEVICE_FAMILY: "1"
 schemes:
+  CrumbKingdom:
+    build:
+      targets:
+        CrumbKingdom: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - CrumbKingdomTests
+        - CrumbKingdomUITests
+    profile:
+      config: TestFlight
+    analyze:
+      config: Debug
+    archive:
+      config: AppStore
   AntKingdom:
     build:
       targets:

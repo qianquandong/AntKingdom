@@ -126,6 +126,58 @@ jobs:
             build/logs
           retention-days: 30
 
+  release-track:
+    name: 发行轨构建与模拟器测试（macOS）
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 选择 Xcode
+        run: bash ci/select-xcode.sh
+
+      - name: 单元 + UI 测试（发行轨 CrumbKingdom，标准尺寸模拟器）
+        run: |
+          mkdir -p build
+          udid=$(python3 ci/pick_simulator.py standard 2>build/sim-release.txt)
+          echo "- 发行轨模拟器：$(cat build/sim-release.txt)" >> "$GITHUB_STEP_SUMMARY"
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme CrumbKingdom \
+            -destination "platform=iOS Simulator,id=$udid" \
+            -derivedDataPath build/DerivedData \
+            -resultBundlePath build/CrumbKingdom.xcresult \
+            CODE_SIGNING_ALLOWED=NO test
+
+      - name: 导出发行轨 UI 测试截图附件
+        if: always()
+        run: |
+          mkdir -p build/attachments-release
+          if [ -d build/CrumbKingdom.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/CrumbKingdom.xcresult --output-path build/attachments-release || true
+          fi
+
+      - name: 发行轨 TestFlight 配置无签名编译（调试入口与测试地图已剔除）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme CrumbKingdom \
+            -configuration TestFlight -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-release \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO build
+          bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/CrumbKingdom.app --release-track \
+            | tee build/release-track-check.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 上传发行轨证据
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence-${{ github.run_number }}
+          path: |
+            build/sim-release.txt
+            build/release-track-check.md
+            build/attachments-release
+            build/logs
+          retention-days: 30
+
   ios-simulator:
     name: Xcode 构建与模拟器测试（macOS）
     runs-on: macos-15

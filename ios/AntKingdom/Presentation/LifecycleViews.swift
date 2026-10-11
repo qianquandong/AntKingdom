@@ -19,7 +19,7 @@ struct AppRootView: View {
 /// - 挂在只观察 AppModel 的父视图上时，controller 发布的离线结果变化不触发重算：OK 关不掉、回前台不弹（D-02）；
 /// - 挂在观察 controller（约 10Hz 发布快照）的视图上时，sheet 内容随之重算，iOS 18 上设置页分段控件
 ///   在点击过程中被重设回旧值（D-06）。PresentationState 只在打开/关闭面板时变化。
-private struct RunningGameView: View {
+struct RunningGameView: View {
     let controller: GameController
     @ObservedObject var presentation: PresentationState
 

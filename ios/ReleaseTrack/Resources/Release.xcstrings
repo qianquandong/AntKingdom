@@ -1,0 +1,618 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "chapter.complete" : {
+      "comment" : "max 24 chars; 正式完成页",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colony Ready!"
+          }
+        }
+      }
+    },
+    "chapter.completed" : {
+      "comment" : "max 16 chars; 章节状态（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completed"
+          }
+        }
+      }
+    },
+    "chapter.extra_goals" : {
+      "comment" : "max 24 chars; 完成页/章节页小标题（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra Goals"
+          }
+        }
+      }
+    },
+    "chapter.garden_edge" : {
+      "comment" : "max 20 chars; 第二章",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garden Edge"
+          }
+        }
+      }
+    },
+    "chapter.goal_count" : {
+      "comment" : "max 24 chars; 章节页进度（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{done}/{total} goals"
+          }
+        }
+      }
+    },
+    "chapter.keep_building" : {
+      "comment" : "max 20 chars; 留在本章",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Building"
+          }
+        }
+      }
+    },
+    "chapter.locked" : {
+      "comment" : "max 48 chars; 解锁条件",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete the previous colony to unlock."
+          }
+        }
+      }
+    },
+    "chapter.main_goals" : {
+      "comment" : "max 24 chars; 完成页/章节页小标题（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main Goals"
+          }
+        }
+      }
+    },
+    "chapter.next" : {
+      "comment" : "max 20 chars; 下一章",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next Colony"
+          }
+        }
+      }
+    },
+    "chapter.playing" : {
+      "comment" : "max 16 chars; 当前章节（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playing"
+          }
+        }
+      }
+    },
+    "chapter.replay" : {
+      "comment" : "max 28 chars; 重玩",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start This Colony Again"
+          }
+        }
+      }
+    },
+    "chapter.replay_confirm" : {
+      "comment" : "max 80 chars; 确认",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restart this colony? Your unlocks and purchases will stay."
+          }
+        }
+      }
+    },
+    "chapter.select" : {
+      "comment" : "max 24 chars; 章节页",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Colony"
+          }
+        }
+      }
+    },
+    "chapter.stone_corner" : {
+      "comment" : "max 20 chars; 第三章",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stone Corner"
+          }
+        }
+      }
+    },
+    "dialog.reset_all" : {
+      "comment" : "max 80 chars; 二次确认（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset every colony? Unlocks and goals will be lost. Purchases stay."
+          }
+        }
+      }
+    },
+    "error.chapter_save" : {
+      "comment" : "max 72 chars; 单章存档不可用（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This colony's save can't be loaded. Start this colony again?"
+          }
+        }
+      }
+    },
+    "error.progress_newer" : {
+      "comment" : "max 80 chars; 全局进度来自更新版本（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This progress was saved by a newer version. Please update the game."
+          }
+        }
+      }
+    },
+    "goal.better_route" : {
+      "comment" : "max 40 chars; 探索目标：冻结人口与源下布局改善 ≥5%（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make a route 5% faster"
+          }
+        }
+      }
+    },
+    "goal.build_pantry" : {
+      "comment" : "max 40 chars; 章节主目标 2（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build a Pantry"
+          }
+        }
+      }
+    },
+    "goal.connect_cookie" : {
+      "comment" : "max 40 chars; 章节主目标 1（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect the Cookie Crumb"
+          }
+        }
+      }
+    },
+    "goal.connect_sap" : {
+      "comment" : "max 40 chars; 探索目标（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect the Sap Root"
+          }
+        }
+      }
+    },
+    "goal.connect_sugar" : {
+      "comment" : "max 40 chars; 探索目标（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect the Sugar Drop"
+          }
+        }
+      }
+    },
+    "goal.done" : {
+      "comment" : "max 60 chars; 达成提示，{goal} 为上面六条之一（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal complete: {goal}"
+          }
+        }
+      }
+    },
+    "goal.full_colony" : {
+      "comment" : "max 40 chars; 章节主目标 3（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grow to 24 ants and 1,100 Food"
+          }
+        }
+      }
+    },
+    "reward.active" : {
+      "comment" : "max 32 chars; 剩余时间",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boost: {time} remaining"
+          }
+        }
+      }
+    },
+    "reward.cooldown" : {
+      "comment" : "max 48 chars; 冷却",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boost ready in {time} of active play."
+          }
+        }
+      }
+    },
+    "reward.daily_limit" : {
+      "comment" : "max 32 chars; 日上限",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More boosts tomorrow."
+          }
+        }
+      }
+    },
+    "reward.description" : {
+      "comment" : "max 80 chars; 明确交换内容",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch an ad for 25% more transport for 5 minutes of active play."
+          }
+        }
+      }
+    },
+    "reward.loading" : {
+      "comment" : "max 24 chars; 加载",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading Ad..."
+          }
+        }
+      }
+    },
+    "reward.not_now" : {
+      "comment" : "max 16 chars; 返回",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        }
+      }
+    },
+    "reward.title" : {
+      "comment" : "max 24 chars; 奖励名",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foraging Boost"
+          }
+        }
+      }
+    },
+    "reward.unavailable" : {
+      "comment" : "max 48 chars; 无填充/离线",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No ad available. You can keep playing."
+          }
+        }
+      }
+    },
+    "reward.watch" : {
+      "comment" : "max 16 chars; 主动播放",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watch Ad"
+          }
+        }
+      }
+    },
+    "settings.privacy" : {
+      "comment" : "max 24 chars; 页面链接",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "settings.privacy_choices" : {
+      "comment" : "max 24 chars; UMP 入口",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Choices"
+          }
+        }
+      }
+    },
+    "settings.reset_all" : {
+      "comment" : "max 24 chars; 正式版设置：重置全部本地进度（C10）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset All Progress"
+          }
+        }
+      }
+    },
+    "settings.support" : {
+      "comment" : "max 24 chars; 支持",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help & Support"
+          }
+        }
+      }
+    },
+    "shop.buy" : {
+      "comment" : "max 24 chars; 本地化价格",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy for {price}"
+          }
+        }
+      }
+    },
+    "shop.default" : {
+      "comment" : "max 24 chars; 恢复默认",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Default Style"
+          }
+        }
+      }
+    },
+    "shop.equip" : {
+      "comment" : "max 24 chars; 启用",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use This Style"
+          }
+        }
+      }
+    },
+    "shop.failed" : {
+      "comment" : "max 64 chars; 失败",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase not completed. Please try again."
+          }
+        }
+      }
+    },
+    "shop.garden_description" : {
+      "comment" : "max 64 chars; 商品内容",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two cozy room styles. Yours to keep."
+          }
+        }
+      }
+    },
+    "shop.garden_pack" : {
+      "comment" : "max 28 chars; 商品",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Garden Decor Pack"
+          }
+        }
+      }
+    },
+    "shop.owned" : {
+      "comment" : "max 16 chars; 已拥有",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Owned"
+          }
+        }
+      }
+    },
+    "shop.pending" : {
+      "comment" : "max 48 chars; 待批准",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your purchase is awaiting approval."
+          }
+        }
+      }
+    },
+    "shop.preview" : {
+      "comment" : "max 16 chars; 预览",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preview"
+          }
+        }
+      }
+    },
+    "shop.restore" : {
+      "comment" : "max 24 chars; 恢复入口",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore Purchases"
+          }
+        }
+      }
+    },
+    "shop.restore_empty" : {
+      "comment" : "max 48 chars; 无权益",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No purchases found for this account."
+          }
+        }
+      }
+    },
+    "shop.restored" : {
+      "comment" : "max 40 chars; 成功",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchases restored."
+          }
+        }
+      }
+    },
+    "shop.title" : {
+      "comment" : "max 20 chars; 外观页",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decorate"
+          }
+        }
+      }
+    },
+    "shop.unavailable" : {
+      "comment" : "max 64 chars; 网络/商品异常",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The shop is unavailable. Please try again later."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,6 +1,8 @@
 import AntKingdomCore
 import SwiftUI
 
+#if !RELEASE_TRACK
+/// 核心验证版入口（AntKingdom target）。发行轨 target 的入口是 ReleaseTrack/CrumbKingdomApp.swift。
 @main
 struct AntKingdomApp: App {
     @StateObject private var model = AppModel()
@@ -23,6 +25,7 @@ struct AntKingdomApp: App {
         }
     }
 }
+#endif
 
 #if DEBUG
 /// 启动参数（只编译进 Debug；TestFlight/AppStore 二进制中不存在，CI 用 check-release-binary.sh 检查）：
@@ -41,6 +44,8 @@ struct LaunchOptions {
     var reduceMotion = false
     var gallery = false
     var zoom: Double?
+    /// 发行轨：在目录后追加测试专用的第二章（只在 Debug；正式第二、三章等 Codex A04）
+    var fixtureChapters = false
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -54,6 +59,7 @@ struct LaunchOptions {
         reduceMotion = arguments.contains("-ak-reduce-motion")
         gallery = arguments.contains("-ak-gallery")
         zoom = value(after: "-ak-zoom").flatMap(Double.init)
+        fixtureChapters = arguments.contains("-ak-fixture-chapters")
     }
 }
 #endif
