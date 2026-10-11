@@ -1,0 +1,82 @@
+import XCTest
+
+/// C06 UI 测试：离线结算总结、前后台循环、杀进程后存档恢复（QA T22、T23、T30 的模拟器部分）。
+/// 真机后台一小时/两小时、系统时间回拨由核心包测试覆盖逻辑，真机行为仍需用户验证。
+final class LifecycleUITests: XCTestCase {
+    private var app: XCUIApplication!
+
+    override func setUp() {
+        continueAfterFailure = false
+        app = XCUIApplication()
+    }
+
+    private func screenshot(_ name: String) {
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.name = name
+        shot.lifetime = .keepAlways
+        add(shot)
+    }
+
+    private func probeDug() -> Int? {
+        let probe = app.staticTexts["debug.probe"]
+        guard probe.waitForExistence(timeout: 5) else { return nil }
+        return probe.label.split(separator: " ").first { $0.hasPrefix("dug=") }.flatMap { Int($0.dropFirst(4)) }
+    }
+
+    func testOfflineSummaryAfterFifteenMinutesAway() {
+        app.launchArguments = ["-ak-scenario", "connected", "-ak-away", "900"]
+        app.launch()
+        let title = app.staticTexts["offline.title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 15))
+        XCTAssertEqual(title.label, "Welcome Back")
+        let summary = app.staticTexts["offline.summary"].label
+        XCTAssertTrue(summary.hasPrefix("Your ants brought in "), summary)
+        XCTAssertTrue(summary.hasSuffix(" Food."), summary)
+        XCTAssertNotEqual(summary, "Your ants brought in 0 Food.")
+        XCTAssertTrue(app.staticTexts["Up to 1 hour at 25% transport rate."].exists)
+        screenshot("C06-offline-summary")
+        app.buttons["offline.ok"].tap()
+        XCTAssertFalse(title.waitForExistence(timeout: 2))
+    }
+
+    func testBackgroundForegroundCyclesStayResponsive() {
+        app.launchArguments = ["-ak-scenario", "connected"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 15))
+        for _ in 0..<5 {
+            XCUIDevice.shared.press(.home)
+            sleep(1)
+            app.activate()
+            XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 10))
+        }
+        XCTAssertFalse(app.staticTexts["offline.title"].exists, "short trips away must not show a summary")
+        XCTAssertEqual(probeDug(), 3)
+    }
+
+    func testDugCellSurvivesProcessKill() throws {
+        app.launchArguments = ["-ak-reset-save"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 15))
+        let probe = app.staticTexts["debug.probe"]
+        XCTAssertTrue(probe.waitForExistence(timeout: 5))
+        var values: [String: String] = [:]
+        for part in probe.label.split(separator: " ") {
+            let pair = part.split(separator: "=", maxSplits: 1)
+            if pair.count == 2 { values[String(pair[0])] = String(pair[1]) }
+        }
+        let origin = try XCTUnwrap(values["origin"]).split(separator: ",").compactMap { Double($0) }
+        let tile = try XCTUnwrap(Double(values["tile"] ?? ""))
+        for _ in 0..<3 {
+            app.coordinate(withNormalizedOffset: .zero)
+                .withOffset(CGVector(dx: origin[0] + 3.5 * tile, dy: origin[1] + 1.5 * tile)).tap()   // (3,1)
+            usleep(250_000)
+        }
+        XCTAssertEqual(probeDug(), 1)
+        app.terminate()
+        app.launchArguments = []
+        app.launch()
+        XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 15))
+        XCTAssertEqual(probeDug(), 1, "the dug cell must survive a process kill")
+        screenshot("C06-after-relaunch")
+    }
+}

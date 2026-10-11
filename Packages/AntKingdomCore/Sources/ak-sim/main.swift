@@ -9,6 +9,16 @@ func rounded(_ value: Double, _ places: Int = 6) -> Double {
     return (value * scale).rounded() / scale
 }
 
+// `ak-sim --sample-save`：输出一份 schema v1 样例存档（300 秒回放状态），用作迁移回归夹具。
+if CommandLine.arguments.contains("--sample-save") {
+    let session = GameSession()
+    try DebugScenario.replay300.apply(to: session)
+    let envelope = SaveEnvelope(schemaVersion: SaveRepository.currentSchema, appVersion: "0.1.0 (1)", savedAt: 1_791_700_000,
+                                wallHighWater: 1_791_700_000, sequence: 1, state: session.makeState())
+    print(String(decoding: try SaveRepository.encode(envelope), as: UTF8.self))
+    exit(0)
+}
+
 let path = CommandLine.arguments.dropFirst().first ?? "design/transport_cases.json"
 do {
     let cases = try TransportCase.load(from: URL(fileURLWithPath: path)).map { testCase -> [String: Any] in

@@ -33,6 +33,19 @@ final class GameController: ObservableObject {
     @Published var showSettings = false
     /// Pantry 建造/移动摆放模式（摆放时不挖土）
     @Published var placement: PantryPlacement?
+    /// 回到前台/冷启动时的离线结果（PRD 5.3）
+    @Published var offlineSummary: OfflineSummary?
+
+    /// 持久化钩子（AppModel 注入）：返回是否保存成功
+    var persist: (() -> Bool)?
+    /// Start Over：由生命周期协调器清档并重存；未注入时退回只重置会话
+    var resetHandler: (() -> Void)?
+    /// 回到前台：场景丢弃暂停期间的帧间隔，后台时长只由离线结算处理
+    var onResume: (() -> Void)?
+    private var dirty = false
+    private var lastSave = -Double.infinity
+    private var saveFailureShown = false
+    private static let autosaveInterval = 30.0
     /// 仅调试/UI 测试：地图变换与已挖格数
     @Published var debugProbe = ""
 
@@ -64,6 +77,9 @@ final class GameController: ObservableObject {
         handle(session.drainEvents())
         latest = session.snapshot()
         let now = clock.uptime()
+        if now - lastSave >= GameController.autosaveInterval || (dirty && now - lastSave >= 1) {
+            saveNow()
+        }
         if now - lastPublish >= 0.1 || discreteChange(latest, snapshot) {
             publish(now: now)
         }
@@ -93,7 +109,28 @@ final class GameController: ObservableObject {
     func send(_ command: GameCommand) -> CommandResult {
         let result = session.apply(command)
         refresh()
+        switch result {
+        case .rejected:
+            break
+        case .tapAccepted:
+            dirty = true          // 未完成格的点击数也要保存，但节流到每秒最多一次
+        default:
+            saveNow()             // 开格、建仓、移仓、孵化开关、设置：关键操作后立即原子保存
+        }
         return result
+    }
+
+    /// 立即保存；失败时提示一次英文错误（不阻断游戏）。
+    func saveNow() {
+        guard let persist else { return }
+        lastSave = clock.uptime()
+        dirty = false
+        if persist() {
+            saveFailureShown = false
+        } else if !saveFailureShown {
+            saveFailureShown = true
+            show("error.save", style: .warning, duration: 4)
+        }
     }
 
     /// 地图单击：可挖前沿→挖一下；实体→选中；其他→取消选中。
@@ -164,8 +201,10 @@ final class GameController: ObservableObject {
                 haptics.cellOpened(enabled: latest.settings.haptics)
                 hold = nil
                 refresh()
+                saveNow()
                 return
             }
+            dirty = true
             if result.isRejected {
                 hold = nil
                 return
@@ -184,7 +223,12 @@ final class GameController: ObservableObject {
         selection = nil
         placement = nil
         hold = nil
-        send(.reset)
+        if let resetHandler {
+            resetHandler()
+            refresh()
+        } else {
+            send(.reset)
+        }
         onReset?()
     }
 

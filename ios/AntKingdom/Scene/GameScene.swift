@@ -69,6 +69,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         controller.onRoutePulse = { [weak self] in self?.pulseRoutes() }
         controller.onRejectedTap = { [weak self] cell in self?.shake(cell) }
         controller.onReset = { [weak self] in self?.resetCamera() }
+        controller.onResume = { [weak self] in self?.resetFrameClock() }
         resetCamera()
     }
 

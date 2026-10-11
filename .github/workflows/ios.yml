@@ -129,6 +129,8 @@ jobs:
           for scenario in fresh connected busy pantry_ready replay300 replay600; do
             bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "scenario-$scenario" -ak-scenario "$scenario"
           done
+          # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算
+          bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "offline-900s" -ak-scenario connected -ak-away 900
 
       - name: 上传证据
         if: always()
