@@ -35,6 +35,9 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private var renderedEmpty: [String: Bool] = [:]
     private var renderedSelection: Selection?
     private var renderedEggs = -1
+    private var placementNode: SKNode?
+    private var renderedPlacement: PantryPlacement?
+    private var renderedValidity: PlacementValidity?
     private var ants = AntSwarm()
 
     private var lastUpdate: TimeInterval?
@@ -216,6 +219,11 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             renderSelection(selection, snapshot: snapshot, map: map)
             renderedSelection = selection
         }
+        if let controller, controller.placement != renderedPlacement || controller.placementValidity != renderedValidity {
+            renderPlacement(controller.placement, validity: controller.placementValidity)
+            renderedPlacement = controller.placement
+            renderedValidity = controller.placementValidity
+        }
         ants.update(layer: antLayer, snapshot: snapshot, queen: map.queenCells, time: time)
         for (index, node) in frontierNodes.values.enumerated() {
             node.alpha = 0.55 + 0.25 * CGFloat(sin(time * 3 + Double(index % 3)))
@@ -386,6 +394,37 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         node.addChild(dashes)
         overlayLayer.addChild(node)
         selectionNode = node
+    }
+
+    /// 2×2 摆放预览：合法 = 绿色实线框 + 勾；非法 = 橙色虚线框 + 叉（不只靠颜色区分）。
+    private func renderPlacement(_ placement: PantryPlacement?, validity: PlacementValidity) {
+        placementNode?.removeFromParent()
+        placementNode = nil
+        guard let topLeft = placement?.topLeft else { return }
+        let frame = MapGeometry.frame(of: Colony.pantryCells(topLeft: topLeft)).insetBy(dx: 2, dy: 2)
+        let ok = validity == .ok
+        let box = CGPath(roundedRect: frame, cornerWidth: 10, cornerHeight: 10, transform: nil)
+        let node = SKShapeNode(path: ok ? box : box.copy(dashingWithPhase: 0, lengths: [10, 6]))
+        node.fillColor = (ok ? ArtLibrary.Palette.connected : ArtLibrary.Palette.busy).withAlphaComponent(0.35)
+        node.strokeColor = ok ? ArtLibrary.Palette.connected : ArtLibrary.Palette.busy
+        node.lineWidth = 4
+        let mark = CGMutablePath()
+        let c = CGPoint(x: frame.midX, y: frame.midY)
+        if ok {
+            mark.move(to: CGPoint(x: c.x - 16, y: c.y)); mark.addLine(to: CGPoint(x: c.x - 4, y: c.y - 12))
+            mark.addLine(to: CGPoint(x: c.x + 18, y: c.y + 14))
+        } else {
+            mark.move(to: CGPoint(x: c.x - 14, y: c.y - 14)); mark.addLine(to: CGPoint(x: c.x + 14, y: c.y + 14))
+            mark.move(to: CGPoint(x: c.x - 14, y: c.y + 14)); mark.addLine(to: CGPoint(x: c.x + 14, y: c.y - 14))
+        }
+        let glyph = SKShapeNode(path: mark)
+        glyph.strokeColor = ArtLibrary.Palette.ant
+        glyph.lineWidth = 5
+        glyph.lineCap = .round
+        node.addChild(glyph)
+        node.zPosition = 1
+        overlayLayer.addChild(node)
+        placementNode = node
     }
 
     // MARK: 一次性视觉反馈

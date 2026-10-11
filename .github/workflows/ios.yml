@@ -89,6 +89,20 @@ jobs:
           fi
           ls -la build/attachments || true
 
+      - name: 录制 Pantry 操作录像（模拟器）
+        timeout-minutes: 12
+        run: |
+          mkdir -p build/videos
+          xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/C05-pantry-flow.mov &
+          rec=$!
+          sleep 2
+          status=0
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_STANDARD"             -derivedDataPath build/DerivedData             -only-testing:AntKingdomUITests/PantryFlowUITests             CODE_SIGNING_ALLOWED=NO test-without-building || status=$?
+          kill -INT "$rec" || true
+          wait "$rec" || true
+          ls -la build/videos
+          exit $status
+
       - name: UI 测试（小屏模拟器，375×667pt 级）
         timeout-minutes: 20
         run: |
@@ -130,6 +144,7 @@ jobs:
             build/attachments-small
             build/logs
             build/regenerated
+            build/videos
           retention-days: 30
 
       - name: 上传 xcresult

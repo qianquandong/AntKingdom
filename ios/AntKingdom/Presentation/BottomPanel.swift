@@ -7,6 +7,17 @@ struct BottomPanel: View {
 
     var body: some View {
         Group {
+            if let placement = controller.placement {
+                PlacementPanel(controller: controller, placement: placement)
+            } else {
+                selectionPanel
+            }
+        }
+        .foregroundStyle(Theme.ink)
+    }
+
+    @ViewBuilder private var selectionPanel: some View {
+        Group {
             switch controller.selection {
             case .source(let id)?:
                 if let source = controller.snapshot.sources.first(where: { $0.id == id }) {
