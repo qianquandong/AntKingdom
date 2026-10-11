@@ -49,9 +49,13 @@ jobs:
       - name: 工程未手改漂移（重新生成后与提交一致）
         run: |
           xcodegen generate --spec ios/project.yml
-          git status --porcelain -- ios/
-          git diff --stat --exit-code -- ios/
-          test -z "$(git status --porcelain -- ios/)"
+          if [ -n "$(git status --porcelain -- ios/)" ]; then
+            git status --porcelain -- ios/
+            git diff -- ios/ | head -n 200
+            mkdir -p build/regenerated && cp -R ios/AntKingdom.xcodeproj build/regenerated/
+            echo "::error::ios/AntKingdom.xcodeproj 与 project.yml 重新生成的结果不一致；运行 xcodegen generate --spec ios/project.yml 后提交"
+            exit 1
+          fi
 
       - name: 核心包测试（macOS）
         run: swift test --package-path Packages/AntKingdomCore
@@ -120,6 +124,7 @@ jobs:
             build/attachments
             build/attachments-small
             build/logs
+            build/regenerated
           retention-days: 30
 
       - name: 上传 xcresult
