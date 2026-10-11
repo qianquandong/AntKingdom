@@ -48,6 +48,8 @@ public struct SessionSnapshot: Equatable, Sendable {
     public let elapsed: Double
     public let settings: GameState.Settings
     public let flags: GameState.Flags
+    /// 正式版奖励 boost 剩余有效前台秒（0 = 未生效）；Trip 仍是基础周期，boost 单独显示
+    public let boostRemaining: Double
 
     public var hasPantry: Bool { !pantryCells.isEmpty }
     public var canAffordPantry: Bool { food >= Rules.pantryCost }
@@ -75,6 +77,6 @@ extension GameSession {
             busyCells: plan.busyCells, sources: sources, walkable: colony.walkable, pantryCells: colony.pantry,
             digTaps: digTaps, frontier: map.soilCells.filter { colony.isFrontier($0) },
             refillCountdown: patchesEmpty ? colony.refillLeft : nil, elapsed: colony.elapsed,
-            settings: settings, flags: flags)
+            settings: settings, flags: flags, boostRemaining: boostRemaining)
     }
 }

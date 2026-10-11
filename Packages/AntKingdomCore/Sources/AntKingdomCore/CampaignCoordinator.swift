@@ -30,7 +30,7 @@ public enum CampaignError: Error, Equatable {
 /// 非线程安全：由 App 主 actor 顺序调用。
 public final class CampaignCoordinator {
     public let catalog: ChapterCatalog
-    public private(set) var progress: PlayerProgress
+    public internal(set) var progress: PlayerProgress
     public private(set) var lifecycle: LifecycleCoordinator
     public private(set) var activeChapter: ChapterDefinition
     private let store: SaveStore
@@ -85,6 +85,7 @@ public final class CampaignCoordinator {
         switch result {
         case .ready(_, let offline, let fromBackup):
             guard let lifecycle else { return (nil, .chapterSaveUnavailable(chapterId: chapter.id, .unreadable("state"))) }
+            lifecycle.session.boostRemaining = progress.rewards.boostRemaining
             let campaign = CampaignCoordinator(catalog: catalog, progress: progress, lifecycle: lifecycle, chapter: chapter,
                                                store: store, appVersion: appVersion, wallClock: wallClock)
             // 启动时补记已经达成但未记录的目标（例如核心版存档已经完成）；不在启动时弹完成页
@@ -158,6 +159,7 @@ public final class CampaignCoordinator {
         guard let chapter = catalog.chapter(id) else { throw CampaignError.unknownChapter(id) }
         guard progress.isUnlocked(id) else { throw CampaignError.locked(id) }
         if id == activeChapter.id { return }
+        syncRewards()
         evaluate(announce: false)
         lifecycle.save()
         let settings = session.settings
@@ -171,6 +173,7 @@ public final class CampaignCoordinator {
         next.session.apply(.setSound(settings.sound))
         next.session.apply(.setHaptics(settings.haptics))
         _ = next.session.drainEvents()
+        next.session.boostRemaining = progress.rewards.boostRemaining   // boost 作用于当前活动章节
         lifecycle = next
         activeChapter = chapter
         progress.activeChapterId = id
@@ -181,8 +184,46 @@ public final class CampaignCoordinator {
 
     /// 重玩本章（UI 二次确认）：只重置本章地图与经济；解锁、已获目标、设置保留。
     public func replayActiveChapter() {
+        syncRewards()
         lifecycle.resetColony()
+        session.boostRemaining = progress.rewards.boostRemaining   // 重玩不刷新、不清除奖励
         saveProgress()
+    }
+
+    // MARK: 奖励广告（C12）
+
+    /// 每帧之后调用：把会话推进的有效前台秒与剩余 boost 记入全局账本（不保存，保存随自动保存/关键操作）。
+    public func syncRewards() {
+        progress.rewards.foreground += session.drainForegroundSeconds()
+        progress.rewards.boostRemaining = session.boostRemaining
+    }
+
+    /// 当前是否可以提供奖励广告（RELEASE_SCOPE 第 3 章“可领取条件”）。
+    public func rewardStatus(adAvailable: Bool) -> RewardLedger.Status {
+        syncRewards()
+        return progress.rewards.status(pantryBuilt: progress.firstPantryBuilt, storageFull: session.colony.isStorageFull,
+                                       day: RewardLedger.utcDay(wallClock.now()), adAvailable: adAvailable)
+    }
+
+    /// 广告 SDK 的“已赚得奖励”回调：授予一次（同一请求重复回调不再授予），立即保存再恢复游戏。
+    @discardableResult
+    public func grantReward(requestId: String) -> Bool {
+        syncRewards()
+        guard progress.rewards.grant(requestId: requestId, day: RewardLedger.utcDay(wallClock.now())) else {
+            return false
+        }
+        session.boostRemaining = progress.rewards.boostRemaining
+        saveProgress()
+        return true
+    }
+
+    /// 当前章节存档与全局进度一起保存（自动保存与关键操作后调用）。
+    @discardableResult
+    public func saveAll() -> Bool {
+        syncRewards()
+        let chapter = lifecycle.save()
+        let global = saveProgress()
+        return chapter && global
     }
 
     // MARK: 外观与权益（C11）
@@ -208,8 +249,11 @@ public final class CampaignCoordinator {
     /// 购买的永久外观权益与当前外观选择保留（权益来自 StoreKit，可恢复），见 RELEASE_SCOPE 第 2 章。
     public func resetAllProgress() {
         let settings = session.settings
+        syncRewards()
         let owned = progress.ownedProducts
         let style = progress.roomStyle
+        // 奖励次数与冷却不随“全部重置”刷新（防止重置后重复领取），与购买权益一样保留
+        let rewards = progress.rewards
         for chapter in catalog.chapters {
             try? CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion).eraseAll()
         }
@@ -217,6 +261,7 @@ public final class CampaignCoordinator {
         progress = .fresh(catalog)
         progress.ownedProducts = owned
         progress.roomStyle = style
+        progress.rewards = rewards
         let chapter = catalog.first
         let (fresh, _) = LifecycleCoordinator.launch(
             repository: CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion),
@@ -225,6 +270,7 @@ public final class CampaignCoordinator {
             fresh.session.apply(.setSound(settings.sound))
             fresh.session.apply(.setHaptics(settings.haptics))
             _ = fresh.session.drainEvents()
+            fresh.session.boostRemaining = rewards.boostRemaining
             lifecycle = fresh
             lifecycle.save()
         }
@@ -235,6 +281,7 @@ public final class CampaignCoordinator {
     // MARK: 生命周期
 
     public func enterBackground() {
+        syncRewards()
         evaluate(announce: false)
         lifecycle.enterBackground()
         saveProgress()

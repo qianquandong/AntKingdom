@@ -9,6 +9,11 @@ public final class GameSession {
     public internal(set) var flags = GameState.Flags()
     public internal(set) var accumulator = TickAccumulator()
     private var pendingEvents: [GameEvent] = []
+    /// 正式版：剩余的奖励 boost 有效前台秒（全局账本在每帧前后同步；核心版恒为 0）。
+    /// 只在前台步进中消耗；离线结算不使用、不消耗。
+    public var boostRemaining = 0.0
+    /// 自上次取走以来推进的有效前台秒（奖励账本累计用）
+    public private(set) var foregroundSeconds = 0.0
 
     public init(map: MapDefinition = .backyard, settings: GameState.Settings = .init()) {
         self.map = map
@@ -158,7 +163,12 @@ public final class GameSession {
         let wasFull = colony.isStorageFull
         let sourceWasEmpty = colony.sources.first { $0.id == source }.map { ($0.remaining ?? 1) <= Rules.epsilon } ?? false
         do {
-            try colony.advance(seconds, efficiency: efficiency)
+            // boost 只作用于前台；在 boost 到期处切分，同一量子内剩余部分按 1.0（与 Python RewardLedger.step 相同）
+            let boosted = efficiency == 1 ? min(max(boostRemaining, 0), seconds) : 0
+            if boosted > 0 { try colony.advance(boosted, efficiency: 1, multiplier: BoostRules.multiplier) }
+            if seconds - boosted > 0 { try colony.advance(seconds - boosted, efficiency: efficiency) }
+            boostRemaining = max(0, boostRemaining - boosted)
+            if efficiency == 1 { foregroundSeconds += seconds }
         } catch {
             assertionFailure("advance failed: \(error)")
             return
@@ -199,6 +209,12 @@ public final class GameSession {
         emitStorageChange(wasFull: wasFull)
         checkPrototypeComplete()
         return result
+    }
+
+    /// 取走累计的有效前台秒（奖励账本用）。
+    public func drainForegroundSeconds() -> Double {
+        defer { foregroundSeconds = 0 }
+        return foregroundSeconds
     }
 
     // MARK: 事件

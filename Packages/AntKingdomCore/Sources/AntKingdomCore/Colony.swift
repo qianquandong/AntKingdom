@@ -210,15 +210,16 @@ public final class Colony {
     // MARK: 经济步进
 
     /// 仅按实际入库量扣有限源；满仓时源和库存均不变。返回实际入库。
+    /// `multiplier` 为正式版前台奖励倍率（C12，独立于 0…1 的离线效率）；核心版恒为 1。
     @discardableResult
-    public func harvest(seconds: Double, efficiency: Double) throws -> Double {
+    public func harvest(seconds: Double, efficiency: Double, multiplier: Double = 1.0) throws -> Double {
         let available = max(0.0, capacity - food)
         if available <= Rules.epsilon { return 0.0 }
         let plan = try plan()
         var desired: [Double] = []
         var total = 0.0
         for source in sources {
-            var amount = plan.rate(for: source.id) * seconds * efficiency
+            var amount = plan.rate(for: source.id) * seconds * efficiency * multiplier
             if let remaining = source.remaining { amount = min(amount, remaining) }
             desired.append(amount)
             total += amount
@@ -238,8 +239,9 @@ public final class Colony {
     }
 
     /// 0.25 秒基准步长，在孵化完成与刷新到期处切短。步内顺序见 PRD 5.3。
-    public func advance(_ seconds: Double, efficiency: Double = 1.0) throws {
-        guard seconds.isFinite, seconds >= 0, efficiency >= 0, efficiency <= 1 else {
+    public func advance(_ seconds: Double, efficiency: Double = 1.0, multiplier: Double = 1.0) throws {
+        guard seconds.isFinite, seconds >= 0, efficiency >= 0, efficiency <= 1,
+              multiplier.isFinite, multiplier >= 1 else {
             throw ColonyError.invalidDuration
         }
         let end = elapsed + seconds
@@ -248,7 +250,7 @@ public final class Colony {
             if let soonest = eggs.map(\.remaining).min() { dt = min(dt, soonest) }
             let patchesEmpty = sources[0].remaining! <= Rules.epsilon && sources[1].remaining! <= Rules.epsilon
             if patchesEmpty { dt = min(dt, refillLeft) }
-            try harvest(seconds: dt, efficiency: efficiency)
+            try harvest(seconds: dt, efficiency: efficiency, multiplier: multiplier)
             for index in eggs.indices { eggs[index].remaining -= dt }
             ants += eggs.filter { $0.remaining <= Rules.epsilon }.count
             eggs.removeAll { $0.remaining <= Rules.epsilon }   // 只移除孵化的那枚，其余留在原槽
