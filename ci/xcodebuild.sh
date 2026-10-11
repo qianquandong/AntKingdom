@@ -7,7 +7,7 @@ log="build/logs/xcodebuild-$(date +%s).log"
 xcodebuild "$@" >"$log" 2>&1
 status=$?
 if [ $status -ne 0 ]; then
-  echo "xcodebuild 失败（$status），最后 80 行："
+  echo "xcodebuild 失败（${status}），最后 80 行："
   tail -n 80 "$log"
   grep -E "error:|error -|Error Domain|Testing failed|failed \(|XCTAssert" "$log" \
     | sed -E 's/^[[:space:]]+//' | awk '!seen[$0]++' | head -n 15 \
