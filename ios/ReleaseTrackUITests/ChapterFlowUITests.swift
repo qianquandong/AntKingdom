@@ -23,7 +23,8 @@ final class ChapterFlowUITests: XCTestCase {
         add(shot)
     }
 
-    private func waitLabel(_ element: XCUIElement, contains text: String, timeout: Double = 5) -> Bool {
+    /// 满仓 24 只时场景持续动画，单次元素查询可能超过 4 秒（CI run 38161170269），默认等 15 秒。
+    private func waitLabel(_ element: XCUIElement, contains text: String, timeout: Double = 15) -> Bool {
         let predicate = NSPredicate(format: "label CONTAINS %@", text)
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
         return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
@@ -74,6 +75,7 @@ final class ChapterFlowUITests: XCTestCase {
         // 切回第一章：完成时的 24 只仍在（非活动期间不产粮，也不丢进度）
         XCTAssertTrue(waitLabel(app.staticTexts["hud.ants"], contains: "Ants: 24/24"))
         XCTAssertFalse(app.staticTexts["chapter.complete"].exists, "completion is announced once")
+        XCTAssertFalse(app.staticTexts["Colony complete! Try a new layout."].exists, "core-only hint is replaced")
         screenshot("C10-back-to-backyard")
     }
 
@@ -81,7 +83,8 @@ final class ChapterFlowUITests: XCTestCase {
         launch("replay600")
         XCTAssertTrue(app.staticTexts["chapter.complete"].waitForExistence(timeout: 10))
         app.buttons["chapter.replay"].tap()
-        let confirm = app.buttons["chapter.replay.confirm"]
+        // iOS 26 的确认对话框里同一按钮可能匹配到多个元素：取第一个
+        let confirm = app.buttons["chapter.replay.confirm"].firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
         XCTAssertTrue(waitLabel(app.staticTexts["hud.ants"], contains: "Ants: 5/24"))
@@ -102,7 +105,7 @@ final class ChapterFlowUITests: XCTestCase {
         XCTAssertTrue(reset.waitForExistence(timeout: 5))
         XCTAssertEqual(reset.label, "Reset All Progress")
         reset.tap()
-        let confirm = app.buttons["dialog.reset.confirm"]
+        let confirm = app.buttons["dialog.reset.confirm"].firstMatch
         XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         confirm.tap()
         XCTAssertTrue(waitLabel(app.staticTexts["hud.ants"], contains: "Ants: 5/24"))
