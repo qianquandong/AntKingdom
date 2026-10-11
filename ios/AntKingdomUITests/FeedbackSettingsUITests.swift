@@ -24,6 +24,18 @@ final class FeedbackSettingsUITests: XCTestCase {
         return (CGPoint(x: origin[0], y: origin[1]), tile, dug)
     }
 
+    /// 探针记录的本局已显示提示 ID（T-04：提示条只显示约 2.6 秒，慢 runner 上元素查询可能更久）
+    private func waitShown(_ id: String, timeout: Double = 5) -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        repeat {
+            let label = app.staticTexts["debug.probe"].label
+            let shown = label.split(separator: " ").first { $0.hasPrefix("shown=") }?.dropFirst(6) ?? ""
+            if shown.split(separator: ",").contains(Substring(id)) { return true }
+            usleep(200_000)
+        } while Date() < deadline
+        return false
+    }
+
     private func tapCell(_ x: Int, _ y: Int) throws {
         let p = try probe()
         app.coordinate(withNormalizedOffset: .zero)
@@ -71,7 +83,7 @@ final class FeedbackSettingsUITests: XCTestCase {
                 usleep(200_000)
             }
         }
-        XCTAssertTrue(app.staticTexts["toast.feedback.connected"].waitForExistence(timeout: 5))
+        XCTAssertTrue(waitShown("feedback.connected"), "connected feedback shown")
         XCTAssertEqual(try probe().dug, 3)
         screenshot("C07-reduce-motion-connected")
 

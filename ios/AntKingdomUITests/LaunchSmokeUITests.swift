@@ -17,7 +17,7 @@ final class LaunchSmokeUITests: XCTestCase {
     }
 
     private struct Probe {
-        let originX: Double, originY: Double, tile: Double, dug: Int
+        let originX: Double, originY: Double, tile: Double, dug: Int, shown: [String]
     }
 
     private func probe() throws -> Probe {
@@ -30,7 +30,17 @@ final class LaunchSmokeUITests: XCTestCase {
         }
         let origin = try XCTUnwrap(values["origin"]).split(separator: ",").compactMap { Double($0) }
         return Probe(originX: origin[0], originY: origin[1], tile: try XCTUnwrap(Double(values["tile"] ?? "")),
-                     dug: try XCTUnwrap(Int(values["dug"] ?? "")))
+                     dug: try XCTUnwrap(Int(values["dug"] ?? "")),
+                     shown: (values["shown"] ?? "").split(separator: ",").map(String.init))
+    }
+
+    private func waitProbe(timeout: Double = 5, _ condition: (Probe) -> Bool) throws -> Bool {
+        let deadline = Date().addingTimeInterval(timeout)
+        repeat {
+            if condition(try probe()) { return true }
+            usleep(200_000)
+        } while Date() < deadline
+        return condition(try probe())
     }
 
     private func tapCell(_ x: Int, _ y: Int) throws {
@@ -66,7 +76,8 @@ final class LaunchSmokeUITests: XCTestCase {
                 usleep(200_000)   // 低于每秒 8 次的逻辑上限
             }
         }
-        XCTAssertTrue(app.staticTexts["toast.feedback.connected"].waitForExistence(timeout: 5))
+        // 提示条只显示约 2.6 秒，慢 runner 上一次元素查询可能更久（CI 38174451505）：由探针确认提示已发出（T-04）
+        XCTAssertTrue(try waitProbe { $0.shown.contains("feedback.connected") }, "connected feedback shown")
         XCTAssertEqual(try probe().dug, 3)
         XCTAssertTrue(app.staticTexts["hud.source"].label.contains("Cookie Crumb") ||
                       app.otherElements["hud.source"].label.contains("Cookie Crumb"))

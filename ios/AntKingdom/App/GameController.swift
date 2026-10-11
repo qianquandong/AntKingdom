@@ -92,6 +92,11 @@ final class GameController: ObservableObject {
     private static let autosaveInterval = 30.0
     /// 仅调试/UI 测试：地图变换与已挖格数
     @Published var debugProbe = ""
+    #if DEBUG
+    /// UI 测试：本局显示过的提示 ID（最多记 8 个，按首次出现顺序）。提示条只显示约 2.6 秒，
+    /// 慢 runner 上单次元素查询可能超过它，测试通过探针确认提示确实发出（T-04）
+    private(set) var shownToastIds: [String] = []
+    #endif
 
     /// 场景每帧读取的最新快照（不触发 SwiftUI 刷新）
     private(set) var latest: SessionSnapshot
@@ -336,6 +341,9 @@ final class GameController: ObservableObject {
 
     func show(_ key: String, _ arguments: [String: String] = [:], style: Toast.Style, duration: Double = 2.6) {
         let toast = Toast(text: L10n.text(key, arguments), style: style, identifier: key)
+        #if DEBUG
+        if !shownToastIds.contains(key) { shownToastIds = Array((shownToastIds + [key]).suffix(8)) }
+        #endif
         toasts.append(toast)
         if toasts.count > 3 { toasts.removeFirst(toasts.count - 3) }
         Task { @MainActor [weak self] in

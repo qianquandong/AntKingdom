@@ -684,6 +684,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                            origin.x, origin.y, MapGeometry.tile * zoom,
                            controller.latest.walkable.count - controller.session.map.initialWalkable.count,
                            view.bounds.width, view.bounds.height, slots.isEmpty ? "-" : slots)
+            + " shown=" + controller.shownToastIds.joined(separator: ",")
         if probe != controller.debugProbe { controller.debugProbe = probe }
         controller.refreshDebugLifecycle()
         #endif
