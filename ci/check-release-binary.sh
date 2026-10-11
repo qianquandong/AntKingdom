@@ -10,6 +10,13 @@ fail=0
 
 value() { /usr/libexec/PlistBuddy -c "Print :$1" "$plist" 2>/dev/null; }
 
+# 二进制中的字符串先写到文件再查。不能用 `strings | grep -q`：pipefail 下 grep 命中后提前退出，
+# strings 收到 SIGPIPE（141），整条管道判为失败，命中反而被当成“没找到”（调试入口会被误报为已剔除）。
+strings_file="$(mktemp)"
+trap 'rm -f "$strings_file"' EXIT
+strings -a "$binary" > "$strings_file"
+has_string() { grep -qF -- "$1" "$strings_file"; }
+
 echo "## Release 配置二进制检查"
 echo
 echo "| 项 | 值 | 结果 |"
@@ -28,7 +35,7 @@ row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 
 # 调试入口（启动参数、探针、调试菜单）只能存在于 Debug 构建
 for marker in "-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "Load scenario: "; do
-  if strings -a "$binary" | grep -qF -- "$marker"; then
+  if has_string "$marker"; then
     row "无调试入口：$marker" "found" "FAIL"
   else
     row "无调试入口：$marker" "absent" "PASS"
@@ -38,7 +45,7 @@ done
 # M0–M3 不接广告或内购（CLAUDE.md）：不得链接相关系统框架
 linked="$(otool -L "$binary" | tail -n +2)"
 for framework in StoreKit AdSupport AppTrackingTransparency GoogleMobileAds; do
-  if echo "$linked" | grep -q "/$framework.framework/"; then
+  if grep -q "/$framework.framework/" <<< "$linked"; then
     row "未链接 $framework" "linked" "FAIL"
   else
     row "未链接 $framework" "not linked" "PASS"
