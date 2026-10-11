@@ -25,7 +25,9 @@ READY = {"approved", "integrated", "verified_on_device"}
 
 def load_names():
     doc = json.loads(NAMES.read_text(encoding="utf-8"))
-    return doc["names"], set(doc["not_runtime"]) | RELEASE_NOT_RUNTIME, doc["audio_extensions"]
+    names = dict(doc["names"])
+    names.update(doc.get("release_names", {}))
+    return names, set(doc["not_runtime"]) | RELEASE_NOT_RUNTIME, doc["audio_extensions"]
 
 
 def name_present(name, audio_exts):
@@ -44,7 +46,7 @@ def report(phase):
         asset_id = asset["id"]
         runtime = asset_id not in not_runtime
         expected = names.get(asset_id, [])
-        if runtime and asset["phase"] == "core" and not expected:
+        if runtime and not expected:
             problems.append(f"{asset_id}: 缺少运行时名称约定（design/asset_runtime_names.json）")
         found = [n for n in expected if name_present(n, audio_exts)]
         rows.append({

@@ -46,6 +46,8 @@ struct LaunchOptions {
     var zoom: Double?
     /// 发行轨：在目录后追加测试专用的第二章（只在 Debug；正式第二、三章等 Codex A04）
     var fixtureChapters = false
+    /// 发行轨：用确定性的假商店（ok/cancel/pending/fail/unavailable/owned），只在 Debug
+    var storeMode: String?
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -60,6 +62,7 @@ struct LaunchOptions {
         gallery = arguments.contains("-ak-gallery")
         zoom = value(after: "-ak-zoom").flatMap(Double.init)
         fixtureChapters = arguments.contains("-ak-fixture-chapters")
+        storeMode = value(after: "-ak-store")
     }
 }
 #endif

@@ -31,6 +31,10 @@ enum AssetNames {
     static let queen = "room_queen"
     static let pantry = "room_pantry"
 
+    /// 房间外观（正式版 A05 garden_decor_pack；运行时名称见 design/asset_runtime_names.json 的 release_names）
+    static func queen(style: RoomStyle) -> String { style == .garden ? "garden_decor_pack_queen" : queen }
+    static func pantry(style: RoomStyle) -> String { style == .garden ? "garden_decor_pack_pantry" : pantry }
+
     /// 有限源：有货/空盘两张（manifest：cookie、sugar）；Sap 只有一张
     static func source(_ id: String, empty: Bool) -> String {
         switch id {

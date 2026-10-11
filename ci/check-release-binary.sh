@@ -38,7 +38,7 @@ row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 # 调试入口（启动参数、探针、调试菜单、测试地图）只能存在于 Debug 构建
 markers=("-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: ")
 if [ "$track" = "--release-track" ]; then
-  markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture")
+  markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture" "-ak-store" "FakeStoreService")
 fi
 for marker in "${markers[@]}"; do
   if has_string "$marker"; then
@@ -48,9 +48,19 @@ for marker in "${markers[@]}"; do
   fi
 done
 
-# M0–M3 不接广告或内购（CLAUDE.md）：不得链接相关系统框架
+# 核心验证版（M0–M3）不接广告或内购（CLAUDE.md）：不得链接相关系统框架。
+# 发行轨（C11 起）必须链接 StoreKit；广告/追踪框架在 C12 接入前仍不得出现。
 linked="$(otool -L "$binary" | tail -n +2)"
-for framework in StoreKit AdSupport AppTrackingTransparency GoogleMobileAds; do
+forbidden="StoreKit AdSupport AppTrackingTransparency GoogleMobileAds"
+if [ "$track" = "--release-track" ]; then
+  forbidden="AdSupport AppTrackingTransparency GoogleMobileAds"
+  if grep -q "/StoreKit.framework/" <<< "$linked"; then
+    row "已链接 StoreKit（外观商品）" "linked" "PASS"
+  else
+    row "已链接 StoreKit（外观商品）" "not linked" "FAIL"
+  fi
+fi
+for framework in $forbidden; do
   if grep -q "/$framework.framework/" <<< "$linked"; then
     row "未链接 $framework" "linked" "FAIL"
   else
@@ -63,6 +73,9 @@ if [ "$track" = "--release-track" ]; then
     found=$(find "$app" -name "$resource" -print -quit)
     if [ -n "$found" ]; then row "已打包 $resource" "${found#$app/}" "PASS"; else row "已打包 $resource" "missing" "FAIL"; fi
   done
+  # 本地 StoreKit 测试配置只用于开发/测试，不进发行包
+  found=$(find "$app" -name "*.storekit" -print -quit)
+  if [ -z "$found" ]; then row "未打包 StoreKit 测试配置" "absent" "PASS"; else row "未打包 StoreKit 测试配置" "${found#$app/}" "FAIL"; fi
 fi
 
 echo

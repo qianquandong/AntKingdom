@@ -43,6 +43,9 @@ private struct CampaignGameView: View {
         .sheet(isPresented: $sheets.showChapters) {
             ChapterSelectView(model: model)
         }
+        .sheet(isPresented: $sheets.showShop) {
+            ShopView(shop: model.shop)
+        }
     }
 }
 

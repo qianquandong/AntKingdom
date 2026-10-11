@@ -517,6 +517,18 @@
         }
       }
     },
+    "shop.loading" : {
+      "comment" : "max 16 chars; 商品/购买进行中（转圈的无障碍标签，C11）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading..."
+          }
+        }
+      }
+    },
     "shop.owned" : {
       "comment" : "max 16 chars; 已拥有",
       "extractionState" : "manual",
@@ -549,6 +561,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Preview"
+          }
+        }
+      }
+    },
+    "shop.preview_end" : {
+      "comment" : "max 16 chars; 结束免费预览（C11）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Preview"
           }
         }
       }

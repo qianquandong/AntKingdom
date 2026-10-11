@@ -121,6 +121,8 @@ targets:
         excludes:
           - "Resources/**"
           - "Info.plist"
+          # 本地 StoreKit 测试配置不进 App 包（只给 scheme 运行与单元测试用）
+          - "Commerce/Products.storekit"
       - path: ReleaseTrack/Resources
         buildPhase: resources
       - path: ../design/transport_cases.json
@@ -162,6 +164,12 @@ targets:
     platform: iOS
     sources:
       - path: ReleaseTrackTests
+      # SKTestSession(configurationFileNamed: "Products") 从测试包读取
+      - path: ReleaseTrack/Commerce/Products.storekit
+        buildPhase: resources
+      - path: ../design/asset_runtime_names.json
+        buildPhase: resources
+        createIntermediateGroups: false
     dependencies:
       - target: CrumbKingdom
     settings:
@@ -188,6 +196,8 @@ schemes:
         CrumbKingdom: all
     run:
       config: Debug
+      # 本地运行时使用 StoreKit 测试配置（不需要 Apple 账号）；Sandbox/TestFlight 需用户账号
+      storeKitConfiguration: ReleaseTrack/Commerce/Products.storekit
     test:
       config: Debug
       targets:

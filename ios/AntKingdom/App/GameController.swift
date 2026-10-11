@@ -69,6 +69,12 @@ final class GameController: ObservableObject {
     var afterEvents: (() -> Void)?
     /// 正式版：HUD 显示章节入口并调用它。核心版为 nil，不显示入口。
     var openChapters: (() -> Void)?
+    /// 正式版：首次建仓后 HUD 显示外观入口（RELEASE_SCOPE 第 2 章）。核心版为 nil。
+    var openShop: (() -> Void)?
+    /// 正式版：设置里的 Restore Purchases。核心版为 nil，不显示。
+    var restorePurchases: (() -> Void)?
+    /// 房间外观（只影响 Queen Chamber 与 Pantry 的绘制；经济不读取）。核心版恒为默认。
+    var roomStyle: RoomStyle = .standard
     /// 核心版用提示条宣布“原型完成”；正式版改由章节完成页宣布（RELEASE_SCOPE 第 6 节）。
     var announcesPrototypeComplete = true
     /// 设置页重置按钮与二次确认的文案 ID：核心版重置本局；正式版重置全部本地进度。

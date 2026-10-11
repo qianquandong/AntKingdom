@@ -13,6 +13,7 @@ struct ChapterCompletion: Identifiable, Equatable {
 @MainActor
 final class CampaignSheets: ObservableObject {
     @Published var showChapters = false
+    @Published var showShop = false
     @Published var completion: ChapterCompletion?
 }
 
@@ -32,6 +33,9 @@ final class CampaignModel: ObservableObject {
 
     @Published private(set) var phase: Phase = .catalogUnavailable
     let sheets = CampaignSheets()
+    /// 外观商品（C11）；权益与外观选择存在全局进度里
+    private(set) var shop: ShopModel!
+    let bundleId = Bundle.main.bundleIdentifier ?? "com.example.CrumbKingdom"
     private(set) var campaign: CampaignCoordinator?
     let catalog: ChapterCatalog?
     private let store: SaveStore
@@ -46,6 +50,7 @@ final class CampaignModel: ObservableObject {
         appVersion = "\(version) (\(build))"
         var store: SaveStore = FileSaveStore(directory: AppModel.saveDirectory)
         var fixture = false
+        var storeService: StoreService = StoreKitService()
         #if DEBUG
         let options = LaunchOptions(arguments: arguments)
         fixture = options.fixtureChapters
@@ -57,12 +62,35 @@ final class CampaignModel: ObservableObject {
             // UI 测试与截图：内存存档，互不污染，也不碰真实存档
             store = MemorySaveStore()
         }
+        if let mode = options.storeMode.flatMap(FakeStoreService.Mode.init(rawValue:)) {
+            let bundle = Bundle.main.bundleIdentifier ?? "com.example.CrumbKingdom"
+            storeService = FakeStoreService(mode: mode, productId: RoomStyle.garden.productId(bundleId: bundle) ?? "")
+        }
         #endif
         self.store = store
         self.wallClock = SystemWallClock()
         self.catalog = try? CampaignModel.loadCatalog(fixture: fixture)
+        shop = ShopModel(
+            service: storeService, bundleId: bundleId,
+            progress: { [weak self] in self?.campaign?.progress },
+            updateEntitlements: { [weak self] owned in
+                guard let self else { return }
+                self.campaign?.updateEntitlements(owned, bundleId: self.bundleId)
+            },
+            selectStyle: { [weak self] style in
+                guard let self else { return false }
+                return self.campaign?.selectRoomStyle(style, bundleId: self.bundleId) ?? false
+            })
+        shop.onStyleChange = { [weak self] in self?.applyRoomStyle() }
         launch()
         observeApplicationLifecycle()
+        shop.start()
+    }
+
+    /// 地图上的房间外观：预览优先，其次已启用的外观（只影响绘制）。
+    private func applyRoomStyle() {
+        guard case .running(let controller) = phase else { return }
+        controller.roomStyle = shop.displayedStyle
     }
 
     /// 从 bundle 的 chapters.json 与地图文件载入目录；只收入已交付地图的章节。
@@ -133,9 +161,21 @@ final class CampaignModel: ObservableObject {
         #endif
         controller.resetHandler = { [weak self] in self?.resetAllProgress() }
         controller.openChapters = { [weak self] in self?.sheets.showChapters = true }
+        controller.roomStyle = shop?.displayedStyle ?? .standard
+        controller.restorePurchases = { [weak self, weak controller] in
+            guard let self else { return }
+            Task { @MainActor in
+                await self.shop.restore()
+                if let key = self.shop.messageKey { controller?.show(key, style: .info, duration: 3) }
+            }
+        }
         controller.afterEvents = { [weak self, weak controller] in
             guard let self, let controller, let campaign = self.campaign else { return }
             self.handle(campaign.evaluate(), controller: controller)
+            // 首次建成 Pantry 后显示外观入口（全局成就，重玩/切章后仍在）
+            if controller.openShop == nil, campaign.progress.firstPantryBuilt {
+                controller.openShop = { [weak self] in self?.sheets.showShop = true }
+            }
         }
         #if DEBUG
         controller.forceReduceMotion = LaunchOptions(arguments: arguments).reduceMotion
@@ -171,6 +211,7 @@ final class CampaignModel: ObservableObject {
     func open(_ chapterId: String) {
         guard let campaign else { return }
         sheets.completion = nil
+        sheets.showShop = false
         if chapterId == campaign.activeChapter.id {
             sheets.showChapters = false
             return
@@ -197,6 +238,7 @@ final class CampaignModel: ObservableObject {
         guard let campaign else { return }
         sheets.completion = nil
         sheets.showChapters = false
+        sheets.showShop = false
         campaign.resetAllProgress()
         phase = .running(makeController())
     }

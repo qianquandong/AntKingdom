@@ -121,6 +121,8 @@ IAP 对经济的影响必须为零。确认拒绝广告不影响免费完成，�
 | `shop.pending` | Your purchase is awaiting approval. | 48 | 待批准 |
 | `shop.unavailable` | The shop is unavailable. Please try again later. | 64 | 网络/商品异常 |
 | `shop.failed` | Purchase not completed. Please try again. | 64 | 失败 |
+| `shop.loading` | Loading... | 16 | 商品/购买进行中（转圈的无障碍标签，C11） |
+| `shop.preview_end` | End Preview | 16 | 结束免费预览（C11） |
 | `reward.title` | Foraging Boost | 24 | 奖励名 |
 | `reward.description` | Watch an ad for 25% more transport for 5 minutes of active play. | 80 | 明确交换内容 |
 | `reward.watch` | Watch Ad | 16 | 主动播放 |
