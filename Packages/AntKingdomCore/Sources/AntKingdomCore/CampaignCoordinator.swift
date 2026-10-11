@@ -217,6 +217,14 @@ public final class CampaignCoordinator {
         return true
     }
 
+    #if DEBUG
+    /// 仅 Debug（UI 测试）：把累计有效前台直接记为解锁所需的 600 秒，不必真实等待。
+    public func debugUnlockRewardsForTesting() {
+        progress.rewards.foreground = max(progress.rewards.foreground, BoostRules.unlockForeground)
+        saveProgress()
+    }
+    #endif
+
     /// 当前章节存档与全局进度一起保存（自动保存与关键操作后调用）。
     @discardableResult
     public func saveAll() -> Bool {

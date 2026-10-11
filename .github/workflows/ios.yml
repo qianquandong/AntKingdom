@@ -155,7 +155,7 @@ jobs:
             xcrun xcresulttool export attachments --path build/CrumbKingdom.xcresult --output-path build/attachments-release || true
           fi
 
-      - name: 发行轨 TestFlight 配置无签名编译（调试入口、测试地图、假商店已剔除；链接 StoreKit）
+      - name: 发行轨 TestFlight 配置无签名编译（调试入口、测试地图、假商店/假广告已剔除；StoreKit + AdMob，不弹 ATT）
         timeout-minutes: 20
         run: |
           set -o pipefail

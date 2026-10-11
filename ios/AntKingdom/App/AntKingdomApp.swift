@@ -51,6 +51,10 @@ struct LaunchOptions {
     var storeMode: String?
     /// 发行轨：启动完成后让内存存档写入失败，只在 Debug 且使用内存存档时生效
     var failWrites = false
+    /// 发行轨：用确定性的假广告（earn/twice/close/fail/nofill），只在 Debug
+    var adsMode: String?
+    /// 发行轨：直接解锁奖励广告的 600 秒前台条件（UI 测试），只在 Debug
+    var rewardReady = false
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -67,6 +71,8 @@ struct LaunchOptions {
         fixtureChapters = arguments.contains("-ak-fixture-chapters")
         storeMode = value(after: "-ak-store")
         failWrites = arguments.contains("-ak-fail-writes")
+        adsMode = value(after: "-ak-ads")
+        rewardReady = arguments.contains("-ak-reward-ready")
     }
 }
 #endif

@@ -14,6 +14,7 @@ struct ChapterCompletion: Identifiable, Equatable {
 final class CampaignSheets: ObservableObject {
     @Published var showChapters = false
     @Published var showShop = false
+    @Published var showReward = false
     @Published var completion: ChapterCompletion?
 }
 
@@ -35,6 +36,8 @@ final class CampaignModel: ObservableObject {
     let sheets = CampaignSheets()
     /// 外观商品（C11）；权益与外观选择存在全局进度里
     private(set) var shop: ShopModel!
+    /// 可选奖励广告 Foraging Boost（C12）；账本存在全局进度里
+    private(set) var rewards: RewardModel!
     let bundleId = Bundle.main.bundleIdentifier ?? "com.example.CrumbKingdom"
     private(set) var campaign: CampaignCoordinator?
     let catalog: ChapterCatalog?
@@ -51,6 +54,7 @@ final class CampaignModel: ObservableObject {
         var store: SaveStore = FileSaveStore(directory: AppModel.saveDirectory)
         var fixture = false
         var storeService: StoreService = StoreKitService()
+        var adService: RewardedAdService = CampaignModel.makeAdService()
         #if DEBUG
         let options = LaunchOptions(arguments: arguments)
         fixture = options.fixtureChapters
@@ -66,11 +70,17 @@ final class CampaignModel: ObservableObject {
             let bundle = Bundle.main.bundleIdentifier ?? "com.example.CrumbKingdom"
             storeService = FakeStoreService(mode: mode, productId: RoomStyle.garden.productId(bundleId: bundle) ?? "")
         }
+        if let mode = options.adsMode.flatMap(FakeRewardedAdService.Mode.init(rawValue:)) {
+            adService = FakeRewardedAdService(mode: mode)
+        } else if options.scenario != nil || options.ephemeral {
+            adService = UnavailableAdService()   // UI 测试与截图默认不联网请求广告
+        }
         if CampaignModel.isUnitTestHost {
             // 单元测试宿主：不监听真实 StoreKit、不写真实存档。否则宿主 App 的交易监听会抢先交付并完成
             // 测试里创建的交易（CI 38170353463 的 StoreKitServiceTests 时好时坏）
             store = MemorySaveStore()
             storeService = FakeStoreService(mode: .unavailable, productId: "")
+            adService = UnavailableAdService()
         }
         #endif
         self.store = store
@@ -89,6 +99,15 @@ final class CampaignModel: ObservableObject {
                 return self.campaign?.selectRoomStyle(style, bundleId: self.bundleId) ?? false
             })
         shop.onStyleChange = { [weak self] in self?.applyRoomStyle() }
+        rewards = RewardModel(service: adService)
+        rewards.statusProvider = { [weak self] available in
+            self?.campaign?.rewardStatus(adAvailable: available) ?? .locked
+        }
+        rewards.ledgerProvider = { [weak self] in self?.campaign?.progress.rewards }
+        rewards.grant = { [weak self] requestId in self?.campaign?.grantReward(requestId: requestId) ?? false }
+        rewards.suspend = { [weak self] suspended in
+            if case .running(let controller)? = self?.phase { controller.isSuspended = suspended }
+        }
         launch()
         observeApplicationLifecycle()
         #if DEBUG
@@ -105,6 +124,16 @@ final class CampaignModel: ObservableObject {
         ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
     #endif
+
+    /// 广告 SDK 可用时用 AdMob + UMP；否则（例如未解析依赖）用不可用服务，免费流程不受影响。
+    private static func makeAdService() -> RewardedAdService {
+        #if canImport(GoogleMobileAds) && canImport(UserMessagingPlatform)
+        let unit = Bundle.main.object(forInfoDictionaryKey: "AKRewardedAdUnitID") as? String ?? ""
+        return unit.isEmpty ? UnavailableAdService() : AdMobRewardedService(unitID: unit)
+        #else
+        return UnavailableAdService()
+        #endif
+    }
 
     /// 地图上的房间外观：预览优先，其次已启用的外观（只影响绘制）。
     private func applyRoomStyle() {
@@ -154,6 +183,9 @@ final class CampaignModel: ObservableObject {
                 _ = campaign.session.drainEvents()
                 campaign.lifecycle.save()
             }
+            if LaunchOptions(arguments: arguments).rewardReady {
+                campaign.debugUnlockRewardsForTesting()
+            }
             #endif
             let controller = makeController()
             if let offline, offline.isWorthShowing { controller.offlineSummary = offline }
@@ -178,6 +210,8 @@ final class CampaignModel: ObservableObject {
         #if DEBUG
         controller.lifecycleTrace = campaign.lifecycle.trace
         #endif
+        // 自动保存与关键操作：章节存档 + 全局进度（含奖励账本的前台秒与剩余 boost）
+        controller.persist = { [weak self] in self?.campaign?.saveAll() ?? false }
         controller.resetHandler = { [weak self] in self?.resetAllProgress() }
         controller.openChapters = { [weak self] in self?.sheets.showChapters = true }
         controller.roomStyle = shop?.displayedStyle ?? .standard
@@ -194,6 +228,19 @@ final class CampaignModel: ObservableObject {
             // 首次建成 Pantry 后显示外观入口（全局成就，重玩/切章后仍在）
             if controller.openShop == nil, campaign.progress.firstPantryBuilt {
                 controller.openShop = { [weak self] in self?.sheets.showShop = true }
+            }
+            // 奖励广告：账本累计有效前台秒；入口只在可领取/生效/冷却/当日已满/暂无广告时显示
+            campaign.syncRewards()
+            self.rewards.refresh()
+            let showsReward = self.rewards.showsEntry
+            if showsReward != (controller.openReward != nil) {
+                controller.openReward = showsReward ? { [weak self] in self?.sheets.showReward = true } : nil
+            }
+            if controller.privacyChoices == nil, self.rewards.service.privacyOptionsRequired {
+                controller.privacyChoices = { [weak self] in
+                    guard let self else { return }
+                    Task { await self.rewards.service.presentPrivacyOptions() }
+                }
             }
         }
         #if DEBUG
@@ -258,6 +305,7 @@ final class CampaignModel: ObservableObject {
         sheets.completion = nil
         sheets.showChapters = false
         sheets.showShop = false
+        sheets.showReward = false
         campaign.resetAllProgress()
         phase = .running(makeController())
     }

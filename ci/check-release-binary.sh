@@ -39,7 +39,8 @@ row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 markers=("-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: ")
 if [ "$track" = "--release-track" ]; then
   markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture" "-ak-store" "FakeStoreService"
-            "-ak-fail-writes" "XCTestConfigurationFilePath")
+            "-ak-fail-writes" "XCTestConfigurationFilePath"
+            "-ak-ads" "-ak-reward-ready" "FakeRewardedAdService" "debugUnlockRewardsForTesting")
 fi
 for marker in "${markers[@]}"; do
   if has_string "$marker"; then
@@ -50,16 +51,39 @@ for marker in "${markers[@]}"; do
 done
 
 # 核心验证版（M0–M3）不接广告或内购（CLAUDE.md）：不得链接相关系统框架。
-# 发行轨（C11 起）必须链接 StoreKit；广告/追踪框架在 C12 接入前仍不得出现。
+# 发行轨：必须链接 StoreKit（C11）；奖励广告用 AdMob + UMP（C12），但不弹 ATT（无 NSUserTrackingUsageDescription）。
 linked="$(otool -L "$binary" | tail -n +2)"
 forbidden="StoreKit AdSupport AppTrackingTransparency GoogleMobileAds"
+notes=""
 if [ "$track" = "--release-track" ]; then
-  forbidden="AdSupport AppTrackingTransparency GoogleMobileAds"
+  forbidden=""
   if grep -q "/StoreKit.framework/" <<< "$linked"; then
     row "已链接 StoreKit（外观商品）" "linked" "PASS"
   else
     row "已链接 StoreKit（外观商品）" "not linked" "FAIL"
   fi
+  if grep -q "GADMobileAds\|GoogleMobileAds" "$strings_file"; then
+    row "包含 AdMob SDK（奖励广告）" "present" "PASS"
+  else
+    row "包含 AdMob SDK（奖励广告）" "absent" "FAIL"
+  fi
+  if [ -z "$(value NSUserTrackingUsageDescription)" ]; then
+    row "不请求 ATT（无 NSUserTrackingUsageDescription）" "absent" "PASS"
+  else
+    row "不请求 ATT（无 NSUserTrackingUsageDescription）" "present" "FAIL"
+  fi
+  gad="$(value GADApplicationIdentifier)"
+  unit="$(value AKRewardedAdUnitID)"
+  row "GADApplicationIdentifier 已配置" "$gad" "$([ -n "$gad" ] && echo PASS || echo FAIL)"
+  row "AKRewardedAdUnitID 已配置" "$unit" "$([ -n "$unit" ] && echo PASS || echo FAIL)"
+  if [[ "$gad" == ca-app-pub-3940256099942544* ]]; then
+    notes="注意：AdMob App ID 与广告单元仍是 Google 测试 ID；AppStore 提交前必须换成用户 AdMob 账号的真实 ID（M5 BLOCKED）。"
+  fi
+  for framework in AdSupport AppTrackingTransparency; do
+    if grep -q "/$framework.framework/" <<< "$linked"; then
+      notes="$notes 链接了 $framework（AdMob SDK 依赖；不弹 ATT、不读取 IDFA 前须用户授权）。"
+    fi
+  done
 fi
 for framework in $forbidden; do
   if grep -q "/$framework.framework/" <<< "$linked"; then
@@ -80,6 +104,7 @@ if [ "$track" = "--release-track" ]; then
 fi
 
 echo
+[ -n "$notes" ] && echo "$notes" && echo
 if [ $fail -ne 0 ]; then
   echo "**FAILED**"
   exit 1

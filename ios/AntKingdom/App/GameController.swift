@@ -75,6 +75,12 @@ final class GameController: ObservableObject {
     var restorePurchases: (() -> Void)?
     /// 房间外观（只影响 Queen Chamber 与 Pantry 的绘制；经济不读取）。核心版恒为默认。
     var roomStyle: RoomStyle = .standard
+    /// 正式版：HUD 显示奖励广告入口（可领取/生效/冷却/当日已满时）。核心版为 nil。
+    var openReward: (() -> Void)?
+    /// 正式版：设置里的 Privacy Choices（UMP 要求时显示）。核心版为 nil。
+    var privacyChoices: (() -> Void)?
+    /// 全屏广告展示期间暂停前台步进（RELEASE_SCOPE 第 3 章）；场景仍刷新，不累积补算时间。
+    var isSuspended = false
     /// 核心版用提示条宣布“原型完成”；正式版改由章节完成页宣布（RELEASE_SCOPE 第 6 节）。
     var announcesPrototypeComplete = true
     /// 设置页重置按钮与二次确认的文案 ID：核心版重置本局；正式版重置全部本地进度。
@@ -121,6 +127,8 @@ final class GameController: ObservableObject {
         case .run:
             break
         }
+        // 全屏广告展示期间不推进（RELEASE_SCOPE 第 3 章）；准入照常调用，生命周期的前台帧时钟保持更新
+        guard !isSuspended else { return }
         session.tick(frameDelta: delta)
         advanceHold()
         handle(session.drainEvents())

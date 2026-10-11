@@ -35,6 +35,23 @@ struct HUDView: View {
                     }
                 }
                 Spacer(minLength: 0)
+                if let openReward = controller.openReward {
+                    Button(action: openReward) {
+                        HStack(spacing: 2) {
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 18, weight: .semibold))
+                            if snapshot.boostRemaining > 0 {
+                                Text(Format.clock(snapshot.boostRemaining))
+                                    .font(.system(.caption, design: .rounded).weight(.bold).monospacedDigit())
+                            }
+                        }
+                        .frame(minWidth: 44, minHeight: 44)
+                    }
+                    .accessibilityLabel(snapshot.boostRemaining > 0
+                                        ? L10n.text("reward.active", ["time": Format.clock(snapshot.boostRemaining)])
+                                        : L10n.text("reward.title"))
+                    .accessibilityIdentifier("hud.reward")
+                }
                 if let openShop = controller.openShop {
                     Button(action: openShop) {
                         Image(systemName: "paintbrush.fill")
@@ -159,7 +176,13 @@ struct RouteStatusBar: View {
     @ViewBuilder
     private var figures: some View {
         if snapshot.activeSourceId != nil, let trip = snapshot.averageTripSeconds {
-            Text(L10n.text("stat.rate", ["rate": Format.oneDecimal(snapshot.expectedFoodPerMinute)]))
+            // 正式版奖励 boost 生效时，显示的吞吐与实际一致（×1.25），并用星点单独标出；Trip 仍是基础周期
+            let boosted = snapshot.boostRemaining > 0
+            if boosted {
+                Image(systemName: "sparkles").foregroundStyle(Theme.food).accessibilityHidden(true)
+            }
+            Text(L10n.text("stat.rate", ["rate": Format.oneDecimal(snapshot.expectedFoodPerMinute
+                                                                    * (boosted ? BoostRules.multiplier : 1))]))
                 .accessibilityIdentifier("hud.rate")
             Text(L10n.text("stat.trip", ["seconds": Format.oneDecimal(trip)]))
                 .accessibilityIdentifier("hud.trip")

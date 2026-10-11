@@ -46,6 +46,9 @@ private struct CampaignGameView: View {
         .sheet(isPresented: $sheets.showShop) {
             ShopView(shop: model.shop)
         }
+        .sheet(isPresented: $sheets.showReward) {
+            RewardView(rewards: model.rewards)
+        }
     }
 }
 
