@@ -131,6 +131,10 @@ public final class CampaignCoordinator {
             events += ChapterGoal.allCases.filter(added.contains).map(CampaignEvent.goalAchieved)
         }
         var changed = !added.isEmpty
+        if goals.contains(.buildPantry), !progress.firstPantryBuilt {
+            progress.firstPantryBuilt = true
+            changed = true
+        }
         if ChapterGoal.isComplete(goals) {
             let next = catalog.next(after: id)?.id
             if !progress.isCompleted(id) || (next.map { !progress.isUnlocked($0) } ?? false) {
@@ -181,15 +185,37 @@ public final class CampaignCoordinator {
         saveProgress()
     }
 
+    // MARK: 外观与权益（C11）
+
+    /// StoreKit 当前已验证权益 → 缓存；失去权益的外观回退默认（返回 true）。立即保存。
+    @discardableResult
+    public func updateEntitlements(_ owned: Set<String>, bundleId: String) -> Bool {
+        let reverted = progress.setEntitlements(owned, bundleId: bundleId)
+        saveProgress()
+        return reverted
+    }
+
+    /// 启用已拥有的外观；未拥有返回 false，不改变任何东西。
+    @discardableResult
+    public func selectRoomStyle(_ style: RoomStyle, bundleId: String) -> Bool {
+        guard progress.select(style, bundleId: bundleId) else { return false }
+        saveProgress()
+        return true
+    }
+
     /// 重置全部本地进度（UI 二次确认）：所有章节存档与全局进度清空，回到第一章；设置保留。
-    /// 购买的永久外观不在这里（StoreKit 可恢复），见 RELEASE_SCOPE 第 2 章。
+    /// 购买的永久外观权益与当前外观选择保留（权益来自 StoreKit，可恢复），见 RELEASE_SCOPE 第 2 章。
     public func resetAllProgress() {
         let settings = session.settings
+        let owned = progress.ownedProducts
+        let style = progress.roomStyle
         for chapter in catalog.chapters {
             try? CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion).eraseAll()
         }
         try? progressRepository.eraseAll()
         progress = .fresh(catalog)
+        progress.ownedProducts = owned
+        progress.roomStyle = style
         let chapter = catalog.first
         let (fresh, _) = LifecycleCoordinator.launch(
             repository: CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion),
