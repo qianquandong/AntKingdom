@@ -2,7 +2,12 @@ name: iOS 工程与核心包
 
 on:
   push:
+    # 只改文档/报告时不占用 macOS runner；PRD 文案变化由 validate.yml 的 export_strings --check 把关
+    paths-ignore: ['docs/**', '*.md']
+  # 堆叠 PR（基于 claude/* 分支）由 push 运行覆盖，PR 页面同样显示该 commit 的检查；
+  # 只有合入 main 的 PR 另跑一次合并结果，避免每个 PR 重复占用 macOS runner。
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
