@@ -1,19 +1,42 @@
 #!/usr/bin/env bash
-# 在指定模拟器上安装 Debug 构建并截图。用法：
+# 在已启动（或可启动）的模拟器上安装 Debug 构建并按场景截图。用法：
 #   ci/capture-screenshots.sh <UDID> <App 路径> <输出目录> <名称> [启动参数...]
-# 截图来自模拟器，只能证明界面状态，不代表真机效果。
+# 每个 simctl 调用都有超时，避免 CI 卡死；截图只证明模拟器上的界面状态，不代表真机。
 set -euo pipefail
 udid="$1"; app="$2"; outdir="$3"; name="$4"; shift 4
 bundle_id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Info.plist")
 mkdir -p "$outdir"
-xcrun simctl boot "$udid" 2>/dev/null || true
-xcrun simctl bootstatus "$udid" -b >/dev/null
-# 统一状态栏，便于对比截图
-xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 \
-  --cellularBars 4 --wifiBars 3 2>/dev/null || true
-xcrun simctl install "$udid" "$app"
-xcrun simctl terminate "$udid" "$bundle_id" 2>/dev/null || true
-xcrun simctl launch "$udid" "$bundle_id" "$@" >/dev/null
+
+# 用法：with_timeout 秒数 命令...；超时返回 124
+with_timeout() {
+  local seconds="$1"; shift
+  "$@" & local pid=$!
+  ( sleep "$seconds"; kill -9 "$pid" 2>/dev/null ) & local watchdog=$!
+  local status=0
+  wait "$pid" || status=$?
+  kill "$watchdog" 2>/dev/null || true
+  wait "$watchdog" 2>/dev/null || true
+  [ $status -eq 137 ] && return 124
+  return $status
+}
+
+log() { echo "[$(date -u +%H:%M:%S)] $*"; }
+
+if ! xcrun simctl list devices | grep -q "$udid) (Booted)"; then
+  log "boot $udid"
+  with_timeout 240 xcrun simctl boot "$udid" || true
+  for _ in $(seq 1 120); do
+    xcrun simctl list devices | grep -q "$udid) (Booted)" && break
+    sleep 2
+  done
+fi
+with_timeout 30 xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 \
+  --cellularBars 4 --wifiBars 3 2>/dev/null || log "status_bar override skipped"
+log "install"
+with_timeout 180 xcrun simctl install "$udid" "$app"
+with_timeout 30 xcrun simctl terminate "$udid" "$bundle_id" 2>/dev/null || true
+log "launch $*"
+with_timeout 60 xcrun simctl launch "$udid" "$bundle_id" "$@" >/dev/null
 sleep "${SCREENSHOT_DELAY:-6}"
-xcrun simctl io "$udid" screenshot "$outdir/$name.png" >/dev/null
-echo "screenshot: $outdir/$name.png"
+with_timeout 60 xcrun simctl io "$udid" screenshot "$outdir/$name.png" >/dev/null
+log "screenshot: $outdir/$name.png"

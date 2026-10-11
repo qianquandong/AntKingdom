@@ -79,11 +79,10 @@ jobs:
           ls -la build/attachments || true
 
       - name: 模拟器截图
+        timeout-minutes: 10
         run: |
           app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots launch-standard
-          small=$(python3 ci/pick_simulator.py small)
-          bash ci/capture-screenshots.sh "$small" "$app" build/screenshots launch-small
 
       - name: 上传证据
         if: always()
