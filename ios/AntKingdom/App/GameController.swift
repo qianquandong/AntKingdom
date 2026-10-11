@@ -36,11 +36,20 @@ final class GameController: ObservableObject {
     @Published private(set) var snapshot: SessionSnapshot
     @Published var selection: Selection?
     @Published private(set) var toasts: [Toast] = []
-    @Published var showSettings = false
+    /// 面板显示状态（设置、离线总结）单独发布：sheet 挂在只观察它的视图上，不随 10Hz 快照重绘。
+    /// 否则 iOS 18 上设置页的分段控件会在点击过程中被重设回旧值（D-06，CI 小屏 iOS 18.5 录像）。
+    let presentation = PresentationState()
+    var showSettings: Bool {
+        get { presentation.showSettings }
+        set { presentation.showSettings = newValue }
+    }
     /// Pantry 建造/移动摆放模式（摆放时不挖土）
     @Published var placement: PantryPlacement?
     /// 回到前台/冷启动时的离线结果（PRD 5.3）
-    @Published var offlineSummary: OfflineSummary?
+    var offlineSummary: OfflineSummary? {
+        get { presentation.offlineSummary }
+        set { presentation.offlineSummary = newValue }
+    }
 
     /// 持久化钩子（AppModel 注入）：返回是否保存成功
     var persist: (() -> Bool)?

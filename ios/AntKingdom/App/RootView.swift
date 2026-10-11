@@ -27,9 +27,6 @@ struct RootView: View {
                 #endif
             }
         }
-        .sheet(isPresented: $controller.showSettings) {
-            SettingsView(controller: controller)
-        }
     }
 }
 
