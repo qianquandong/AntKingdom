@@ -31,6 +31,11 @@ final class FeedbackSettingsUITests: XCTestCase {
             .tap()
     }
 
+    private func waitSelected(_ element: XCUIElement) -> Bool {
+        let selected = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isSelected == true"), object: element)
+        return XCTWaiter().wait(for: [selected], timeout: 3) == .completed
+    }
+
     private func screenshot(_ name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot())
         shot.name = name
@@ -46,10 +51,12 @@ final class FeedbackSettingsUITests: XCTestCase {
         app.buttons["hud.settings"].tap()
         let sound = app.segmentedControls["settings.sound"]
         XCTAssertTrue(sound.waitForExistence(timeout: 5))
-        sound.buttons["Off"].tap()
-        app.segmentedControls["settings.haptics"].buttons["Off"].tap()
-        XCTAssertTrue(sound.buttons["Off"].isSelected)
-        XCTAssertTrue(app.segmentedControls["settings.haptics"].buttons["Off"].isSelected)
+        let soundOff = sound.buttons["Off"]
+        let hapticsOff = app.segmentedControls["settings.haptics"].buttons["Off"]
+        soundOff.tap()
+        XCTAssertTrue(waitSelected(soundOff), "Sound must switch to Off")
+        hapticsOff.tap()
+        XCTAssertTrue(waitSelected(hapticsOff), "Haptics must switch to Off")
         screenshot("C07-feedback-off")
         app.buttons["settings.close"].tap()
         XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 5))
@@ -65,5 +72,11 @@ final class FeedbackSettingsUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["toast.feedback.connected"].waitForExistence(timeout: 5))
         XCTAssertEqual(try probe().dug, 3)
         screenshot("C07-reduce-motion-connected")
+
+        // 设置已保存：重新打开仍是 Off
+        app.buttons["hud.settings"].tap()
+        XCTAssertTrue(sound.waitForExistence(timeout: 5))
+        XCTAssertTrue(soundOff.isSelected)
+        XCTAssertTrue(hapticsOff.isSelected)
     }
 }
