@@ -103,6 +103,19 @@ if [ "$track" = "--release-track" ]; then
   if [ -z "$found" ]; then row "未打包 StoreKit 测试配置" "absent" "PASS"; else row "未打包 StoreKit 测试配置" "${found#$app/}" "FAIL"; fi
 fi
 
+# 隐私清单（C13）：App 自身只用 systemUptime 计前台时长（SystemBootTime / 35F9.1），不跟踪、不收集。
+# 第三方 SDK（AdMob/UMP）自带各自的清单；App Store 隐私标签按最终 SDK 实际行为由用户填写。
+manifest="$app/PrivacyInfo.xcprivacy"
+if [ -f "$manifest" ]; then
+  row "PrivacyInfo.xcprivacy 已打包" "present" "PASS"
+  reasons="$(/usr/libexec/PlistBuddy -c 'Print :NSPrivacyAccessedAPITypes:0:NSPrivacyAccessedAPITypeReasons:0' "$manifest" 2>/dev/null)"
+  row "声明 SystemBootTime 原因 35F9.1" "$reasons" "$([ "$reasons" = "35F9.1" ] && echo PASS || echo FAIL)"
+  tracking="$(/usr/libexec/PlistBuddy -c 'Print :NSPrivacyTracking' "$manifest" 2>/dev/null)"
+  row "App 自身不跟踪（NSPrivacyTracking）" "$tracking" "$([ "$tracking" = "false" ] && echo PASS || echo FAIL)"
+else
+  row "PrivacyInfo.xcprivacy 已打包" "missing" "FAIL"
+fi
+
 echo
 [ -n "$notes" ] && echo "$notes" && echo
 if [ $fail -ne 0 ]; then

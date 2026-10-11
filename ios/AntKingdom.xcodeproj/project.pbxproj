@@ -31,10 +31,12 @@
 		4410F8E2907F7CC2B68BEA8A /* Release.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5E299DFF773BABD24A807619 /* Release.xcstrings */; };
 		485BEAE68C5D8D92D9FD41D6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */; };
 		4C5B1ACD2847AB6637056B53 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
+		4C7475662D77728ADAE26308 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */; };
 		50E23573E127D899B24FC37D /* EggClutch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B2B75E2C2BCE116751550 /* EggClutch.swift */; };
 		51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */; };
 		53261ABA3C645BABD70E09EE /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		579C1493C2146018183F47DE /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1D48483C2DBD31DFBB1557 /* GameScene.swift */; };
+		58F9714E231D5C6E0D72F700 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */; };
 		60E104957BFE6F44999C28B4 /* EggClutchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F8BBF45EE754CBB73C934B /* EggClutchTests.swift */; };
 		64A911E6F9892E0354BD9B26 /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		6769F30E682842A678EFE19D /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC52BE7B1F9722360442BFE /* MapGeometry.swift */; };
@@ -143,6 +145,7 @@
 		100B22119B0E7ECA54E370E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1647B87EE8765C3C300BAEDA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		1F7647DC48D98DFDF69FF2F0 /* ChapterFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterFlowUITests.swift; sourceTree = "<group>"; };
+		2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2C7ADD374A18E5FC815F24B6 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackSettingsUITests.swift; sourceTree = "<group>"; };
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -275,6 +278,7 @@
 			children = (
 				100B22119B0E7ECA54E370E1 /* Assets.xcassets */,
 				DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */,
+				2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -662,6 +666,7 @@
 			files = (
 				2E6660ED50AB9230CD5FA45E /* Assets.xcassets in Resources */,
 				6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */,
+				4C7475662D77728ADAE26308 /* PrivacyInfo.xcprivacy in Resources */,
 				994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -680,6 +685,7 @@
 			files = (
 				3C138F2EB6FD79C430211A6A /* Assets.xcassets in Resources */,
 				485BEAE68C5D8D92D9FD41D6 /* Localizable.xcstrings in Resources */,
+				58F9714E231D5C6E0D72F700 /* PrivacyInfo.xcprivacy in Resources */,
 				4410F8E2907F7CC2B68BEA8A /* Release.xcstrings in Resources */,
 				72D753614E8E611AF19574BE /* chapters.json in Resources */,
 				AE99150F98280FBFD41E4BB3 /* map_prototype.txt in Resources */,
