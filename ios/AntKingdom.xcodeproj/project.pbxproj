@@ -15,12 +15,12 @@
 		51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */; };
 		53261ABA3C645BABD70E09EE /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */; };
-		6DD51E95A026D62AE1FF6E6B /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 79D05E610776328ED5277391 /* transport_cases.json */; };
 		6E5B47D6069905CD759887C7 /* AntKingdomCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9981BA22E18B195D8173322 /* AntKingdomCore */; };
 		6FA9E3AAFE09B7A8BD8FDBE5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */; };
 		78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */; };
 		7D4262B832572A1085A165A6 /* AntSwarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */; };
 		89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
+		994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		9E2F2A640F124D68A6FBB5C7 /* BottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46655BCDA18D4B2831BF3884 /* BottomPanel.swift */; };
 		9FD961D3AD5BF223332B3964 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E9C27AC7A4781AED0D672 /* DebugMenu.swift */; };
 		B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647B87EE8765C3C300BAEDA /* L10n.swift */; };
@@ -64,8 +64,8 @@
 		5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBootstrapTests.swift; sourceTree = "<group>"; };
 		6046A1B36421749B07DA9776 /* AntKingdom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AntKingdom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61B70D1626E7C44AB4980112 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		675B34722EA6717625FAB89B /* transport_cases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = transport_cases.json; sourceTree = "<group>"; };
 		68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntKingdomApp.swift; sourceTree = "<group>"; };
-		79D05E610776328ED5277391 /* transport_cases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = transport_cases.json; sourceTree = "<group>"; };
 		9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSmokeUITests.swift; sourceTree = "<group>"; };
 		BCC52BE7B1F9722360442BFE /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextPanels.swift; sourceTree = "<group>"; };
@@ -144,8 +144,8 @@
 				9ED8A4EB21E4A7AE6BA4CAA7 /* AntKingdom */,
 				D0CDF3F2B05F2580A8C14B79 /* AntKingdomTests */,
 				E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */,
+				D99A8405C0C78191214531AA /* design */,
 				B93868FE4754D841010F94E5 /* Packages */,
-				875093F05E718E2A6291201D /* repo */,
 				295178E13BF44660598488D0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -160,15 +160,6 @@
 				BCC52BE7B1F9722360442BFE /* MapGeometry.swift */,
 			);
 			path = Scene;
-			sourceTree = "<group>";
-		};
-		875093F05E718E2A6291201D /* repo */ = {
-			isa = PBXGroup;
-			children = (
-				D9011B32368341D51A7A2678 /* design */,
-			);
-			name = repo;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		9268CBDCC52D3EBAF1123E2F /* Debug */ = {
@@ -210,12 +201,13 @@
 			path = AntKingdomTests;
 			sourceTree = "<group>";
 		};
-		D9011B32368341D51A7A2678 /* design */ = {
+		D99A8405C0C78191214531AA /* design */ = {
 			isa = PBXGroup;
 			children = (
-				79D05E610776328ED5277391 /* transport_cases.json */,
+				675B34722EA6717625FAB89B /* transport_cases.json */,
 			);
-			path = design;
+			name = design;
+			path = ../design;
 			sourceTree = "<group>";
 		};
 		E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */ = {
@@ -339,7 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */,
-				6DD51E95A026D62AE1FF6E6B /* transport_cases.json in Resources */,
+				994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,6 +48,8 @@ targets:
       # 共享运输夹具：Debug 入口用来展示三组固定对照（与 Python 同一份输入）
       - path: ../design/transport_cases.json
         buildPhase: resources
+        # 不生成以检出目录命名的父组，保证任何目录名下重新生成都完全一致
+        createIntermediateGroups: false
     dependencies:
       - package: AntKingdomCore
         product: AntKingdomCore
