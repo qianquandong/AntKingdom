@@ -45,6 +45,9 @@ targets:
           - "Resources/**"
       - path: AntKingdom/Resources
         buildPhase: resources
+      # 共享运输夹具：Debug 入口用来展示三组固定对照（与 Python 同一份输入）
+      - path: ../design/transport_cases.json
+        buildPhase: resources
     dependencies:
       - package: AntKingdomCore
         product: AntKingdomCore

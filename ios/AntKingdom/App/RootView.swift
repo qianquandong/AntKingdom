@@ -1,21 +1,47 @@
 import AntKingdomCore
 import SwiftUI
 
-/// C00 启动页：证明 App、String Catalog 与核心包均可构建运行。
-/// 玩家可见文字只来自 String Catalog（PRD 附录 A）。
+/// 主界面：地图铺底，顶部 HUD，底部上下文面板，提示条浮在 HUD 下方。
 struct RootView: View {
+    @ObservedObject var controller: GameController
+
     var body: some View {
-        ZStack {
-            Color(red: 0.96, green: 0.93, blue: 0.85).ignoresSafeArea()
-            VStack(spacing: 12) {
-                Text(L10n.text("game.title"))
-                    .font(.system(.largeTitle, design: .rounded).weight(.bold))
-                    .accessibilityIdentifier("title")
-                Text(L10n.text("world.backyard"))
-                    .font(.system(.title3, design: .rounded))
-                    .accessibilityIdentifier("world")
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                GameMapView(controller: controller,
+                            insets: UIEdgeInsets(top: proxy.safeAreaInsets.top + 112, left: 0,
+                                                 bottom: proxy.safeAreaInsets.bottom + 132, right: 0))
+                    .ignoresSafeArea()
+                VStack(spacing: 8) {
+                    HUDView(controller: controller)
+                    ToastStack(toasts: controller.toasts)
+                    Spacer(minLength: 0)
+                    BottomPanel(controller: controller)
+                }
+                .padding(.horizontal, 12)
+                .padding(.bottom, 8)
+                #if DEBUG
+                DebugProbeView(text: controller.debugProbe)
+                #endif
             }
-            .foregroundStyle(Color(red: 0.19, green: 0.16, blue: 0.15))
+        }
+        .sheet(isPresented: $controller.showSettings) {
+            SettingsView(controller: controller)
         }
     }
 }
+
+#if DEBUG
+/// UI 测试读取的调试探针（地图变换与已挖格数）；只在 Debug 构建存在。
+private struct DebugProbeView: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .font(.system(size: 1))
+            .opacity(0.02)
+            .frame(width: 1, height: 1)
+            .accessibilityIdentifier("debug.probe")
+            .allowsHitTesting(false)
+    }
+}
+#endif
