@@ -36,7 +36,9 @@ final class LifecycleUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Up to 1 hour at 25% transport rate."].exists)
         screenshot("C06-offline-summary")
         app.buttons["offline.ok"].tap()
-        XCTAssertFalse(title.waitForExistence(timeout: 2))
+        // 等待 sheet 收起动画结束后标题消失（waitForExistence 在元素仍存在时会立刻返回 true）
+        let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: title)
+        XCTAssertEqual(XCTWaiter().wait(for: [gone], timeout: 5), .completed, "OK must close the summary")
     }
 
     func testBackgroundForegroundCyclesStayResponsive() {
