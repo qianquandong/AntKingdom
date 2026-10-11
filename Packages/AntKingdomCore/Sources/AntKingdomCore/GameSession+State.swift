@@ -93,6 +93,13 @@ extension GameSession {
         guard state.refills >= 0, state.elapsed >= 0, state.hauled >= 0, state.spent >= 0 else {
             throw fail("negative counter")
         }
+        let sourceIds = Set(map.sources.filter { $0.kind != .surface }.map(\.id))
+        guard Set(state.flags.connectedSources).isSubset(of: sourceIds),
+              state.flags.connectedSources == state.flags.connectedSources.sorted(),
+              Set(state.flags.connectedSources).count == state.flags.connectedSources.count,
+              state.flags.bestRouteGain.isFinite, state.flags.bestRouteGain >= 0 else {
+            throw fail("bad goal flags")
+        }
         // 资源守恒：搬入 − 支出 = 库存（容差随规模放大）
         guard abs(state.hauled - state.spent - state.food) <= 1e-6 * max(1, state.hauled) else {
             throw fail("food not conserved")

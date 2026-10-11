@@ -22,6 +22,12 @@ public struct GameState: Codable, Equatable, Sendable {
         public var pantryBuiltOnce = false
         public var pantryMovedOnce = false
         public var prototypeComplete = false
+        /// 本局曾经连通过的源（按 ID 排序；地面源不记录）。章节探索目标用。
+        public var connectedSources: [String] = []
+        /// 本局冻结人口与源后出现过的最大布局改善（%）。章节探索目标用。
+        public var bestRouteGain = 0.0
+        /// 本局已达成全部主目标并宣布过本章完成（正式版章节；核心版不使用）
+        public var chapterComplete = false
         public init() {}
 
         public init(from decoder: Decoder) throws {
@@ -30,6 +36,9 @@ public struct GameState: Codable, Equatable, Sendable {
             pantryBuiltOnce = try c.decodeIfPresent(Bool.self, forKey: .pantryBuiltOnce) ?? false
             pantryMovedOnce = try c.decodeIfPresent(Bool.self, forKey: .pantryMovedOnce) ?? false
             prototypeComplete = try c.decodeIfPresent(Bool.self, forKey: .prototypeComplete) ?? false
+            connectedSources = try c.decodeIfPresent([String].self, forKey: .connectedSources) ?? []
+            bestRouteGain = try c.decodeIfPresent(Double.self, forKey: .bestRouteGain) ?? 0
+            chapterComplete = try c.decodeIfPresent(Bool.self, forKey: .chapterComplete) ?? false
         }
     }
 

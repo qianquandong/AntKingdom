@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "chapters": [
+    {
+      "id": "backyard",
+      "title": "world.backyard",
+      "map": "map_prototype.txt",
+      "mapVersion": 1,
+      "status": "ready"
+    },
+    {
+      "id": "garden_edge",
+      "title": "chapter.garden_edge",
+      "map": null,
+      "mapVersion": 1,
+      "status": "awaiting_A04"
+    },
+    {
+      "id": "stone_corner",
+      "title": "chapter.stone_corner",
+      "map": null,
+      "mapVersion": 1,
+      "status": "awaiting_A04"
+    }
+  ]
+}

@@ -121,6 +121,9 @@ public final class GameSession {
         for id in connected.subtracting(before.connected).sorted() {
             emit(.sourceConnected(id))
             flags.firstSourceConnected = true
+            if !flags.connectedSources.contains(id) {
+                flags.connectedSources = (flags.connectedSources + [id]).sorted()
+            }
         }
         let source = colony.activeSourceId
         if source != before.source {
@@ -132,7 +135,10 @@ public final class GameSession {
         guard let id = source, before.rate > 0, let after = try? colony.plan().rate else { return }
         let percent = (after / before.rate - 1) * 100
         // 显示保留一位小数；低于 0.05% 会显示成 +0.0%，不报告。
-        if percent >= 0.05 { emit(.routeImproved(sourceId: id, percent: percent)) }
+        if percent >= 0.05 {
+            flags.bestRouteGain = max(flags.bestRouteGain, percent)
+            emit(.routeImproved(sourceId: id, percent: percent))
+        }
     }
 
     // MARK: 时间推进

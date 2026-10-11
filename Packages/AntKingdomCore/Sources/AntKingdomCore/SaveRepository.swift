@@ -37,9 +37,36 @@ public protocol SaveStore: AnyObject {
     func remove(_ slot: SaveSlot) throws
 }
 
-public enum SaveSlot: String, CaseIterable, Sendable {
-    case main = "colony.json"
-    case backup = "colony.backup.json"
+/// 一个存档文件名。核心验证版只有主档与备份两个；正式版每章一对，另有全局进度一对。
+public struct SaveSlot: Hashable, Sendable {
+    public let rawValue: String
+    public init(_ rawValue: String) { self.rawValue = rawValue }
+
+    public static let main = SaveSlot("colony.json")
+    public static let backup = SaveSlot("colony.backup.json")
+    /// 核心验证版（单地图）使用的全部槽
+    public static let allCases: [SaveSlot] = [.main, .backup]
+}
+
+/// 主档 + 备份。第一章 Backyard 沿用核心版文件名，核心 TestFlight 的进度升级后可直接继续。
+public struct SaveSlotPair: Hashable, Sendable {
+    public let main: SaveSlot
+    public let backup: SaveSlot
+
+    public init(main: SaveSlot, backup: SaveSlot) {
+        self.main = main
+        self.backup = backup
+    }
+
+    public static let colony = SaveSlotPair(main: .main, backup: .backup)
+    public static let progress = SaveSlotPair(main: SaveSlot("progress.json"), backup: SaveSlot("progress.backup.json"))
+
+    public static func chapter(_ id: String) -> SaveSlotPair {
+        if id == MapDefinition.backyard.id { return .colony }
+        return SaveSlotPair(main: SaveSlot("colony-\(id).json"), backup: SaveSlot("colony-\(id).backup.json"))
+    }
+
+    public var all: [SaveSlot] { [main, backup] }
 }
 
 /// 文件存储：`Data.write(options: .atomic)` 先写同目录临时文件再原子替换，崩溃时旧文件仍完整。
@@ -101,11 +128,16 @@ public final class SaveRepository {
     public static let currentSchema = CoreInfo.saveSchemaVersion
     private let store: SaveStore
     private let appVersion: String
+    public let slots: SaveSlotPair
+    /// 校验存档时使用的地图（正式版各章不同）
+    private let map: MapDefinition
     public private(set) var sequence = 0
 
-    public init(store: SaveStore, appVersion: String) {
+    public init(store: SaveStore, appVersion: String, slots: SaveSlotPair = .colony, map: MapDefinition = .backyard) {
         self.store = store
         self.appVersion = appVersion
+        self.slots = slots
+        self.map = map
     }
 
     /// 保存：先把当前有效主档复制为备份，再原子写入新主档。失败时抛出，主档保持上一份有效内容。
@@ -116,11 +148,11 @@ public final class SaveRepository {
                                     savedAt: now, wallHighWater: max(wallHighWater, now), sequence: sequence,
                                     state: session.makeState())
         let data = try SaveRepository.encode(envelope)
-        if let current = try? store.read(.main), (try? SaveRepository.decodeValid(current)) != nil {
-            try? store.write(current, to: .backup)
+        if let current = try? store.read(slots.main), (try? SaveRepository.decodeValid(current, map: map)) != nil {
+            try? store.write(current, to: slots.backup)
         }
         do {
-            try store.write(data, to: .main)
+            try store.write(data, to: slots.main)
         } catch {
             throw SaveError.writeFailed(String(describing: error))
         }
@@ -128,13 +160,13 @@ public final class SaveRepository {
     }
 
     public func load() -> LoadOutcome {
-        let main = try? store.read(.main)
-        let backup = try? store.read(.backup)
+        let main = try? store.read(slots.main)
+        let backup = try? store.read(slots.backup)
         if main == nil, backup == nil { return .fresh }
         var lastError = SaveError.unreadable("missing")
         if let main {
             do {
-                let envelope = try SaveRepository.decodeValid(main)
+                let envelope = try SaveRepository.decodeValid(main, map: map)
                 sequence = envelope.sequence
                 return .loaded(envelope, recoveredFromBackup: false)
             } catch let error as SaveError {
@@ -144,7 +176,7 @@ public final class SaveRepository {
                 lastError = .unreadable(String(describing: error))
             }
         }
-        if let backup, let envelope = try? SaveRepository.decodeValid(backup) {
+        if let backup, let envelope = try? SaveRepository.decodeValid(backup, map: map) {
             sequence = envelope.sequence
             return .loaded(envelope, recoveredFromBackup: true)
         }
@@ -153,7 +185,7 @@ public final class SaveRepository {
 
     /// 玩家确认重置后清除本地存档（UI 负责二次确认）。
     public func eraseAll() throws {
-        for slot in SaveSlot.allCases { try store.remove(slot) }
+        for slot in slots.all { try store.remove(slot) }
         sequence = 0
     }
 
@@ -164,7 +196,7 @@ public final class SaveRepository {
     }
 
     /// 解码 + 迁移 + 完整状态校验；任何一步失败都视为不可用。
-    public static func decodeValid(_ data: Data) throws -> SaveEnvelope {
+    public static func decodeValid(_ data: Data, map: MapDefinition = .backyard) throws -> SaveEnvelope {
         struct Header: Decodable { let schemaVersion: Int }
         guard let header = try? JSONDecoder().decode(Header.self, from: data) else {
             throw SaveError.unreadable("no header")
@@ -179,7 +211,7 @@ public final class SaveRepository {
         }
         guard envelope.savedAt.isFinite, envelope.wallHighWater.isFinite else { throw SaveError.unreadable("time") }
         do {
-            _ = try GameSession(state: envelope.state)
+            _ = try GameSession(state: envelope.state, map: map)
         } catch {
             throw SaveError.unreadable("state: \(error)")
         }
