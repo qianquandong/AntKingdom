@@ -455,7 +455,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -535,7 +535,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = TestFlight;
@@ -552,7 +552,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = TestFlight;
@@ -640,7 +640,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = TestFlight;
 		};
@@ -656,7 +656,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = AppStore;
@@ -673,7 +673,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = AppStore;
@@ -690,7 +690,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = AntKingdom;
 			};
 			name = Debug;
@@ -772,7 +772,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
 				PRODUCT_NAME = AntKingdom;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = AppStore;
 		};
@@ -788,7 +788,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
 			};
 			name = Debug;
