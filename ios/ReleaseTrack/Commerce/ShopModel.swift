@@ -33,6 +33,8 @@ final class ShopModel: ObservableObject {
     private let selectStyle: (RoomStyle) -> Bool
     /// 刚买下但写盘失败：写盘成功后再启用新外观
     private var equipAfterSave = false
+    /// 最近一次权益写盘失败：内存中的权益可能与磁盘不同，下次交付必须重写
+    private var entitlementsUnsaved = false
 
     init(service: StoreService, bundleId: String,
          progress: @escaping () -> PlayerProgress?,
@@ -184,13 +186,21 @@ final class ShopModel: ObservableObject {
     }
 
     /// 写权益缓存；记录写盘结果与提示。
+    /// - 与已写盘的缓存相同：没有要写的，直接算已交付（启动时存储不可写也不打扰玩家）；
+    /// - 新获得的权益写盘失败：显示 shop.save_failed 与 Try Again；
+    /// - 只是移除（退款/撤销）写盘失败：内存已回退，交易保持未完成，下次交付或自动保存时重写，不打扰玩家。
     private func save(_ owned: Set<String>) -> Bool {
+        let cached = Set(progress()?.ownedProducts ?? [])
+        if owned == cached, !entitlementsUnsaved, progress() != nil { return true }
+        let grants = !owned.subtracting(cached).isEmpty
         let saved = updateEntitlements(owned)
-        savePending = !saved
-        if !saved {
+        entitlementsUnsaved = !saved
+        if saved {
+            savePending = false
+            if messageKey == "shop.save_failed" { messageKey = nil }
+        } else if grants || savePending {
+            savePending = true
             messageKey = "shop.save_failed"
-        } else if messageKey == "shop.save_failed" {
-            messageKey = nil
         }
         onStyleChange?()
         return saved

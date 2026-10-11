@@ -319,6 +319,44 @@ final class ShopModelTests: XCTestCase {
         XCTAssertEqual(harness.campaign.session.makeState(), colony)
     }
 
+    /// 启动时存储不可写、权益也没有变化：不提示保存失败，可以正常购买（CI 38168148276 的 UI 测试发现的缺陷）。
+    func testLaunchWithFailingStorageAndNoChangeShowsNoError() async throws {
+        let harness = try Harness()
+        let (shop, service) = makeShop(.ok, harness)
+        harness.store.failWrites = true
+        await shop.syncOnLaunch()
+        XCTAssertFalse(shop.savePending)
+        XCTAssertNil(shop.messageKey)
+        await shop.load()
+        guard case .ready = shop.product else { return XCTFail("buy stays available") }
+        await shop.buy()
+        XCTAssertTrue(shop.savePending, "the purchase itself is what failed to save")
+        XCTAssertEqual(service.finishCount, [:])
+    }
+
+    /// 退款写盘失败：内存已回退、不打扰玩家，交易不完成；存储恢复后下次交付重写磁盘再完成。
+    func testRevocationSaveFailureRetriesQuietly() async throws {
+        let harness = try Harness()
+        let (shop, service) = makeShop(.owned, harness)
+        await shop.syncOnLaunch()
+        shop.equip(.garden)
+        shop.listenForUpdates()
+        harness.store.failWrites = true
+        await service.simulateUpdate(productId: garden, revoked: true)
+        XCTAssertFalse(shop.owned)
+        XCTAssertEqual(harness.campaign.progress.selectedRoomStyle, .standard)
+        XCTAssertFalse(shop.savePending)
+        XCTAssertNil(shop.messageKey)
+        XCTAssertEqual(service.unfinished.count, 1, "not finished until the removal is on disk")
+        XCTAssertEqual(try harness.onDisk()?.ownedProducts, [garden])
+
+        harness.store.failWrites = false
+        await shop.syncOnLaunch()
+        XCTAssertTrue(service.unfinished.isEmpty)
+        XCTAssertEqual(try harness.onDisk()?.ownedProducts, [])
+        XCTAssertEqual(try harness.onDisk()?.selectedRoomStyle, .standard)
+    }
+
     func testCancelPendingAndFailureGrantNothing() async throws {
         let cases: [(FakeStoreService.Mode, String?)] = [(.cancel, nil), (.pending, "shop.pending"), (.fail, "shop.failed")]
         for (mode, message) in cases {
