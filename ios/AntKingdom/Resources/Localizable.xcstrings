@@ -25,6 +25,18 @@
         }
       }
     },
+    "action.close" : {
+      "comment" : "max 16 chars; 关闭面板/设置（C04 新增）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
     "action.confirm" : {
       "comment" : "max 16 chars; 确认按钮",
       "extractionState" : "manual",

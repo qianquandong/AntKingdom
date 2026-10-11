@@ -311,6 +311,7 @@ python tools/check_strings.py
 | `action.move` | Move | 16 | 移动按钮 |
 | `action.confirm` | Confirm | 16 | 确认按钮 |
 | `action.cancel` | Cancel | 16 | 取消按钮 |
+| `action.close` | Close | 16 | 关闭面板/设置（C04 新增） |
 | `action.pause_hatching` | Pause Hatching | 24 | 暂停按钮 |
 | `action.resume_hatching` | Resume Hatching | 24 | 恢复按钮 |
 | `action.reset` | Start Over | 20 | 重置按钮 |

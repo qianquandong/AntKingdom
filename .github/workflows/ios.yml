@@ -29,7 +29,7 @@ jobs:
   ios-simulator:
     name: Xcode 构建与模拟器测试（macOS）
     runs-on: macos-15
-    timeout-minutes: 45
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -49,9 +49,13 @@ jobs:
       - name: 工程未手改漂移（重新生成后与提交一致）
         run: |
           xcodegen generate --spec ios/project.yml
-          git status --porcelain -- ios/
-          git diff --stat --exit-code -- ios/
-          test -z "$(git status --porcelain -- ios/)"
+          if [ -n "$(git status --porcelain -- ios/)" ]; then
+            git status --porcelain -- ios/
+            git diff -- ios/ | head -n 200
+            mkdir -p build/regenerated && cp -R ios/AntKingdom.xcodeproj build/regenerated/
+            echo "::error::ios/AntKingdom.xcodeproj 与 project.yml 重新生成的结果不一致；运行 xcodegen generate --spec ios/project.yml 后提交"
+            exit 1
+          fi
 
       - name: 核心包测试（macOS）
         run: swift test --package-path Packages/AntKingdomCore
@@ -85,11 +89,32 @@ jobs:
           fi
           ls -la build/attachments || true
 
-      - name: 模拟器截图
+      - name: UI 测试（小屏模拟器，375×667pt 级）
         timeout-minutes: 20
         run: |
+          small=$(python3 ci/pick_simulator.py small)
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -destination "platform=iOS Simulator,id=$small" \
+            -derivedDataPath build/DerivedData \
+            -resultBundlePath build/AntKingdom-small.xcresult \
+            -only-testing:AntKingdomUITests \
+            CODE_SIGNING_ALLOWED=NO test
+
+      - name: 导出小屏 UI 截图附件
+        if: always()
+        run: |
+          mkdir -p build/attachments-small
+          if [ -d build/AntKingdom-small.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/AntKingdom-small.xcresult --output-path build/attachments-small || true
+          fi
+
+      - name: 调试场景截图（标准尺寸）
+        timeout-minutes: 25
+        run: |
           app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
-          bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots launch-standard
+          for scenario in fresh connected busy pantry_ready replay300 replay600; do
+            bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "scenario-$scenario" -ak-scenario "$scenario"
+          done
 
       - name: 上传证据
         if: always()
@@ -102,7 +127,9 @@ jobs:
             build/swift_core.json
             build/screenshots
             build/attachments
+            build/attachments-small
             build/logs
+            build/regenerated
           retention-days: 30
 
       - name: 上传 xcresult
