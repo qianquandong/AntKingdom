@@ -10,6 +10,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 import check_map
 import check_strings
+import export_strings
 
 
 class ValidationTests(unittest.TestCase):
@@ -44,6 +45,10 @@ class ValidationTests(unittest.TestCase):
         for bad in bad_docs:
             with self.subTest(text=bad[:50]):
                 self.assertTrue(check_strings.validate(bad))
+
+    def test_string_catalog_matches_prd(self):
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(export_strings.main(["--check"]), 0)
 
     def test_bad_strings_return_failure(self):
         with tempfile.TemporaryDirectory() as folder:

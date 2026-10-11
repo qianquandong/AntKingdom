@@ -1,0 +1,715 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12666765F469231E02DF90EB /* AntKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */; };
+		6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */; };
+		6E5B47D6069905CD759887C7 /* AntKingdomCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9981BA22E18B195D8173322 /* AntKingdomCore */; };
+		78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */; };
+		89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
+		B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647B87EE8765C3C300BAEDA /* L10n.swift */; };
+		D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4E631A38AD7B383E7CF76DC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A348768A3FBAA1967F69955 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C604291B02AD6025F33F4F9B;
+			remoteInfo = AntKingdom;
+		};
+		C3FF87A811D2EE61FFD831C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A348768A3FBAA1967F69955 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C604291B02AD6025F33F4F9B;
+			remoteInfo = AntKingdom;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1647B87EE8765C3C300BAEDA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		3E1A073027F0CE7292F95A4E /* AntKingdomCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AntKingdomCore; path = ../Packages/AntKingdomCore; sourceTree = SOURCE_ROOT; };
+		5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBootstrapTests.swift; sourceTree = "<group>"; };
+		6046A1B36421749B07DA9776 /* AntKingdom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AntKingdom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61B70D1626E7C44AB4980112 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntKingdomApp.swift; sourceTree = "<group>"; };
+		9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSmokeUITests.swift; sourceTree = "<group>"; };
+		D263A039C40C37B9B2674AEA /* AntKingdomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D41723238ECBA5EEBC53CBEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		75545D7868FE57CFB82813D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E5B47D6069905CD759887C7 /* AntKingdomCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E2C4D263F4B2F735F58B4C3 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				1647B87EE8765C3C300BAEDA /* L10n.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		1765348D62BE78E2FA87BDE2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		295178E13BF44660598488D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6046A1B36421749B07DA9776 /* AntKingdom.app */,
+				D263A039C40C37B9B2674AEA /* AntKingdomTests.xctest */,
+				DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		52E95654630DB8388CB7AEA3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */,
+				61B70D1626E7C44AB4980112 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		54608715ABF1FDC3176695A3 = {
+			isa = PBXGroup;
+			children = (
+				9ED8A4EB21E4A7AE6BA4CAA7 /* AntKingdom */,
+				D0CDF3F2B05F2580A8C14B79 /* AntKingdomTests */,
+				E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */,
+				B93868FE4754D841010F94E5 /* Packages */,
+				295178E13BF44660598488D0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9ED8A4EB21E4A7AE6BA4CAA7 /* AntKingdom */ = {
+			isa = PBXGroup;
+			children = (
+				52E95654630DB8388CB7AEA3 /* App */,
+				0E2C4D263F4B2F735F58B4C3 /* Presentation */,
+				1765348D62BE78E2FA87BDE2 /* Resources */,
+				D41723238ECBA5EEBC53CBEF /* Info.plist */,
+			);
+			path = AntKingdom;
+			sourceTree = "<group>";
+		};
+		B93868FE4754D841010F94E5 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				3E1A073027F0CE7292F95A4E /* AntKingdomCore */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		D0CDF3F2B05F2580A8C14B79 /* AntKingdomTests */ = {
+			isa = PBXGroup;
+			children = (
+				5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */,
+			);
+			path = AntKingdomTests;
+			sourceTree = "<group>";
+		};
+		E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */,
+			);
+			path = AntKingdomUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9B1EE68C08FB65018332149A /* AntKingdomUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED7F33E6614381104C0767C6 /* Build configuration list for PBXNativeTarget "AntKingdomUITests" */;
+			buildPhases = (
+				6A84C7964D5CC7DB9DC18AC4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				41DAB65BC01B1D16C32333D7 /* PBXTargetDependency */,
+			);
+			name = AntKingdomUITests;
+			packageProductDependencies = (
+			);
+			productName = AntKingdomUITests;
+			productReference = DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9DEC9A3B876D72A5046E6591 /* AntKingdomTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F15A308F2830660A5C2799B1 /* Build configuration list for PBXNativeTarget "AntKingdomTests" */;
+			buildPhases = (
+				A27AC626A1C8314F15A62354 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				80A3434701D39FDF67C1939E /* PBXTargetDependency */,
+			);
+			name = AntKingdomTests;
+			packageProductDependencies = (
+			);
+			productName = AntKingdomTests;
+			productReference = D263A039C40C37B9B2674AEA /* AntKingdomTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C604291B02AD6025F33F4F9B /* AntKingdom */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C830AFC00A50CB73428608BF /* Build configuration list for PBXNativeTarget "AntKingdom" */;
+			buildPhases = (
+				02019E46F61F928DD8708FE0 /* Sources */,
+				6FD5C58A513397D72F5D6FAB /* Resources */,
+				75545D7868FE57CFB82813D4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AntKingdom;
+			packageProductDependencies = (
+				D9981BA22E18B195D8173322 /* AntKingdomCore */,
+			);
+			productName = AntKingdom;
+			productReference = 6046A1B36421749B07DA9776 /* AntKingdom.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A348768A3FBAA1967F69955 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					9B1EE68C08FB65018332149A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = C604291B02AD6025F33F4F9B;
+					};
+					9DEC9A3B876D72A5046E6591 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					C604291B02AD6025F33F4F9B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 1FA19016A2D48375B41A2AFB /* Build configuration list for PBXProject "AntKingdom" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 54608715ABF1FDC3176695A3;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				669FBD473DDE3C9206790BBC /* XCLocalSwiftPackageReference "../Packages/AntKingdomCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 295178E13BF44660598488D0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C604291B02AD6025F33F4F9B /* AntKingdom */,
+				9DEC9A3B876D72A5046E6591 /* AntKingdomTests */,
+				9B1EE68C08FB65018332149A /* AntKingdomUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6FD5C58A513397D72F5D6FAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02019E46F61F928DD8708FE0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12666765F469231E02DF90EB /* AntKingdomApp.swift in Sources */,
+				B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */,
+				89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A84C7964D5CC7DB9DC18AC4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A27AC626A1C8314F15A62354 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		41DAB65BC01B1D16C32333D7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C604291B02AD6025F33F4F9B /* AntKingdom */;
+			targetProxy = C3FF87A811D2EE61FFD831C4 /* PBXContainerItemProxy */;
+		};
+		80A3434701D39FDF67C1939E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C604291B02AD6025F33F4F9B /* AntKingdom */;
+			targetProxy = 4E631A38AD7B383E7CF76DC0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		26CBCDBD7CD53195CBCDD696 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AntKingdom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
+				PRODUCT_NAME = AntKingdom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3276C40A34D4D9656AE29F03 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = APPSTORE;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = AppStore;
+		};
+		36D8AD308983AE495649971E /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
+			};
+			name = TestFlight;
+		};
+		71EC68DA40D87B7E06A2B285 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AntKingdom;
+			};
+			name = TestFlight;
+		};
+		7A179CAE3659BE659B2F58F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		922BFB892E4A759EB3F3D0B9 /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AntKingdom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
+				PRODUCT_NAME = AntKingdom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = TestFlight;
+		};
+		A3E100022C9FC4F712D388DA /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
+			};
+			name = AppStore;
+		};
+		AC5BF56B2B980FAEF9363AEE /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AntKingdom;
+			};
+			name = AppStore;
+		};
+		D6043DCCEE272B41A177A620 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AntKingdom;
+			};
+			name = Debug;
+		};
+		E7FDEDC129F9F2EA7CC832CE /* TestFlight */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TESTFLIGHT;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = TestFlight;
+		};
+		EAD5E11441361E97E73BFFA9 /* AppStore */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = AntKingdom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom;
+				PRODUCT_NAME = AntKingdom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = AppStore;
+		};
+		F376628A4DCC3130B012175C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.CrumbKingdom.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AntKingdom.app/AntKingdom";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1FA19016A2D48375B41A2AFB /* Build configuration list for PBXProject "AntKingdom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3276C40A34D4D9656AE29F03 /* AppStore */,
+				7A179CAE3659BE659B2F58F9 /* Debug */,
+				E7FDEDC129F9F2EA7CC832CE /* TestFlight */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AppStore;
+		};
+		C830AFC00A50CB73428608BF /* Build configuration list for PBXNativeTarget "AntKingdom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAD5E11441361E97E73BFFA9 /* AppStore */,
+				26CBCDBD7CD53195CBCDD696 /* Debug */,
+				922BFB892E4A759EB3F3D0B9 /* TestFlight */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AppStore;
+		};
+		ED7F33E6614381104C0767C6 /* Build configuration list for PBXNativeTarget "AntKingdomUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC5BF56B2B980FAEF9363AEE /* AppStore */,
+				D6043DCCEE272B41A177A620 /* Debug */,
+				71EC68DA40D87B7E06A2B285 /* TestFlight */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AppStore;
+		};
+		F15A308F2830660A5C2799B1 /* Build configuration list for PBXNativeTarget "AntKingdomTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3E100022C9FC4F712D388DA /* AppStore */,
+				F376628A4DCC3130B012175C /* Debug */,
+				36D8AD308983AE495649971E /* TestFlight */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = AppStore;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		669FBD473DDE3C9206790BBC /* XCLocalSwiftPackageReference "../Packages/AntKingdomCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/AntKingdomCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D9981BA22E18B195D8173322 /* AntKingdomCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AntKingdomCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1A348768A3FBAA1967F69955 /* Project object */;
+}

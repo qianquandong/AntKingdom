@@ -1,0 +1,106 @@
+name: iOS 工程与核心包
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  XCODEGEN_VERSION: "2.45.4"
+
+jobs:
+  core-linux:
+    name: 核心包测试（Linux）
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift --version
+      - run: swift test --package-path Packages/AntKingdomCore
+
+  ios-simulator:
+    name: Xcode 构建与模拟器测试（macOS）
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 选择 Xcode
+        run: bash ci/select-xcode.sh
+
+      - name: 安装锁定版本的 XcodeGen
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/xcodegen.zip" \
+            "https://github.com/yonaskolb/XcodeGen/releases/download/${XCODEGEN_VERSION}/xcodegen.zip"
+          unzip -q "$RUNNER_TEMP/xcodegen.zip" -d "$RUNNER_TEMP/xcodegen"
+          echo "$RUNNER_TEMP/xcodegen/xcodegen/bin" >> "$GITHUB_PATH"
+
+      - name: 记录构建环境
+        run: bash ci/record-environment.sh build/environment.md && cat build/environment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 工程未手改漂移（重新生成后与提交一致）
+        run: |
+          xcodegen generate --spec ios/project.yml
+          git status --porcelain -- ios/
+          git diff --stat --exit-code -- ios/
+          test -z "$(git status --porcelain -- ios/)"
+
+      - name: 核心包测试（macOS）
+        run: swift test --package-path Packages/AntKingdomCore
+
+      - name: 列出 scheme
+        run: xcodebuild -list -project ios/AntKingdom.xcodeproj
+
+      - name: 单元 + UI 测试（标准尺寸模拟器）
+        run: |
+          udid=$(python3 ci/pick_simulator.py standard)
+          echo "SIM_STANDARD=$udid" >> "$GITHUB_ENV"
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -destination "platform=iOS Simulator,id=$udid" \
+            -derivedDataPath build/DerivedData \
+            -resultBundlePath build/AntKingdom.xcresult \
+            CODE_SIGNING_ALLOWED=NO test
+
+      - name: 导出 UI 测试截图附件
+        if: always()
+        run: |
+          mkdir -p build/attachments
+          if [ -d build/AntKingdom.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/AntKingdom.xcresult --output-path build/attachments || true
+          fi
+          ls -la build/attachments || true
+
+      - name: 模拟器截图
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots launch-standard
+          small=$(python3 ci/pick_simulator.py small)
+          bash ci/capture-screenshots.sh "$small" "$app" build/screenshots launch-small
+
+      - name: 上传证据
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-evidence-${{ github.run_number }}
+          path: |
+            build/environment.md
+            build/screenshots
+            build/attachments
+            build/logs
+          retention-days: 30
+
+      - name: 上传 xcresult
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult-${{ github.run_number }}
+          path: build/AntKingdom.xcresult
+          retention-days: 14
