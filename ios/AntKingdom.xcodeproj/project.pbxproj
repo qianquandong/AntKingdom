@@ -748,7 +748,7 @@
 		03424D40C51B007D21410266 /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -898,7 +898,7 @@
 		3DF81FAF9DCFCB566EECA6AF /* TestFlight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1037,7 +1037,7 @@
 		958D37C91C351240306208C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

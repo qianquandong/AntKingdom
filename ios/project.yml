@@ -155,6 +155,8 @@ targets:
         PRODUCT_NAME: CrumbKingdom
         SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) RELEASE_TRACK"
         TARGETED_DEVICE_FAMILY: "1"
+        # 与核心版相同：A06 app_icon 未交付，共享的 Assets.xcassets 里没有 AppIcon，先置空（发行 strict 检查照常失败）
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
   CrumbKingdomTests:
     type: bundle.unit-test
     platform: iOS
