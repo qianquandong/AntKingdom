@@ -21,6 +21,7 @@
 | [A01-01 正式资源首批](assets/source/a01-01/README.md) | 9 张地形/食物源 PNG、原稿、提示词、QA 与接入标准；reviewed |
 | [A01-02 通路与房间](assets/source/a01-02/README.md) | 16 种通路 + Queen/Pantry，18 PNG、连接布局检视；[Claude 接入 #13](https://github.com/qianquandong/AntKingdom/issues/13) |
 | [A02-01 工蚁、货物与卵](assets/source/a02-01/README.md) | 14 张工蚁动作帧 + 货物 + 卵两态，17 PNG、动作检视与接入验收；[Claude 接入 #17](https://github.com/qianquandong/AntKingdom/issues/17) |
+| [A02-02地表与挖掘反馈](assets/source/a02-02/README.md) | 4 PNG、地表裁切、两级裂纹与土屑；累计48张/13组，桌面reviewed待接入 |
 | [资源清单](design/asset_manifest.json) | Codex 待制作资源 ID 与交付状态 |
 | [测试计划](docs/QA_TEST_PLAN.md) | 48 条客户端用例、真机矩阵、观察试玩、发行门槛 |
 | [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |

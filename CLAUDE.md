@@ -12,7 +12,7 @@
 2. [Issue #16](https://github.com/qianquandong/AntKingdom/issues/16)：保留 D-14/D-15 修复，整合后重跑适用回归，真实 SDK / 设备项独立记录。
 3. [Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)：交付新固定 SHA/tag、递增 build、签名安装或可访问 TestFlight 入口、至少一台物理 iPhone 新美术证据。旧 0.1.0(2) 是 unsigned 占位包，不是可安装/TestFlight交付。签名条件缺失准确标 SIGNING_BLOCKED，并交齐已验证工程与 Mac 步骤。
 
-Codex 已交 [A01-01](assets/source/a01-01/README.md)、[A01-02](assets/source/a01-02/README.md)、[A02-01](assets/source/a02-01/README.md) 三批44张 / 11组，状态 reviewed，设备终验未完成。Codex 继续补地表背景和挖掘反馈，Claude 继续代码与构建；不扩大玩法或商业化范围。下方初始 M0–M3 流程仅供依赖参考，不要重做已有证据的任务。
+Codex 已交 [A01-01](assets/source/a01-01/README.md)、[A01-02](assets/source/a01-02/README.md)、[A02-01](assets/source/a02-01/README.md) 三批44张 / 11组，状态 reviewed，设备终验未完成。新增 [A02-02地表/挖掘反馈](assets/source/a02-02/README.md) 4张已reviewed，累计48张/13组；Claude 独立接入两scheme并遵守等比裁切，首包至少包含前三批44张。Claude 继续代码与构建；不扩大玩法或商业化范围。下方初始 M0–M3 流程仅供依赖参考，不要重做已有证据的任务。
 
 ## 开始阅读
 

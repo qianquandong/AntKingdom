@@ -1,6 +1,6 @@
 # 美术方向与资源交付规范
 
-主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)为 draft；[A01-01 地形/食物源](../assets/source/a01-01/README.md)与 [A01-02 通路/房间](../assets/source/a01-02/README.md)累计交付 27 张运行时 PNG，8 个资源组 reviewed，待客户端接入与真机终验。地表背景及其他图片/音频未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张英文文字仅用于组合预览，正式贴图无烘焙文字。
+主责：Codex。运行时集成主责：Claude。[A00样张](../assets/source/keyframe/README.md)为draft；[A01-01](../assets/source/a01-01/README.md)、[A01-02](../assets/source/a01-02/README.md)、[A02-01](../assets/source/a02-01/README.md)、[A02-02地表/挖掘反馈](../assets/source/a02-02/README.md)累计48张运行时PNG / 13组reviewed。前三批44张已在核心分支导入，发行A02/卵跳位/设备待验；本批4张待接入。路线标记、UI/音频及发行内容仍未交付。状态见[manifest](../design/asset_manifest.json)，所有正式贴图无烘焙文字。
 
 ## 1. 视觉目标
 
@@ -53,7 +53,9 @@
 
 A01-02 通路虽然名称含 masks，交付的是完整不透明地形 PNG（包含地面与封闭土边），不是只有边缘的 alpha 图；图片上方=N。房间是带透明留白的开放装饰层，贴图尺寸使用完整占地 Queen 144×96pt / Pantry 96×96pt，不再套占位图的 3pt inset 拉伸，不以装饰/alpha 产生碰撞。具体接入和验收见 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)。
 
-A02-01 工蚁、货物与卵已交付，详见 [资源包](../assets/source/a02-01/README.md) / [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)。工蚁 96px@3x 显示32pt，idle2/walk6/carry6 对应4/10/10fps；货物48px@3x显示16pt，相对父节点(+11,0)pt并共同旋转，身体不烘焙货物。卵96px@3x但显式显示24pt，最后2秒使用ready纹理，保持真实0/1/2卵与现有孵化/暂停规则。14个身体帧统一中心，按完整画布对齐，不按各帧可见边界裁切；动画仅表现，不触发收益或改路径。桌面 reviewed，接入/真机待验收。
+A02-01 工蚁、货物与卵已交付，详见 [资源包](../assets/source/a02-01/README.md) / [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)。工蚁 96px@3x 显示32pt，idle2/walk6/carry6 对应4/10/10fps；货物48px@3x显示16pt，相对父节点(+11,0)pt并共同旋转，身体不烘焙货物。卵96px@3x但显式显示24pt，最后2秒使用ready纹理，保持真实0/1/2卵与现有孵化/暂停规则。14个身体帧统一中心，按完整画布对齐，不按各帧可见边界裁切；动画仅表现，不触发收益或改路径。桌面 reviewed；PR #18核心已导入，发行与真机待验收。卵必须按[10-12交接](reviews/2026-10-12-art-device-handoff.md)修D-16，每枚保留自己的槽位，不按count压紧。
+
+A02-02 已交付 [地表与挖掘反馈4图](../assets/source/a02-02/README.md)：地表1296×288不透明，当前9列单行裁中间1296×144显示432×48pt，不能压扁整图；裂纹两级144px/48pt，碎屑36px/12pt。裂纹共用完整画布与中心，1→2原位扩展，第三次开通清除；事件与Reduce Motion验收见资源包。本批由Claude接入两scheme，不改变路径、收益和碰撞。
 
 ## 4. 制作批次与验收
 

@@ -14,7 +14,7 @@
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
 | iOS 工程/客户端 | D13_D14_D15_CODE_CI_PASSED / D16_OPEN | D14独立Swift157/157；A02核心93/93、单元16、两机型UI18+1skip。固定SHA/run见10-12交接；未合并main、设备未验 |
-| Codex 正式美术资源 | A01_A02_CORE_IMPORTED / RELEASE_A02_PENDING | 三批44 PNG / 11组reviewed；PR #18核心已导入。发行尚缺A02，D-16卵跳位待修 |
+| Codex 正式美术资源 | 48_REVIEWED / 44_CORE_IMPORTED | 四批48 PNG / 13组；新A02-02地表/反馈4张待接入。前三批44张核心已导入，发行A02和D-16/真机待验 |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
@@ -37,7 +37,7 @@
 | 修复/验收 | A01-02 集成 | Claude / Codex | CORE_IMPORTED / REVIEW_PENDING | [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)：双scheme、比例/层级/移动/缩放与真机验收 |
 | 本轮美术 | A02-01 | Codex | REVIEWED | 工蚁14帧、cargo、卵两态，共17 PNG；桌面尺寸/alpha/对齐及64次浏览器seek检查通过 |
 | P1，修复/验收 | A02-01 集成 | Claude / Codex | CORE_IMPORTED / RELEASE_PENDING | #17：D-16/E01–E06、四向与改路、双scheme和设备；不可再写核心未导入 |
-| 后续美术 | 地表 / A02反馈 | Codex | PLANNED | 地表背景、裂纹碎屑/路线状态；UI/音效及发行资源另按计划 |
+| 新交付/待接入 | A02-02 | Codex / Claude | REVIEWED / INTEGRATION_PENDING | 地表、两级裂纹、土屑共4图；按[资源说明](../assets/source/a02-02/README.md)双scheme裁切/三击/Reduce Motion验收 |
 
 以下为初始阶段队列，保留作依赖参考；执行时以开发分支报告和上述当前优先级为准。
 
@@ -46,7 +46,7 @@
 | 1 | C00 | Claude | READY | 基线检查、环境记录、可构建工程 |
 | 并行 | A00 | Codex | DRAFT | 主界面样张已交付；补小屏/角色近景并完成方向确认 |
 | 2 | C01–C04 | Claude | WAITING_C00 | 规则移植与可操作灰盒 |
-| 并行 | A01–A03 | Codex | A01_A02_PARTIAL | A01-01/02、A02-01 已交付；地表、反馈、核心 UI/音效待制作 |
+| 并行 | A01–A03 | Codex | A01_A02_PARTIAL | 四批48张已制作；路线反馈、核心UI/音效待制作 |
 | 3 | C05–C08 | Claude | WAITING_M1 | 核心循环、保存、集成、内部包 |
 | 4 | C09 | Claude/用户/Codex | WAITING_M2 | 真机证据与观察反馈 |
 | 5 | A04 / C10 | Codex / Claude | WAITING_M3 | 正式内容设计/实现 |
@@ -112,8 +112,6 @@ Codex 回传资源时记录 ID、版本、尺寸、锚点、帧序、来源、�
 
 ## 6. 现在可直接交给 Claude 的消息
 
-> 同步最新 main，先读 CLAUDE.md 与 docs/reviews/2026-10-11-followup-review.md，按 Issue #16 优先交付固定 SHA、version/build 的可安装 AntKingdom 核心真机包。保留已通过的 D-13 代码/模拟器证据，完成 #11 的签名安装与设备验收；发行支线修 D-14 两条复现并补真实接线的集成测试；修 D-15 食物源方板与 A01 两scheme/动态验收。签名/设备不足准确列出阻塞，不用无签名编译或CI通过冒充安装。暂停新增玩法/商业化；不等待A02再交核心包。文档中文，玩家文案英文。
+> 同步最新main，先读CLAUDE.md与docs/reviews/2026-10-12-art-device-handoff.md。优先修#17的D-16卵跳位：每枚卵保留固定槽位，补E01–E06；把A02-01同步到发行CrumbKingdom，保留D-13/D-14/D-15修复，补四向/改路/动态和双scheme验收。交付至少含前三批44张美术的新SHA/tag/build>2测试版，完成#11签名安装和物理iPhone证据；缺签名准确列SIGNING_BLOCKED，unsigned编译不算交付完成。后续资源不拖延首包，不扩玩法/商业化。文档中文，玩家文案英文。
 
-本轮接入补充：
-
-本轮执行以 [10-12新美术真机包交接](reviews/2026-10-12-art-device-handoff.md) 为准：A02核心已导入，修D-16、补发行和设备验收；带新美术包需新tag/build与安装证据。缺设备/真实SDK的项目逐项NOT_RUN。
+> Codex新增A02-02地表/挖掘反馈4张，读取assets/source/a02-02/README.md独立接入：地表等比裁中间一行，不压扁；两级裂纹保持位置；土屑36px/12pt；三击与Reduce Motion按事件驱动。累计48张/13组reviewed，发行门槛仍严格，缺设备写NOT_RUN。

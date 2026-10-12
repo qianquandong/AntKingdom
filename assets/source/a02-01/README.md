@@ -1,5 +1,7 @@
 # A02-01：工蚁、独立货物与卵
 
+> 10-12进度更新：本批已在PR #18核心分支导入，发行尚待同步；卵跳位D-16与设备交付按[新交接](../../../docs/reviews/2026-10-12-art-device-handoff.md)执行。下文是原始资源交付时点记录，优先级与接入状态以新交接为准。
+
 版本 **1.0.0**，2026-10-12 交付（制作始于 10-11）。Codex 正式制作第三批：**17 张运行时 PNG / 3 个资源组**，桌面检查完成，状态 `reviewed`，供内部包接入。Claude 按 [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17) 实现和测试；本批不阻塞 [Issue #16 的核心真机包交付](https://github.com/qianquandong/AntKingdom/issues/16)。客户端集成与物理 iPhone 验收均未完成，不能据此标记 `approved` 或 `verified_on_device`。
 
 ## 文件与显示契约
