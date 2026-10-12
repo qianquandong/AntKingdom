@@ -39,6 +39,7 @@
 		C8DEDF571B02FF16091ADE9F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1D48483C2DBD31DFBB1557 /* GameScene.swift */; };
 		CE8C9DB163685993F3DD3978 /* GameController+Placement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77412A7A3D1820AE92346F4A /* GameController+Placement.swift */; };
 		D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */; };
+		F285A3FD8CE25835E5986906 /* ArtScreenshotsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */; };
 		F947E3D3E5F7A7ED0F8D6399 /* ContextPanels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */; };
 		FC0615DA35BD1EED6D087D1D /* PantryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */; };
 /* End PBXBuildFile section */
@@ -96,6 +97,7 @@
 		CADB3D4C007669C66FE7EB17 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
 		D263A039C40C37B9B2674AEA /* AntKingdomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D41723238ECBA5EEBC53CBEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtScreenshotsUITests.swift; sourceTree = "<group>"; };
 		DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F82063E864DA850E7CD105BB /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		E6ADE45856F4B9D0DC617F26 /* AntKingdomUITests */ = {
 			isa = PBXGroup;
 			children = (
+				DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */,
 				2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */,
 				9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */,
 				3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */,
@@ -416,6 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F285A3FD8CE25835E5986906 /* ArtScreenshotsUITests.swift in Sources */,
 				79507EE3877DBAC4BE2C6BB5 /* FeedbackSettingsUITests.swift in Sources */,
 				D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */,
 				32E363F0E63DA0400130FEDF /* LifecycleRoundTripUITests.swift in Sources */,

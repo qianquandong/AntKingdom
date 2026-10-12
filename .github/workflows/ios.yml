@@ -205,7 +205,6 @@ jobs:
         run: |
           small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
           echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
-          echo "SIM_SMALL=$small" >> "$GITHUB_ENV"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$small" \
             -derivedDataPath build/DerivedData \
@@ -228,12 +227,6 @@ jobs:
           for scenario in fresh connected busy pantry_ready pantry_built replay300 replay600 tunnel_gallery; do
             bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "scenario-$scenario" -ak-scenario "$scenario"
           done
-          # A01 美术对照：小屏同场景（标准与小屏各一组）
-          if [ -n "${SIM_SMALL:-}" ]; then
-            for scenario in connected pantry_built tunnel_gallery; do
-              bash ci/capture-screenshots.sh "$SIM_SMALL" "$app" build/screenshots "small-$scenario" -ak-scenario "$scenario"
-            done
-          fi
           # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "offline-900s" -ak-scenario connected -ak-away 900
 
