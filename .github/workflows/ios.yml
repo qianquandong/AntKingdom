@@ -147,12 +147,23 @@ jobs:
             -resultBundlePath build/CrumbKingdom.xcresult \
             CODE_SIGNING_ALLOWED=NO test
 
+      - name: 发行轨美术截图（小屏 iPhone SE，A01 / D-15 两个 target 对照）
+        if: always()
+        timeout-minutes: 15
+        run: |
+          small=$(python3 ci/pick_simulator.py small 2>build/sim-release-small.txt)
+          echo "- 发行轨小屏模拟器：$(cat build/sim-release-small.txt)" >> "$GITHUB_STEP_SUMMARY"
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme CrumbKingdom             -destination "platform=iOS Simulator,id=$small"             -derivedDataPath build/DerivedData             -resultBundlePath build/CrumbKingdom-small.xcresult             -only-testing:CrumbKingdomUITests/ReleaseArtScreenshotsUITests             CODE_SIGNING_ALLOWED=NO test
+
       - name: 导出发行轨 UI 测试截图附件
         if: always()
         run: |
-          mkdir -p build/attachments-release
+          mkdir -p build/attachments-release build/attachments-release-small
           if [ -d build/CrumbKingdom.xcresult ]; then
             xcrun xcresulttool export attachments --path build/CrumbKingdom.xcresult --output-path build/attachments-release || true
+          fi
+          if [ -d build/CrumbKingdom-small.xcresult ]; then
+            xcrun xcresulttool export attachments --path build/CrumbKingdom-small.xcresult --output-path build/attachments-release-small || true
           fi
 
       - name: 发行轨 TestFlight 配置无签名编译（调试入口、测试地图、假商店/假广告已剔除；StoreKit + AdMob，不弹 ATT）
@@ -173,8 +184,10 @@ jobs:
           name: release-evidence-${{ github.run_number }}
           path: |
             build/sim-release.txt
+            build/sim-release-small.txt
             build/release-track-check.md
             build/attachments-release
+            build/attachments-release-small
             build/logs
           retention-days: 30
 
