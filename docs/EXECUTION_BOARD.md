@@ -1,6 +1,6 @@
 # 执行看板与交付模板
 
-更新：2026-10-12。Claude 开工先更新本表，不把任务列表当完成清单。
+更新：2026-10-12（Claude 回填 Issue #16：核心包、D-14、D-15、A01 证据；A02-01 接入 PR #18）。Claude 开工先更新本表，不把任务列表当完成清单。
 
 **当前第一优先：按 [最新复核](reviews/2026-10-11-followup-review.md) 交付可安装核心真机包，并修发行支线 D-14 广告暂停漏洞。** D-13 原问题已有确定性修复与模拟器 20/20 证据，Issue #11 仍因签名/真机未完成保持开放。美术接入修 D-15 食物源方板并补两 scheme 与动态验收；A02 不阻塞核心包。
 
@@ -13,8 +13,8 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | D13_CODE_CI_PASSED / DEVICE_NOT_RUN / D14_OPEN | 复核核心 d5251f6：Swift 91/91、Python 31/31；D-13 20/20 模拟器。发行 ff92393 新增两条广告暂停失败用例；未签名安装、未合并 main |
-| Codex 正式美术资源 | A01_CORE_IMPORTED / A02_REVIEWED | A01 两批 27 PNG / 8 组已在 PR #14/#15 核心分支接入；D-15 与双轨/动态视觉待验。A02-01 新交付 17 PNG / 3 组，按 #17 接入；累计制作44张，未正式批准/真机终验 |
+| iOS 工程/客户端 | D13_BUILD_ARTIFACT / SIGNING_BLOCKED / DEVICE_NOT_RUN；D14_FIXED_CI_SIM | 核心测试包 tag `core-test-d13-2` = 387ad4f，0.1.0 (2)，CI [38205092148](https://github.com/qianquandong/AntKingdom/actions/runs/38205092148) 全部通过（往返 20/20）并产出无签名 .app（仅构建证据）；签名安装等用户本机 Apple ID。D-14 修于 m5-ads 60691ea（[D14 报告](https://github.com/qianquandong/AntKingdom/blob/claude/m5-ads/docs/reports/D14-2026-10-12.md)）。未合并 main |
+| Codex 正式美术资源 | A01_INTEGRATED_2_TARGETS / A02_INTEGRATED_PR18 / REVIEW_PENDING | A01 27 PNG：D-15 已修，核心与发行两个 target 的模拟器截图、补给录屏、遮罩检视页见 A01-02 报告；A02-01 17 PNG 在 PR #18 接入（CI 回填中）；manifest 仍 reviewed，strict 门槛失败，真机未验 |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
@@ -25,17 +25,17 @@
 
 | 优先级 | ID | 主责 | 当前状态 | 交付物 |
 |---|---|---|---|---|
-| P1，先执行 | D-13 交付 | Claude / 用户 | CODE_CI_PASSED / NOT_INSTALLED | 固定版本/build、构建产物与日志、签名安装、真机验收；未安装不能关单 |
-| P1，发行修复 | D-14 | Claude | REPRODUCED | 广告暂停与后台/恢复首帧的交互；两条复现测试、正式集成测试及固定 CI |
-| P2，美术修复 | D-15 | Claude | OPEN | 食物源透明边缘下铺正式土层，消除浅色矩形底板；补 A01 两 scheme 和动态证据 |
-| 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 固定 SHA 的签名核心包或 TestFlight build、安装证据；缺签名条件则 SIGNING_BLOCKED |
+| P1，先执行 | D-13 交付 | Claude / 用户 | CODE_CI_PASSED / BUILD_ARTIFACT_DELIVERED / SIGNING_BLOCKED / NOT_INSTALLED | tag `core-test-d13-2`、0.1.0 (2)、无签名 TestFlight/Debug .app 两份（SHA-256 见 [D-13 报告](https://github.com/qianquandong/AntKingdom/blob/claude/d13-lifecycle/docs/reports/D13-2026-10-11.md) 第 6 节）；签名安装与真机矩阵等用户，未安装不能关单 |
+| P1，发行修复 | D-14 | Claude | CODE_FIXED / CI_SIM_PASS；真实 SDK / 真机 NOT_RUN | 有意暂停进入生命周期（e3a4b73）；Codex 两条复现改接 API + 9 条核心、4 条 CampaignModel 集成、1 条全屏假广告 UI；变异检查 10/11 失败（95≠65）；CI [38206933405](https://github.com/qianquandong/AntKingdom/actions/runs/38206933405)（60691ea）发行轨全部通过 |
+| P2，美术修复 | D-15 | Claude / Codex | CODE_FIXED / CI_SIM_PASS / REVIEW_PENDING | f7cf6e9 源格铺正式土层；前后对照、Sugar 有货→耗尽→补给录屏、两 target 两屏截图（A01-02 报告）；Cookie 完整循环录屏在 PR #18 CI 回填 |
+| 紧随修复 | CORE_DEVICE_BUILD | 用户 / Claude | SIGNING_BLOCKED / NOT_INSTALLED | 缺：用户 Mac 上 Xcode 登录的 Apple ID（个人免费账号即可）与一台 iPhone；步骤见 BUILD.md“核心真机测试包”；装好后回传型号/iOS/build/首屏截图 |
 | 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵、日志与实际收益/总结对照 |
 | 已交付 | A01-01 | Codex | REVIEWED | 9 张环境贴图，已在 PR #14 核心分支导入 |
-| 修复/验收 | A01-01 集成 | Claude / Codex | CORE_IMPORTED / REVIEW_PENDING | 修 D-15；补发行 target、采样和耗尽/补给证据 |
+| 修复/验收 | A01-01 集成 | Claude / Codex | INTEGRATED_2_TARGETS / REVIEW_PENDING | D-15 已修；发行 target 截图已补；采样/闪线需真机；T-05 间歇 UI 失败已记录（A01-01 报告） |
 | 已交付 | A01-02 | Codex | REVIEWED | 16 种通路 + Queen/Pantry，共18 PNG；已在 PR #15 核心分支导入 |
-| 修复/验收 | A01-02 集成 | Claude / Codex | CORE_IMPORTED / REVIEW_PENDING | [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)：双scheme、比例/层级/移动/缩放与真机验收 |
+| 修复/验收 | A01-02 集成 | Claude / Codex | INTEGRATED_2_TARGETS / REVIEW_PENDING | [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)：16 遮罩检视页（含 0 号）待 Codex 逐边复核；挖格重开、0/1/2 卵、Pantry、平移缩放录像已产出；真机 NOT_RUN |
 | 本轮美术 | A02-01 | Codex | REVIEWED | 工蚁14帧、cargo、卵两态，共17 PNG；桌面尺寸/alpha/对齐及64次浏览器seek检查通过 |
-| 核心安装不等待 | A02-01 集成 | Claude / Codex | READY_FOR_INTERNAL_INTEGRATION | [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)：A02-T01…T06、两scheme、原速/慢放/设备证据 |
+| 核心安装不等待 | A02-01 集成 | Claude / Codex | INTEGRATED_IN_PR18 / CI_PENDING | [PR #18](https://github.com/qianquandong/AntKingdom/pull/18)：17 张导入（SHA 对 metadata）、14 帧整组、独立货物、卵 24pt；A02-T01/T03 测试、动作录像；发行 target 与真机待做 |
 | 后续美术 | 地表 / A02反馈 | Codex | PLANNED | 地表背景、裂纹碎屑/路线状态；UI/音效及发行资源另按计划 |
 
 以下为初始阶段队列，保留作依赖参考；执行时以开发分支报告和上述当前优先级为准。
