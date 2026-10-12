@@ -149,6 +149,11 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             }
         case .soil? where !walkable.contains(p):
             node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+        case .cookie?, .sugar?, .sap?:
+            // D-15：食物源格不可通行（含 empty），底下铺同一格的正式土层；源贴图的透明 padding 自然露出土层，
+            // 不再露出通路色的浅色方板。不裁 padding、不放大源贴图、不改占地与碰撞
+            node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+            node.color = soilColor(p)
         default:
             let mask = AssetNames.tunnelMask(at: p, open: walkable)
             node.texture = walkable.contains(p) ? ArtLibrary.texture(AssetNames.tunnel(mask: mask)) : nil
@@ -172,6 +177,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         case .surface?: return ArtLibrary.Palette.paper
         case .stone?: return ArtLibrary.Palette.stone
         case .soil? where !walkable: return soilColor(p)
+        case .cookie?, .sugar?, .sap?: return soilColor(p)
         default: return ArtLibrary.Palette.tunnel
         }
     }
