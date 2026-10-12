@@ -18,10 +18,10 @@ public enum DebugScenario: String, CaseIterable, Sendable {
     /// A01-02 截图：按可挖前沿顺序挖开 16 格，让通路网同时出现四邻遮罩 1–15（直道、转角、三岔、四向、尽头）。
     /// 遮罩 0（四邻都不通）在游戏中不会出现——每个挖开的格都与已有通路相连
     case tunnelGallery = "tunnel_gallery"
-    /// A01 美术录屏：Cookie 接通、只剩 4 Food，Sugar 已空，刷新倒计时 6 秒且轮到 Cookie →
-    /// 约 20 秒内看到 Cookie 有货 → 耗尽 → 补给（Sugar 保持耗尽图）
+    /// A01 美术录屏：Cookie 接通、只剩 15 Food（约 9 秒搬完），Sugar 已空，轮到 Cookie；两块都空后 6 秒补给 →
+    /// 约 20 秒内看到 Cookie 有货 → 耗尽 → 补给（Sugar 保持耗尽图）。原先 4 Food 在录像首个可见帧之前就搬完了
     case sourceCycleCookie = "source_cycle_cookie"
-    /// 同上，接通 Sugar（挖开 (5,1)(6,1)(7,1)）、只剩 4 Food，轮到 Sugar：Sugar 有货 → 耗尽 → 补给
+    /// 同上，接通 Sugar（挖开 (5,1)(6,1)(7,1)）、只剩 8 Food（约 6 秒搬完），轮到 Sugar：Sugar 有货 → 耗尽 → 补给
     case sourceCycleSugar = "source_cycle_sugar"
     /// A01-02 美术截图：Queen 房间 1 颗 / 2 颗卵（孵化暂停，卵保持可见）
     case eggsOne = "eggs_one"
@@ -71,7 +71,7 @@ public enum DebugScenario: String, CaseIterable, Sendable {
         case .sourceCycleCookie:
             connect(session)
             try session.debugReplaceState { state in
-                state.patchRemaining["cookie"] = 4
+                state.patchRemaining["cookie"] = 15   // 约 9 秒耗尽：录像里能看到有货（4 Food 在首个可见帧前就搬完）
                 state.patchRemaining["sugar"] = 0
                 state.refillLeft = 6
                 state.nextPatchId = "cookie"
@@ -81,7 +81,7 @@ public enum DebugScenario: String, CaseIterable, Sendable {
             for p in [GridPoint(5, 1), GridPoint(6, 1), GridPoint(7, 1)] { session.apply(.debugCompleteCell(p)) }
             try session.debugReplaceState { state in
                 state.patchRemaining["cookie"] = 0
-                state.patchRemaining["sugar"] = 4
+                state.patchRemaining["sugar"] = 8
                 state.refillLeft = 6
                 state.nextPatchId = "sugar"
                 state.hatching = false

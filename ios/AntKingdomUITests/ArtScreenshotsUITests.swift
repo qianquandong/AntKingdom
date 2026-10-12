@@ -29,10 +29,13 @@ final class ArtScreenshotsUITests: XCTestCase {
             if scenario == "tunnel_gallery" || scenario == "connected" {
                 let map = app.otherElements["map"]
                 XCTAssertTrue(map.waitForExistence(timeout: 5))
-                map.pinch(withScale: 4, velocity: 2)
+                map.pinch(withScale: 4, velocity: 2)       // 最大 1.6 倍（镜头钳制）
                 sleep(1)
                 shot(app, "\(scenario)-zoom-max")
-                map.pinch(withScale: 0.15, velocity: -2)
+                // 总览 = 最小缩放（整图按宽度装下）。快速的一次大幅捏合在 CI 上只缩回一部分（run 38205368547），
+                // 改为两次较慢的捏合，镜头钳制到下限
+                map.pinch(withScale: 0.5, velocity: -0.5)
+                map.pinch(withScale: 0.5, velocity: -0.5)
                 sleep(1)
                 shot(app, "\(scenario)-overview")
             }
