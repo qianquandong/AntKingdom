@@ -2,7 +2,9 @@
 
 更新：2026-10-11。Claude 开工先更新本表，不把任务列表当完成清单。
 
-本轮交接：[Issue #6 修复与验收清单](https://github.com/qianquandong/AntKingdom/issues/6)；[评审记录](reviews/2026-10-11-claude-review.md)；[Codex A00 样张](../assets/source/keyframe/README.md)。本次仅同步已知概况与 Codex 美术进度，下方 Claude 任务的初始排队状态仍需由 Claude 按实际 SHA/测试证据逐项回填（R05），不能作为当前完成度。
+**当前第一优先：Claude 修复 [D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)，完成回归后交付可安装核心真机包。** [本轮修复要求](reviews/2026-10-11-d13-handoff.md)列出复现、20 轮模拟器/10 轮真机往返及签名交付标准。未确认根因时不能以重跑通过关单。
+
+关联：[Issue #6 原修复清单](https://github.com/qianquandong/AntKingdom/issues/6)；[首次评审记录](reviews/2026-10-11-claude-review.md)；[A00 样张](../assets/source/keyframe/README.md)；[A01-01 环境资源首批](../assets/source/a01-01/README.md)。下方历史阶段队列不是当前完成度；Claude 应合并其分支已有报告的实际证据，逐项替换历史状态，不覆盖更完整的记录。
 
 ## 1. 当前事实
 
@@ -11,22 +13,33 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / PARTIALLY_TESTED | C06 分支 2351f27 模拟器 CI 通过；评审时最新广告分支 3a6f5f9 编译失败，见 Issue #6；未合入 main、真机未验收 |
-| Codex 正式美术资源 | A00_DRAFT / RUNTIME_PLANNED | 主界面预览与无文字底稿已交付；其余运行时资源仍 planned；A00 小屏/近景/方向确认待完成 |
+| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / D13_OPEN | 已复核 14845d2 的修复与 CI 38175736095；最新复核分支 86a7654 含补充报告。R01–R04 已有代码/CI 修复证据，D-13 根因未确认；未合入 main、真机未验收 |
+| Codex 正式美术资源 | A01_01_REVIEWED / NOT_INTEGRATED | 已交付 9 PNG / 5 资源组，144px 与 288px 导出、原稿/提示词/QA；其余仍 planned，A00 仍 draft |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
 | Apple 开发者账号与签名 | UNKNOWN | 用户在 C00 提供账号就绪状态，不提供密码到仓库 |
 | TestFlight / App Store | NOT_STARTED | 不得把计划写成已经上传/上线 |
 
-## 2. 排队任务
+## 2. 当前任务与历史阶段队列
+
+| 优先级 | ID | 主责 | 当前状态 | 交付物 |
+|---|---|---|---|---|
+| P1，先执行 | D-13 | Claude | OPEN | 根因、稳定复现、修复、规定回归、更新 M2 与 CI 证据 |
+| 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 固定 SHA 的签名核心包或 TestFlight build、安装证据；缺签名条件则 SIGNING_BLOCKED |
+| 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵、日志与实际收益/总结对照 |
+| 并行 | A01-01 | Codex | REVIEWED | 9 张环境贴图，详见交付包；尚未导入客户端 |
+| 生命周期稳定后 | A01-01 集成 | Claude / Codex | READY_FOR_INTERNAL_INTEGRATION | 同名 imageset、两 target 截图、尺寸/采样/状态切换检查 |
+| 下一美术批 | A01-02 | Codex | PLANNED | 通路遮罩、Queen/Pantry、地表；不阻塞占位核心真机包 |
+
+以下为初始阶段队列，保留作依赖参考；执行时以开发分支报告和上述当前优先级为准。
 
 | 顺序 | ID | 主责 | 初始状态 | 下一项完成动作 |
 |---|---|---|---|---|
 | 1 | C00 | Claude | READY | 基线检查、环境记录、可构建工程 |
 | 并行 | A00 | Codex | DRAFT | 主界面样张已交付；补小屏/角色近景并完成方向确认 |
 | 2 | C01–C04 | Claude | WAITING_C00 | 规则移植与可操作灰盒 |
-| 并行 | A01–A03 | Codex | WAITING_A00 | 环境、角色、核心 UI/音效 |
+| 并行 | A01–A03 | Codex | A01_PARTIAL | A01-01 已交付；其余环境、角色、核心 UI/音效待制作 |
 | 3 | C05–C08 | Claude | WAITING_M1 | 核心循环、保存、集成、内部包 |
 | 4 | C09 | Claude/用户/Codex | WAITING_M2 | 真机证据与观察反馈 |
 | 5 | A04 / C10 | Codex / Claude | WAITING_M3 | 正式内容设计/实现 |
@@ -90,6 +103,6 @@ macOS / Xcode / SDK / 最低系统：
 
 Codex 回传资源时记录 ID、版本、尺寸、锚点、帧序、来源、文件位置、预览与验收结论。Claude 回传集成截图；状态从 approved 到 integrated 再到 verified_on_device，不跳过设备检查。
 
-## 6. 交给 Claude 的首条消息
+## 6. 现在可直接交给 Claude 的消息
 
-> 请读取仓库根目录 CLAUDE.md，并按 docs/DELIVERY_PLAN.md 执行 AntKingdom。你负责具体代码实现、自动化测试与 iOS 工程；Codex 负责计划、数值和美术，用户负责真机试玩与发行决定。Mac 已有，游戏最终免费并加入内购/可选奖励广告。现在先执行 C00，再按依赖完成 M1/M2；不要提前接商业化。保持文档和沟通中文、玩家文案英文。每个任务提交代码与实际测试证据，更新 docs/EXECUTION_BOARD.md，列出需要 Codex 提供的资源 ID。缺少账号或最终美术时继续可独立进行的工作，不把占位、模拟器或未运行的测试标成真机通过。
+> 同步最新 main 的交接资料，先读 CLAUDE.md 与 docs/reviews/2026-10-11-d13-handoff.md，优先处理 Issue #11 的 D-13。先定位根因并做原实现稳定失败的测试，再完成规定回归，交付固定 SHA 的可安装 AntKingdom 核心真机测试包和步骤；未取得签名/设备条件请准确列出阻塞，不用重跑成功或无签名编译冒充完成。保留既有分支，暂停新增玩法/商业化，更新 M2 报告和当前看板。Codex 的 assets/source/a01-01/README.md 包含 9 张正式环境资源及接入标准，生命周期修复稳定后独立导入。你负责代码、测试、构建；Codex 负责计划与美术，用户负责物理设备操作。文档中文，玩家文案英文。

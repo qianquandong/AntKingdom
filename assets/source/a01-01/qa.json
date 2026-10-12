@@ -1,0 +1,278 @@
+{
+  "delivery": "A01-01",
+  "sharp_version": "0.35.5",
+  "thresholds": {
+    "transparent_outer_edge_alpha_max": 1,
+    "visible_padding_fraction_at_alpha16": 0.04,
+    "pair_alpha128_iou_min": 0.99,
+    "pair_max_bounds_delta_px": 1
+  },
+  "checks": [
+    {
+      "id": "terrain_soil_1",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 255,
+      "minimum_padding_alpha16": 0,
+      "visible_bounds_alpha128": {
+        "left": 0,
+        "top": 0,
+        "right": 143,
+        "bottom": 143
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "terrain_soil_2",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 255,
+      "minimum_padding_alpha16": 0,
+      "visible_bounds_alpha128": {
+        "left": 0,
+        "top": 0,
+        "right": 143,
+        "bottom": 143
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "terrain_soil_3",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 255,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 255,
+      "minimum_padding_alpha16": 0,
+      "visible_bounds_alpha128": {
+        "left": 0,
+        "top": 0,
+        "right": 143,
+        "bottom": 143
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "terrain_stone",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 0,
+      "minimum_padding_alpha16": 12,
+      "visible_bounds_alpha128": {
+        "left": 13,
+        "top": 17,
+        "right": 130,
+        "bottom": 128
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "source_cookie_full",
+      "width": 288,
+      "height": 288,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 1,
+      "minimum_padding_alpha16": 17,
+      "visible_bounds_alpha128": {
+        "left": 17,
+        "top": 23,
+        "right": 269,
+        "bottom": 265
+      },
+      "warning": "最外缘存在 alpha=1 的近透明残留；已保留，深浅底未见色边。",
+      "pass": true
+    },
+    {
+      "id": "source_cookie_empty",
+      "width": 288,
+      "height": 288,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 0,
+      "minimum_padding_alpha16": 16,
+      "visible_bounds_alpha128": {
+        "left": 17,
+        "top": 23,
+        "right": 270,
+        "bottom": 265
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "source_sugar_full",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 0,
+      "minimum_padding_alpha16": 21,
+      "visible_bounds_alpha128": {
+        "left": 22,
+        "top": 23,
+        "right": 122,
+        "bottom": 120
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "source_sugar_empty",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 0,
+      "minimum_padding_alpha16": 20,
+      "visible_bounds_alpha128": {
+        "left": 21,
+        "top": 23,
+        "right": 122,
+        "bottom": 121
+      },
+      "warning": null,
+      "pass": true
+    },
+    {
+      "id": "source_sap",
+      "width": 144,
+      "height": 144,
+      "space": "srgb",
+      "has_icc": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "outer_edge_alpha_max": 0,
+      "minimum_padding_alpha16": 16,
+      "visible_bounds_alpha128": {
+        "left": 17,
+        "top": 17,
+        "right": 127,
+        "bottom": 125
+      },
+      "warning": null,
+      "pass": true
+    }
+  ],
+  "full_empty_pairs": [
+    {
+      "group": "cookie",
+      "alpha_mask_iou": 0.992243,
+      "alpha_mean_absolute_delta": 1.616,
+      "max_bounds_delta_px": 1,
+      "full_bounds": {
+        "left": 17,
+        "top": 23,
+        "right": 269,
+        "bottom": 265
+      },
+      "empty_bounds": {
+        "left": 17,
+        "top": 23,
+        "right": 270,
+        "bottom": 265
+      }
+    },
+    {
+      "group": "sugar",
+      "alpha_mask_iou": 0.993643,
+      "alpha_mean_absolute_delta": 0.905,
+      "max_bounds_delta_px": 1,
+      "full_bounds": {
+        "left": 22,
+        "top": 23,
+        "right": 122,
+        "bottom": 120
+      },
+      "empty_bounds": {
+        "left": 21,
+        "top": 23,
+        "right": 122,
+        "bottom": 121
+      }
+    }
+  ],
+  "soil_edges": [
+    {
+      "from": "terrain_soil_1",
+      "to": "terrain_soil_1",
+      "horizontal_edge_rgb_mae": 3.456,
+      "vertical_edge_rgb_mae": 3.88
+    },
+    {
+      "from": "terrain_soil_1",
+      "to": "terrain_soil_2",
+      "horizontal_edge_rgb_mae": 3.551,
+      "vertical_edge_rgb_mae": 4.141
+    },
+    {
+      "from": "terrain_soil_1",
+      "to": "terrain_soil_3",
+      "horizontal_edge_rgb_mae": 4.065,
+      "vertical_edge_rgb_mae": 4.343
+    },
+    {
+      "from": "terrain_soil_2",
+      "to": "terrain_soil_1",
+      "horizontal_edge_rgb_mae": 4.049,
+      "vertical_edge_rgb_mae": 4.294
+    },
+    {
+      "from": "terrain_soil_2",
+      "to": "terrain_soil_2",
+      "horizontal_edge_rgb_mae": 3.861,
+      "vertical_edge_rgb_mae": 4.495
+    },
+    {
+      "from": "terrain_soil_2",
+      "to": "terrain_soil_3",
+      "horizontal_edge_rgb_mae": 4.731,
+      "vertical_edge_rgb_mae": 4.831
+    },
+    {
+      "from": "terrain_soil_3",
+      "to": "terrain_soil_1",
+      "horizontal_edge_rgb_mae": 3.484,
+      "vertical_edge_rgb_mae": 4.199
+    },
+    {
+      "from": "terrain_soil_3",
+      "to": "terrain_soil_2",
+      "horizontal_edge_rgb_mae": 3.509,
+      "vertical_edge_rgb_mae": 4.363
+    },
+    {
+      "from": "terrain_soil_3",
+      "to": "terrain_soil_3",
+      "horizontal_edge_rgb_mae": 4,
+      "vertical_edge_rgb_mae": 4.648
+    }
+  ],
+  "notes": "边缘差值是排查线索，不等于美术无缝验收。接触表为资产检视图，不是游戏截图。真机未测。"
+}
