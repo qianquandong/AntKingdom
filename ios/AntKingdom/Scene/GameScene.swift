@@ -665,6 +665,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                            controller.latest.walkable.count - controller.session.map.initialWalkable.count,
                            view.bounds.width, view.bounds.height)
         if probe != controller.debugProbe { controller.debugProbe = probe }
+        controller.refreshDebugLifecycle()
         #endif
     }
 }

@@ -1,5 +1,6 @@
 import AntKingdomCore
 import SwiftUI
+import UIKit
 
 /// 应用级状态：读档/离线结算/前后台与自动保存（C06）。所有修改在主 actor 上顺序进行。
 @MainActor
@@ -43,6 +44,19 @@ final class AppModel: ObservableObject {
         self.wallClock = wall
         self.phase = .saveUnavailable(.unreadable("not launched"))
         launch()
+        observeApplicationLifecycle()
+    }
+
+    /// D-13：除 SwiftUI scenePhase 外再监听 UIKit 通知。两路都只是“提示”，生命周期协调器对重复事件幂等；
+    /// UIKit 的进入后台通知在挂起之前同步送达，比 scenePhase 更早、更可靠。
+    private func observeApplicationLifecycle() {
+        let center = NotificationCenter.default
+        center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleBackground(source: "didEnterBackground") }
+        }
+        center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleActive(source: "didBecomeActive") }
+        }
     }
 
     static var saveDirectory: URL {
@@ -52,8 +66,12 @@ final class AppModel: ObservableObject {
 
     /// 读档 → 校验 → 一次离线结算 → 立即保存。
     func launch() {
+        var trace: LifecycleTrace?
+        #if DEBUG
+        trace = LifecycleTrace()      // D-13 诊断：只在 Debug 构建
+        #endif
         let (coordinator, result) = LifecycleCoordinator.launch(repository: SaveRepository(store: store, appVersion: appVersion),
-                                                                wallClock: wallClock)
+                                                                wallClock: wallClock, trace: trace)
         switch result {
         case .ready(let session, let offline, _):
             self.coordinator = coordinator
@@ -85,23 +103,41 @@ final class AppModel: ObservableObject {
     }
 
     private func wire(_ controller: GameController) {
-        controller.persist = { [weak self] in self?.coordinator?.save() ?? false }
+        controller.persist = { [weak self] in self?.coordinator?.save(reason: "controller") ?? false }
         controller.resetHandler = { [weak self] in self?.coordinator?.resetColony() }
+        controller.admitFrame = { [weak self] in self?.coordinator?.admitForegroundFrame() ?? .run }
+        #if DEBUG
+        controller.lifecycleTrace = coordinator?.trace
+        #endif
     }
 
     func scenePhaseChanged(_ newPhase: ScenePhase) {
-        guard let coordinator, case .running(let controller) = phase else { return }
+        coordinator?.note("phase", String(describing: newPhase))
         switch newPhase {
         case .background:
-            coordinator.enterBackground()
+            handleBackground(source: "scenePhase")
         case .active:
-            if let summary = coordinator.becomeActive(), summary.isWorthShowing {
-                controller.offlineSummary = summary
-            }
-            controller.onResume?()
+            handleActive(source: "scenePhase")
         default:
             break
         }
+    }
+
+    private func handleBackground(source: String) {
+        guard let coordinator, case .running = phase else { return }
+        coordinator.note("signal", "background via \(source)")
+        coordinator.enterBackground()
+    }
+
+    /// 回到前台：只为本次离开区间结算一次（重复信号返回 nil），≥ 60 秒才弹 Welcome Back。
+    private func handleActive(source: String) {
+        guard let coordinator, case .running(let controller) = phase else { return }
+        coordinator.note("signal", "active via \(source)")
+        if let summary = coordinator.becomeActive(), summary.isWorthShowing {
+            controller.offlineSummary = summary
+            coordinator.note("summary", "presented hauled=\(Int(summary.hauledFood.rounded()))")
+        }
+        controller.onResume?()
     }
 }
 

@@ -13,6 +13,7 @@
 		1D4ADA72153D3BE4DAA6E59E /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
 		2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
 		30A44CFA38615D653C6EC1B8 /* LifecycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */; };
+		32E363F0E63DA0400130FEDF /* LifecycleRoundTripUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */; };
 		427F6927A4725868A1799876 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A427BAB9E5A691739E2C2A /* Feedback.swift */; };
 		43CC1E75DEA37B319F086AA7 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481AE54E930CF5CFCE79C5B6 /* HUDView.swift */; };
 		51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */; };
@@ -65,6 +66,7 @@
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		382E9C27AC7A4781AED0D672 /* DebugMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
 		3E1A073027F0CE7292F95A4E /* AntKingdomCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AntKingdomCore; path = ../Packages/AntKingdomCore; sourceTree = SOURCE_ROOT; };
+		3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleRoundTripUITests.swift; sourceTree = "<group>"; };
 		4125C63167FB727DDB70C304 /* GameMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMapView.swift; sourceTree = "<group>"; };
 		46655BCDA18D4B2831BF3884 /* BottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPanel.swift; sourceTree = "<group>"; };
 		47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerTests.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */,
 				9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */,
+				3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */,
 				B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */,
 				9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */,
 			);
@@ -411,6 +414,7 @@
 			files = (
 				79507EE3877DBAC4BE2C6BB5 /* FeedbackSettingsUITests.swift in Sources */,
 				D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */,
+				32E363F0E63DA0400130FEDF /* LifecycleRoundTripUITests.swift in Sources */,
 				30A44CFA38615D653C6EC1B8 /* LifecycleUITests.swift in Sources */,
 				FC0615DA35BD1EED6D087D1D /* PantryFlowUITests.swift in Sources */,
 			);
@@ -494,7 +498,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -592,7 +596,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -730,7 +734,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;

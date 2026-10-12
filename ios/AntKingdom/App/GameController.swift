@@ -57,6 +57,14 @@ final class GameController: ObservableObject {
     var resetHandler: (() -> Void)?
     /// 回到前台：场景丢弃暂停期间的帧间隔，后台时长只由离线结算处理
     var onResume: (() -> Void)?
+    /// 每帧推进之前的生命周期准入（D-13，AppModel / CampaignModel 注入）：离开区间未结算时不推进、不保存
+    var admitFrame: (() -> ForegroundFrame)?
+    #if DEBUG
+    /// 仅调试：生命周期环形日志（UI 测试从隐藏元素 debug.lifecycle 读取）
+    var lifecycleTrace: LifecycleTrace?
+    @Published var debugLifecycle = ""
+    private var traceSeen = -1
+    #endif
     private var dirty = false
     private var lastSave = -Double.infinity
     private var saveFailureShown = false
@@ -86,6 +94,18 @@ final class GameController: ObservableObject {
     // MARK: 每帧
 
     func frame(delta: Double) {
+        switch admitFrame?() ?? .run {
+        case .hold:
+            return                    // 后台区间尚未结算（恢复首帧早于 .active）：不推进、不保存（D-13）
+        case .resumed(let summary):
+            // 帧停顿超过阈值且没有后台记录：生命周期已按离线结算；丢弃本帧间隔
+            if let summary, summary.isWorthShowing { offlineSummary = summary }
+            onResume?()
+            refresh()
+            return
+        case .run:
+            break
+        }
         session.tick(frameDelta: delta)
         advanceHold()
         handle(session.drainEvents())
@@ -98,6 +118,15 @@ final class GameController: ObservableObject {
             publish(now: now)
         }
     }
+
+    #if DEBUG
+    /// 生命周期日志有新行时刷新隐藏元素（不按帧拼字符串）
+    func refreshDebugLifecycle() {
+        guard let trace = lifecycleTrace, trace.sequence != traceSeen else { return }
+        traceSeen = trace.sequence
+        debugLifecycle = trace.tail(24)
+    }
+    #endif
 
     private func publish(now: Double) {
         snapshot = latest

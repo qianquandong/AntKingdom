@@ -46,12 +46,27 @@ final class LifecycleUITests: XCTestCase {
         app.launchArguments = ["-ak-scenario", "connected"]
         app.launch()
         XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 15))
+        let left = Date()
         XCUIDevice.shared.press(.home)
         sleep(65)
         app.activate()
+        let away = Date().timeIntervalSince(left)
         let title = app.staticTexts["offline.title"]
         XCTAssertTrue(title.waitForExistence(timeout: 10), "returning after 65 s must show the summary")
         screenshot("C06-offline-after-background")
+        // D-13：总结内容必须等于这一次离开的实际结算（Debug 生命周期日志），且只结算一次
+        let lines = app.staticTexts["debug.lifecycle"].label.components(separatedBy: " | ")
+        let paid = lines.filter { ($0.contains(" settle active ") || $0.contains(" settle gap ")) && !$0.contains("settled=0") }
+        XCTAssertEqual(paid.count, 1, lines.joined(separator: " / "))
+        if let line = paid.first {
+            func value(_ key: String) -> Double? {
+                line.split(separator: " ").first { $0.hasPrefix(key + "=") }.flatMap { Double($0.dropFirst(key.count + 1)) }
+            }
+            let settled = value("settled") ?? 0
+            XCTAssertEqual(settled, away, accuracy: 3, line)
+            XCTAssertEqual(app.staticTexts["offline.summary"].label,
+                           "Your ants brought in \(Int((value("hauled") ?? -1).rounded(.down))) Food.")
+        }
         app.buttons["offline.ok"].tap()
         let gone = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: title)
         XCTAssertEqual(XCTWaiter().wait(for: [gone], timeout: 5), .completed, "OK must close the summary")

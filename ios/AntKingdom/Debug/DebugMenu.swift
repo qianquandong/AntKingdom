@@ -1,6 +1,7 @@
 #if DEBUG
 import AntKingdomCore
 import SwiftUI
+import UIKit
 
 /// 开发调试入口（只编译进 Debug）：载入调试场景、查看三组固定夹具的求解结果。
 /// 文字是开发者用的英文/ID，不属于玩家文案，不进入 TestFlight/AppStore 构建。
@@ -9,8 +10,17 @@ struct DebugMenu: View {
     let controller: GameController
     @State private var fixtures: [FixtureResult] = []
 
+    @State private var copiedLines: Int?
+
     var body: some View {
         Section("Debug") {
+            // D-13 真机验收：把生命周期环形日志复制到剪贴板，贴到记录表/Issue（不含设备标识与账号数据）
+            Button(copiedLines.map { "Lifecycle log copied (\($0) lines)" } ?? "Copy Lifecycle Log") {
+                let lines = controller.lifecycleTrace?.lines ?? []
+                UIPasteboard.general.string = lines.joined(separator: "\n")
+                copiedLines = lines.count
+            }
+            .accessibilityIdentifier("debug.copy_lifecycle")
             ForEach(DebugScenario.allCases, id: \.self) { scenario in
                 Button("Load scenario: \(scenario.rawValue)") {
                     controller.loadDebugScenario(scenario)
