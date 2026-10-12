@@ -9,6 +9,13 @@ public struct OfflineSummary: Equatable, Sendable {
     /// 墙钟离开时长（未封顶，可能为 0）
     public let awaySeconds: Double
 
+    public init(hauledFood: Double, netFood: Double, simulatedSeconds: Double, awaySeconds: Double) {
+        self.hauledFood = hauledFood
+        self.netFood = netFood
+        self.simulatedSeconds = simulatedSeconds
+        self.awaySeconds = awaySeconds
+    }
+
     /// 低于一分钟的离开不弹总结，避免切换应用时打扰
     public var isWorthShowing: Bool { simulatedSeconds >= 60 }
 }
