@@ -52,4 +52,37 @@ final class DebugScenarioTests: XCTestCase {
         }
         XCTAssertEqual(seen, Set(1...15))
     }
+
+    /// A01 录屏场景：约 20 秒内，目标源从有货变为耗尽，再由刷新补满；另一个有限源保持耗尽。
+    func testSourceCycleScenariosEmptyAndRefillWithinTwentySeconds() throws {
+        for (scenario, id, other) in [(DebugScenario.sourceCycleCookie, "cookie", "sugar"),
+                                      (DebugScenario.sourceCycleSugar, "sugar", "cookie")] {
+            let session = GameSession()
+            try scenario.apply(to: session)
+            func remaining(_ source: String) -> Double {
+                session.colony.sources.first { $0.id == source }?.remaining ?? -1
+            }
+            XCTAssertGreaterThan(remaining(id), 0, "\(scenario) starts with food")
+            XCTAssertEqual(remaining(other), 0, "\(scenario)")
+            var sawEmpty = false
+            var refilled = false
+            for _ in 0..<(20 * 4) {
+                session.tick(frameDelta: Rules.tick)
+                if remaining(id) <= Rules.epsilon { sawEmpty = true }
+                if sawEmpty, remaining(id) > 100 { refilled = true; break }
+            }
+            XCTAssertTrue(sawEmpty, "\(scenario) empties")
+            XCTAssertTrue(refilled, "\(scenario) refills")
+            XCTAssertEqual(remaining(other), 0, "\(scenario) other patch stays empty")
+        }
+    }
+
+    func testEggScenariosShowOneAndTwoEggs() throws {
+        for (scenario, count) in [(DebugScenario.eggsOne, 1), (DebugScenario.eggsTwo, 2)] {
+            let session = GameSession()
+            try scenario.apply(to: session)
+            XCTAssertEqual(session.colony.larvae.count, count)
+            XCTAssertFalse(session.colony.hatching)
+        }
+    }
 }
