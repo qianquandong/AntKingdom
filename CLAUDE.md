@@ -10,6 +10,8 @@
 
 暂停新增玩法/商业化扩展，保留既有分支；不要重复已经有证据的 M0–M2 工作。Codex 的 [A01-01 资源包](assets/source/a01-01/README.md) 已供内部集成，D-13 测试包可先用占位资源；正式资源导入另做可追溯提交，发行门槛不放宽。
 
+本轮新增 **[A01-02 通路与房间](assets/source/a01-02/README.md)**：18 张 PNG（16 种通路、Queen、Pantry），已通过桌面检查。按 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13) 在 D-13 基线稳定后接入；特别检查 N/S 方向、房间原比例、移除占位外框与 Pantry 三条 shelves 线。两批累计 27 张 / 8 资源组，地表与角色等仍缺失，不将本批接入当全部发行资源齐备。
+
 ## 开始阅读
 
 按顺序阅读：

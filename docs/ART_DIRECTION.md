@@ -1,6 +1,6 @@
 # 美术方向与资源交付规范
 
-主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)为 draft；[A01-01 地形/食物源首批](../assets/source/a01-01/README.md)已交付 9 张运行时 PNG，5 个资源组状态 reviewed，待客户端接入与真机终验。其余图片/音频未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张英文文字仅用于组合预览，正式贴图无烘焙文字。
+主责：Codex。运行时集成主责：Claude。状态：[A00 主界面方向样张与无文字底稿](../assets/source/keyframe/README.md)为 draft；[A01-01 地形/食物源](../assets/source/a01-01/README.md)与 [A01-02 通路/房间](../assets/source/a01-02/README.md)累计交付 27 张运行时 PNG，8 个资源组 reviewed，待客户端接入与真机终验。地表背景及其他图片/音频未交付。资源状态见 [manifest](../design/asset_manifest.json)。样张英文文字仅用于组合预览，正式贴图无烘焙文字。
 
 ## 1. 视觉目标
 
@@ -50,6 +50,8 @@
 一套 walk 可供正常与繁忙队伍使用，速度来自逻辑周期；不额外生产几十套方向图。图集边缘留 padding/extrusion，导入前核对实际纹理尺寸、锚点和缩放。命名使用 `snake_case`，版本由 manifest 与 Git 管理，避免 `final_final2.png`。
 
 交付包包含：asset ID、路径、用途、帧顺序、像素尺寸、逻辑尺寸、锚点、透明状态、许可证/生成来源、版本、预览接触表、状态。任何项缺失都不能标 `approved`。音频单列来源和循环点，不用无授权素材。
+
+A01-02 通路虽然名称含 masks，交付的是完整不透明地形 PNG（包含地面与封闭土边），不是只有边缘的 alpha 图；图片上方=N。房间是带透明留白的开放装饰层，贴图尺寸使用完整占地 Queen 144×96pt / Pantry 96×96pt，不再套占位图的 3pt inset 拉伸，不以装饰/alpha 产生碰撞。具体接入和验收见 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)。
 
 ## 4. 制作批次与验收
 
