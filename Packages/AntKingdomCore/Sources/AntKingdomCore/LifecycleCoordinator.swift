@@ -236,7 +236,7 @@ public final class LifecycleTrace {
     public private(set) var sequence = 0
     private let processId: Int32
 
-    public init(capacity: Int = 60, processId: Int32 = ProcessInfo.processInfo.processIdentifier) {
+    public init(capacity: Int = 200, processId: Int32 = ProcessInfo.processInfo.processIdentifier) {
         self.capacity = capacity
         self.processId = processId
     }

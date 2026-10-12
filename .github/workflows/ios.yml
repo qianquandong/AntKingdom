@@ -56,6 +56,9 @@ jobs:
         env:
           TEST_RUNNER_AK_ROUNDS: "10"
         run: |
+          # 先等模拟器真正启动完成（CI 38186667094 标准机型首轮 launch 报 “Failed to get launch progress”）
+          xcrun simctl boot "$SIM_STANDARD" 2>/dev/null || true
+          xcrun simctl bootstatus "$SIM_STANDARD" -b
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData             -resultBundlePath build/D13-standard.xcresult             -only-testing:AntKingdomUITests/LifecycleRoundTripUITests             CODE_SIGNING_ALLOWED=NO test-without-building
 
       - name: 小屏 10 轮
@@ -64,6 +67,9 @@ jobs:
         env:
           TEST_RUNNER_AK_ROUNDS: "10"
         run: |
+          # 先等模拟器真正启动完成（CI 38186667094 标准机型首轮 launch 报 “Failed to get launch progress”）
+          xcrun simctl boot "$SIM_SMALL" 2>/dev/null || true
+          xcrun simctl bootstatus "$SIM_SMALL" -b
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_SMALL" -derivedDataPath build/DerivedData             -resultBundlePath build/D13-small.xcresult             -only-testing:AntKingdomUITests/LifecycleRoundTripUITests             CODE_SIGNING_ALLOWED=NO test-without-building
 
       - name: 汇总每一轮
