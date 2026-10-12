@@ -1,0 +1,840 @@
+{
+  "schema_version": 1,
+  "version": "A02-01 1.0.0",
+  "created_at": "2026-10-11",
+  "delivered_at": "2026-10-12",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status": "reviewed",
+  "generation": "Built-in image_gen; generated alpha preserved; mechanical scale/registration only in sharp.",
+  "assets": [
+    {
+      "id": "ant_worker_idle_1",
+      "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+      "runtime": "assets/game/ants/worker/ant_worker_idle_1.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_idle_1",
+      "generated_filename": "exec-d0ee232a-20fd-47d6-aa27-37a5f1f4e4b8.png",
+      "reference": "room_queen (style only)",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c",
+      "sha256": "1e66321b37a80d825565702b10b845fe5736b9cfedec0100c51afe7d0cfa420f",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 0
+      },
+      "bytes": 5703,
+      "reference_inputs": [
+        {
+          "source": "assets/game/rooms/queen/room_queen.png",
+          "sha256": "2fca012d86dd1e5615bf9b6788bd53023513a8453feb0581a7a33a84ded54abc"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_idle_2",
+      "source": "assets/source/a02-01/masters/ant_worker_idle_2.png",
+      "runtime": "assets/game/ants/worker/ant_worker_idle_2.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_idle_2",
+      "generated_filename": "exec-7fc43bd4-8ca0-444d-a6b7-3eedfadb21cd.png",
+      "reference": "ant_worker_idle_1",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "e7f6f333befe951f7b63e1786a27a8422e54c9c8264848dc4dad7d51bd93b35c",
+      "sha256": "54e28021d444d412d2e22e6a99fdbe5f911905c570c997039ae727f4e4a16dea",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 4.3539
+      },
+      "bytes": 5846,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_1",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_1.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_1.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_1",
+      "generated_filename": "exec-5698776b-4f46-47db-8c2c-1a1ce10a723e.png",
+      "reference": "ant_worker_idle_1",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "665e6bd4190a71d10f3cb95a5d39e555eee2e6c9a5a09519fb212cf56975aec9",
+      "sha256": "d0acff12e32746196c43e64ea7d723c6c35f897e9d865ace3e32459c3f647729",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          4,
+          1
+        ],
+        "canvas_translation": [
+          -8,
+          -4
+        ],
+        "body_mae_255": 10.3051
+      },
+      "bytes": 6197,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_2",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_2.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_2.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_2",
+      "generated_filename": "exec-a72ce716-c9bf-4be6-a07a-a350c0861037.png",
+      "reference": "ant_worker_walk_2-initial",
+      "revision": true,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c95c12c8c62f188fd8e561dce48fa09852a8f9ff8669a8ce7252915fc38cb9fd",
+      "sha256": "dc7be1b8f53cd7404fcce5719f8d84f856ce6b438ecf6135ce1b4543d70f684c",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 12.0109
+      },
+      "bytes": 5941,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/reference_sources/ant_worker_walk_2-initial.png",
+          "sha256": "886d727ae942ddca51637ef9b41df033914a8f2a4231092e9aa0f814044ce624"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_3",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_3.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_3.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_3",
+      "generated_filename": "exec-3e689461-b165-49ff-b4eb-ec18b02acb81.png",
+      "reference": "ant_worker_walk_3-initial",
+      "revision": true,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "3c7e7ca0c8993ba0acee7c7871a4850496c831887c2858a4c1e265c086305eee",
+      "sha256": "1cac229c1d03138dcb9b5c7aa5ba19b9fa739498eb0c2f5f83aafe7e91297538",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 11.0286
+      },
+      "bytes": 6076,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/reference_sources/ant_worker_walk_3-initial.png",
+          "sha256": "3667e353a494beae197a76f77f12450d5c8ee2346aaced9293ddae741af0aaca"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_4",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_4.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_4.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_4",
+      "generated_filename": "exec-1f35a081-58e7-445e-974c-02184ec71d05.png",
+      "reference": "ant_worker_idle_1",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "af8ba7be63ea095504a0476024c91e8304f5294e6a09845c48e232e29c3a6564",
+      "sha256": "d677cdf99c847863994215f9845bd4318f8f8dce61e9687008c98eac4c129ccc",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 8.7837
+      },
+      "bytes": 5942,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_5",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_5.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_5.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_5",
+      "generated_filename": "exec-73b33253-f6ab-430e-a00a-da6b0ba516b6.png",
+      "reference": "ant_worker_idle_1",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "137e367da5a68738fd7a0cc4339e6d293f62277d577e0b49ea9388093c4ee0ca",
+      "sha256": "66190cd09ef78145262f9df38888faeb6447744e4ac6507c10b13dcd51ff9a3d",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 6.4059
+      },
+      "bytes": 6049,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_walk_6",
+      "source": "assets/source/a02-01/masters/ant_worker_walk_6.png",
+      "runtime": "assets/game/ants/worker/ant_worker_walk_6.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_walk_6",
+      "generated_filename": "exec-004fbc22-a3fe-498d-92e1-e7f098007c82.png",
+      "reference": "ant_worker_idle_1",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "1ff99157569a1a1d65e60906c02db5f4dcf2d4217bcb1ff25065808b149bbaa9",
+      "sha256": "8a5548903ce1735c9626fa7e54af9a343be62e5f741fb1e9b7be3870539f7178",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 12.8024
+      },
+      "bytes": 6115,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_1",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_1.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_1.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_1",
+      "generated_filename": "exec-7eb9e2bc-3e91-475e-ba7f-1d3c576ed1aa.png",
+      "reference": "ant_worker_idle_1 + carry_1 initial",
+      "revision": true,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "cce9d0668651268527c82922bbc158e07f5770648f94aa8948e75a0879c55f07",
+      "sha256": "1e4d65131d647a1bd4429337ea1172badacf36b369890d1ff0467decb9ed65ba",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          4,
+          0
+        ],
+        "canvas_translation": [
+          -8,
+          -3
+        ],
+        "body_mae_255": 9.6063
+      },
+      "bytes": 5999,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/reference_sources/ant_worker_carry_1-initial.png",
+          "sha256": "e187f3f18d298f3136694582d0d8f41ab059f65045e164a8ac4a54d3005c2c5b"
+        },
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_2",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_2.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_2.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_2",
+      "generated_filename": "exec-6a4ae3f2-0902-4cff-919f-9381b23fb27b.png",
+      "reference": "ant_worker_idle_1 + carry_2 initial",
+      "revision": true,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "e54c10a4d326534cd76cec600b6c03a0a9f595e8c4957bcdc14c8df9488d05e7",
+      "sha256": "53eb92da8c1600b7d76a8e18870e5ff7bd74eb46f1c0c2ddb8e6ca53fb14dccf",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 8.1341
+      },
+      "bytes": 5849,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/reference_sources/ant_worker_carry_2-initial.png",
+          "sha256": "06b8546029b74362f230c85bed182fc45133bd9586a25a30423855e0e5f3e3b0"
+        },
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_3",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_3.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_3.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_3",
+      "generated_filename": "exec-0bf217da-370c-4d18-aec0-553247412c1a.png",
+      "reference": "ant_worker_walk_3",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "dad4f40b9ec69a83d471dfdfa24d883bb781d255433ae942a50bc6898162ed1f",
+      "sha256": "1847a20ad8882a08b639a4db99c61b560489858d87496689097c6e6855968b8a",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          1
+        ],
+        "canvas_translation": [
+          -4,
+          -4
+        ],
+        "body_mae_255": 13.6689
+      },
+      "bytes": 6063,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_walk_3.png",
+          "sha256": "3c7e7ca0c8993ba0acee7c7871a4850496c831887c2858a4c1e265c086305eee"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_4",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_4.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_4.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_4",
+      "generated_filename": "exec-80c7f82c-67d8-4ff0-bbca-8af5ddf38797.png",
+      "reference": "ant_worker_walk_4",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "eb2373aa1b7bdf902073b1430e4918354b04ec8afd2b8c2d078f705433d67e3f",
+      "sha256": "fc543d512a1b0a5fedadf032446d5784583ac8d7c2141c5542522b84e98dc6ea",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 13.7862
+      },
+      "bytes": 6067,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_walk_4.png",
+          "sha256": "af8ba7be63ea095504a0476024c91e8304f5294e6a09845c48e232e29c3a6564"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_5",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_5.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_5.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_5",
+      "generated_filename": "exec-31c73c9c-8cf3-4426-839f-54966f3adaa6.png",
+      "reference": "ant_worker_walk_5",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "3714b1d92ebd76122243fb2c25a6ab4ddca17eb71930c864ad9bd99545338a8c",
+      "sha256": "2d5e52356d59dc6271694f0d7ef421930fbbb665502969909966b70557fec4a0",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          1
+        ],
+        "canvas_translation": [
+          -4,
+          -4
+        ],
+        "body_mae_255": 12.1241
+      },
+      "bytes": 6193,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_walk_5.png",
+          "sha256": "137e367da5a68738fd7a0cc4339e6d293f62277d577e0b49ea9388093c4ee0ca"
+        }
+      ]
+    },
+    {
+      "id": "ant_worker_carry_6",
+      "source": "assets/source/a02-01/masters/ant_worker_carry_6.png",
+      "runtime": "assets/game/ants/worker/ant_worker_carry_6.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        32,
+        32
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_worker_carry_6",
+      "generated_filename": "exec-90710392-4b2a-47be-9239-3fbc36410464.png",
+      "reference": "ant_worker_idle_1 + carry_6 initial",
+      "revision": true,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "62fe8eaf527706c50025b39a95c65a4f274d54aa2e826ebaf8af4dfa3e61ae1f",
+      "sha256": "998def31c82c54e14d96723bf85d00de2a7a719a8fc656ff599cfb45e9985bcb",
+      "export_registration": {
+        "comparison_scale": 192,
+        "match_offset": [
+          0,
+          0
+        ],
+        "canvas_translation": [
+          -4,
+          -3
+        ],
+        "body_mae_255": 6.7413
+      },
+      "bytes": 6043,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/reference_sources/ant_worker_carry_6-initial.png",
+          "sha256": "5258c6ab234975b3defe755c8bb1151fe008923a7719353fae0cf1525ad50530"
+        },
+        {
+          "source": "assets/source/a02-01/masters/ant_worker_idle_1.png",
+          "sha256": "d4dacc510b7f2dd55e1dc826993f92d641c9c69f492a4a6c0505352d58000b1c"
+        }
+      ]
+    },
+    {
+      "id": "ant_cargo",
+      "source": "assets/source/a02-01/masters/ant_cargo.png",
+      "runtime": "assets/game/ants/cargo/ant_cargo.png",
+      "pixels": [
+        48,
+        48
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        16,
+        16
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "ant_cargo",
+      "generated_filename": "exec-6f25d5f8-b167-4417-b45f-b74fc64159e1.png",
+      "reference": null,
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "39ec401fe6f48553da2ca141208d85411962d630692fb8f08a4f330bd6627bcb",
+      "sha256": "6b8c18946158e0297a974bd59896543722ab7d0beeff74e17263617637afcfc0",
+      "export_registration": null,
+      "bytes": 2112,
+      "reference_inputs": []
+    },
+    {
+      "id": "egg_states_normal",
+      "source": "assets/source/a02-01/masters/egg_states_normal.png",
+      "runtime": "assets/game/ants/egg/egg_states_normal.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        24,
+        24
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "egg_states_normal",
+      "generated_filename": "exec-bf22ad57-7fd4-4a5c-9b2f-7c29511ba862.png",
+      "reference": null,
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "43a56fd70ea29ad7f4ae20c28db92095bed87fa51ba44ff41c838a9e09b21320",
+      "sha256": "894ff3917cf767884af35ae83a7dcc2cfba9b41dc506d67157fae04349be229d",
+      "export_registration": null,
+      "bytes": 6059,
+      "reference_inputs": []
+    },
+    {
+      "id": "egg_states_ready",
+      "source": "assets/source/a02-01/masters/egg_states_ready.png",
+      "runtime": "assets/game/ants/egg/egg_states_ready.png",
+      "pixels": [
+        96,
+        96
+      ],
+      "catalog_scale": 3,
+      "render_points": [
+        24,
+        24
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "prompt_id": "egg_states_ready",
+      "generated_filename": "exec-54ea4ccb-6cbc-4ed2-9465-0a78516545f7.png",
+      "reference": "egg_states_normal",
+      "revision": false,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "798261b27d87f38e8f9dcc3d43246e6bfe002f931f2185d156b6c84156029ba8",
+      "sha256": "7cd86e36bc19e80ffb26dcca68e99c265a46a33871b57dfb010c1ecedeb56eea",
+      "export_registration": null,
+      "bytes": 6171,
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-01/masters/egg_states_normal.png",
+          "sha256": "43a56fd70ea29ad7f4ae20c28db92095bed87fa51ba44ff41c838a9e09b21320"
+        }
+      ]
+    }
+  ],
+  "runtime_bytes": 98425,
+  "revisions": [
+    {
+      "id": "ant_worker_walk_2-initial",
+      "source": "assets/source/a02-01/reference_sources/ant_worker_walk_2-initial.png",
+      "reason": "missing upper rear leg",
+      "generated_filename": "exec-5ab89dcc-53e9-4677-ab56-b9dd54036924.png",
+      "sha256": "886d727ae942ddca51637ef9b41df033914a8f2a4231092e9aa0f814044ce624"
+    },
+    {
+      "id": "ant_worker_walk_3-initial",
+      "source": "assets/source/a02-01/reference_sources/ant_worker_walk_3-initial.png",
+      "reason": "crossing upper legs",
+      "generated_filename": "exec-76f8708f-453b-423f-a80b-8543c3a5a009.png",
+      "sha256": "3667e353a494beae197a76f77f12450d5c8ee2346aaced9293ddae741af0aaca"
+    },
+    {
+      "id": "ant_worker_carry_1-initial",
+      "source": "assets/source/a02-01/reference_sources/ant_worker_carry_1-initial.png",
+      "reason": "body color/registration drift > 14/255",
+      "generated_filename": "exec-810aac0d-5239-45c4-800b-fd23faa41e01.png",
+      "sha256": "e187f3f18d298f3136694582d0d8f41ab059f65045e164a8ac4a54d3005c2c5b"
+    },
+    {
+      "id": "ant_worker_carry_2-initial",
+      "source": "assets/source/a02-01/reference_sources/ant_worker_carry_2-initial.png",
+      "reason": "body color/registration drift > 14/255",
+      "generated_filename": "exec-4688502b-19ac-4ac0-947d-2652bf1c7d8f.png",
+      "sha256": "06b8546029b74362f230c85bed182fc45133bd9586a25a30423855e0e5f3e3b0"
+    },
+    {
+      "id": "ant_worker_carry_6-initial",
+      "source": "assets/source/a02-01/reference_sources/ant_worker_carry_6-initial.png",
+      "reason": "body color/registration drift > 14/255",
+      "generated_filename": "exec-f06058aa-d3ca-4829-a589-c0516d43eda3.png",
+      "sha256": "5258c6ab234975b3defe755c8bb1151fe008923a7719353fae0cf1525ad50530"
+    }
+  ],
+  "generation_calls": 22,
+  "integration_status": "NOT_RUN",
+  "physical_device_status": "NOT_RUN",
+  "integration_issue": "https://github.com/qianquandong/AntKingdom/issues/17",
+  "approval_status": "桌面资产检查完成；可内部接入，未批准运行时/真机终验。"
+}
