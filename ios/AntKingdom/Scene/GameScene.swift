@@ -71,6 +71,14 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         controller.onReset = { [weak self] in self?.resetCamera() }
         controller.onResume = { [weak self] in self?.resetFrameClock() }
         resetCamera()
+        #if DEBUG
+        // 美术截图：指定初始缩放（0 → 最小总览，很大 → 最大 1.6 倍），镜头照常钳制
+        if let debugZoom = LaunchOptions(arguments: ProcessInfo.processInfo.arguments).zoom {
+            zoom = CGFloat(debugZoom)
+            clampZoom()
+            clampCamera()
+        }
+        #endif
     }
 
     override func didChangeSize(_ oldSize: CGSize) {

@@ -19,27 +19,24 @@ final class ArtScreenshotsUITests: XCTestCase {
         return app
     }
 
-    /// 默认视图；通路截图场景与 connected 另截最大放大与总览（双指缩放，镜头自动钳制到上下限）
+    /// 默认视图（原尺寸，48 pt 格）；通路截图场景与 connected 另截最大放大（1.6 倍）与总览（最小缩放，整图按宽度装下）。
+    /// 放大 / 总览用 Debug 启动参数 `-ak-zoom` 直接设定：CI 上的捏合缩小不可靠（run 38205368547 / 38212447159 的
+    /// “overview” 都没缩到最小），手势本身由 ArtPanZoomUITests 覆盖。
     func testArtReviewScenes() {
         for scenario in ["connected", "pantry_built", "tunnel_gallery", "eggs_one", "eggs_two", "replay600"] {
-            let app = launch(["-ak-scenario", scenario])
+            var app = launch(["-ak-scenario", scenario])
             XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 20), scenario)
             sleep(2)
             shot(app, scenario)
-            if scenario == "tunnel_gallery" || scenario == "connected" {
-                let map = app.otherElements["map"]
-                XCTAssertTrue(map.waitForExistence(timeout: 5))
-                map.pinch(withScale: 4, velocity: 2)       // 最大 1.6 倍（镜头钳制）
-                sleep(1)
-                shot(app, "\(scenario)-zoom-max")
-                // 总览 = 最小缩放（整图按宽度装下）。快速的一次大幅捏合在 CI 上只缩回一部分（run 38205368547），
-                // 改为两次较慢的捏合，镜头钳制到下限
-                map.pinch(withScale: 0.5, velocity: -0.5)
-                map.pinch(withScale: 0.5, velocity: -0.5)
-                sleep(1)
-                shot(app, "\(scenario)-overview")
-            }
             app.terminate()
+            guard scenario == "tunnel_gallery" || scenario == "connected" else { continue }
+            for (label, zoom) in [("zoom-max", "9"), ("overview", "0")] {
+                app = launch(["-ak-scenario", scenario, "-ak-zoom", zoom])
+                XCTAssertTrue(app.staticTexts["hud.food"].waitForExistence(timeout: 20), "\(scenario) \(label)")
+                sleep(2)
+                shot(app, "\(scenario)-\(label)")
+                app.terminate()
+            }
         }
     }
 
