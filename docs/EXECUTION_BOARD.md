@@ -13,8 +13,8 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / D13_OPEN | 已复核 14845d2 的修复与 CI 38175736095；最新复核分支 86a7654 含补充报告。R01–R04 已有代码/CI 修复证据，D-13 根因未确认；未合入 main、真机未验收 |
-| Codex 正式美术资源 | A01_01_02_REVIEWED / NOT_INTEGRATED | 两批累计 27 PNG / 8 资源组，含 16 种通路、Queen/Pantry；[A01-02](../assets/source/a01-02/README.md) 已做方向/配对/透明与布局检视。地表、角色、UI/音频等仍 planned，A00 仍 draft |
+| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / D13_FIXED_CI / DEVICE_NOT_RUN | Claude 2026-10-11：D-13 根因已定位并修复（PR #12，tag `core-test-d13-1` = f930e13，CI 38191008410 全部通过、模拟器往返 20/20），见 [D-13 报告](reports/D13-2026-10-11.md)；R01–R04 见 #9/#10；未合入 main、真机未验收 |
+| Codex 正式美术资源 | A01_01_02_REVIEWED / INTEGRATED_IN_BRANCHES（待 Codex 复核） | 两批累计 27 PNG / 8 资源组，含 16 种通路、Queen/Pantry；[A01-02](../assets/source/a01-02/README.md) 已做方向/配对/透明与布局检视。地表、角色、UI/音频等仍 planned，A00 仍 draft |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
@@ -25,13 +25,13 @@
 
 | 优先级 | ID | 主责 | 当前状态 | 交付物 |
 |---|---|---|---|---|
-| P1，先执行 | D-13 | Claude | OPEN | 根因、稳定复现、修复、规定回归、更新 M2 与 CI 证据 |
-| 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 固定 SHA 的签名核心包或 TestFlight build、安装证据；缺签名条件则 SIGNING_BLOCKED |
-| 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵、日志与实际收益/总结对照 |
+| P1，先执行 | D-13 | Claude | CODE_FIXED / CI_PASS | 根因、原实现 2/2 失败的最小复现、修复（PR #12）、20/20 往返与 M2/D-13 报告已提交；Issue #11 已回填 |
+| 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | SIGNING_BLOCKED / NOT_INSTALLED | 固定 tag `core-test-d13-1`；无签名编译与发行检查通过；个人签名安装步骤见 D-13 报告第 6 节、BUILD.md |
+| 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵；记录表与 Debug “Copy Lifecycle Log” 见 D-13 报告第 7 节 |
 | 并行 | A01-01 | Codex | REVIEWED | 9 张环境贴图，详见交付包；尚未导入客户端 |
-| 生命周期稳定后 | A01-01 集成 | Claude / Codex | READY_FOR_INTERNAL_INTEGRATION | 同名 imageset、两 target 截图、尺寸/采样/状态切换检查 |
+| 生命周期稳定后 | A01-01 集成 | Claude / Codex | INTEGRATED_CORE / AWAITING_REVIEW | PR #14：9 张 @3x 导入、石块铺土层、源按完整格；CI 38193335116；[报告](reports/A01-01-2026-10-11.md)；发行 target 截图与真机待做 |
 | 本轮美术 | A01-02 | Codex | REVIEWED | 16 种通路 + Queen/Pantry，共 18 PNG；64 边方向与 128 通口配对通过，见资源包 |
-| 生命周期稳定后 | A01-02 集成 | Claude / Codex | READY_FOR_INTERNAL_INTEGRATION | [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)：18 图导入、占位清理、比例/层级/移动与真机验收 |
+| 生命周期稳定后 | A01-02 集成 | Claude / Codex | INTEGRATED_CORE / AWAITING_REVIEW | PR #15：18 图导入、货架线清理、tunnel_gallery 遮罩 1–15、标准/小屏对照；CI 38199223850；[报告](reports/A01-02-2026-10-11.md)；逐边放大、闪线、发行 target 与真机待做 |
 | 后续美术 | 地表 / A02 | Codex | PLANNED | 地表背景、工蚁与反馈；未包含在本次 A01-02，不阻塞占位核心真机包 |
 
 以下为初始阶段队列，保留作依赖参考；执行时以开发分支报告和上述当前优先级为准。
