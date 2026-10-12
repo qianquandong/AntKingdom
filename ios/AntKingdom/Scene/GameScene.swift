@@ -106,7 +106,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                 tileNodes[p] = node
                 tileLayer.addChild(node)
                 applyTileTexture(p, map: map, walkable: map.initialWalkable)
-                if map.tile(at: p) == .stone, node.texture == nil { node.addChild(stoneMarks()) }
+                if map.tile(at: p) == .stone, ArtLibrary.texture(AssetNames.stone) == nil { node.addChild(stoneMarks()) }
                 if map.tile(at: p) == .entrance { node.addChild(entranceMark()) }
             }
         }
@@ -135,9 +135,25 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         case .surface?:
             return
         case .stone?:
-            node.texture = ArtLibrary.texture(AssetNames.stone)
+            // A01-01：石块贴图带透明区，底下铺同一格的土层（固定变体；无土层贴图时用土色），不留灰色方块底板
+            guard let stone = ArtLibrary.texture(AssetNames.stone) else {
+                node.texture = nil
+                return
+            }
+            node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+            node.color = soilColor(p)
+            if node.childNode(withName: "stoneArt") == nil {
+                let art = SKSpriteNode(texture: stone, size: node.size)
+                art.name = "stoneArt"
+                node.addChild(art)
+            }
         case .soil? where !walkable.contains(p):
             node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+        case .cookie?, .sugar?, .sap?:
+            // D-15：食物源格不可通行（含 empty），底下铺同一格的正式土层；源贴图的透明 padding 自然露出土层，
+            // 不再露出通路色的浅色方板。不裁 padding、不放大源贴图、不改占地与碰撞
+            node.texture = ArtLibrary.texture(AssetNames.soil(variantFor: p))
+            node.color = soilColor(p)
         default:
             let mask = AssetNames.tunnelMask(at: p, open: walkable)
             node.texture = walkable.contains(p) ? ArtLibrary.texture(AssetNames.tunnel(mask: mask)) : nil
@@ -160,15 +176,20 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         switch map.tile(at: p) {
         case .surface?: return ArtLibrary.Palette.paper
         case .stone?: return ArtLibrary.Palette.stone
-        case .soil? where !walkable:
-            let shade = CGFloat((p.x * 7 + p.y * 3) % 3) * 0.035
-            return ArtLibrary.Palette.soil.adjustedBrightness(by: shade)
+        case .soil? where !walkable: return soilColor(p)
+        case .cookie?, .sugar?, .sap?: return soilColor(p)
         default: return ArtLibrary.Palette.tunnel
         }
     }
 
+    private func soilColor(_ p: GridPoint) -> UIColor {
+        let shade = CGFloat((p.x * 7 + p.y * 3) % 3) * 0.035
+        return ArtLibrary.Palette.soil.adjustedBrightness(by: shade)
+    }
+
     private func roomNode(cells: Set<GridPoint>, color: UIColor, assetID: String) -> SKShapeNode {
-        let frame = MapGeometry.frame(of: cells).insetBy(dx: 3, dy: 3)
+        let cellsFrame = MapGeometry.frame(of: cells)
+        let frame = cellsFrame.insetBy(dx: 3, dy: 3)
         let node = SKShapeNode(rect: CGRect(x: -frame.width / 2, y: -frame.height / 2,
                                             width: frame.width, height: frame.height), cornerRadius: 10)
         node.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -176,10 +197,13 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         node.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.7)
         node.lineWidth = 2
         if let texture = ArtLibrary.texture(assetID) {
-            let sprite = SKSpriteNode(texture: texture, size: frame.size)
+            // A01-01：正式贴图自带土边与透明留白，按完整逻辑格绘制（Cookie 2×2 = 96pt，Sugar/Sap 1×1 = 48pt），
+            // 不再缩进 3pt；去掉占位填色与描边，避免双重边框。选中状态由独立的选中描边绘制。
+            let sprite = SKSpriteNode(texture: texture, size: cellsFrame.size)
             sprite.name = "art"
             node.addChild(sprite)
             node.fillColor = .clear
+            node.strokeColor = .clear
         } else if let label = ArtLibrary.placeholderLabel(assetID, in: frame.size) {
             node.addChild(label)
         }
