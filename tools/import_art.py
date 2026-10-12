@@ -8,7 +8,8 @@
 
 用法：
   python3 tools/import_art.py          # 生成/更新 ios/AntKingdom/Resources/Assets.xcassets
-  python3 tools/import_art.py --check  # 只检查：imageset 与交付文件逐字节一致、没有多余或缺失
+  python3 tools/import_art.py --check  # 只检查：imageset 与交付文件逐字节一致、没有多余或缺失；
+                                       # 交付文件与 Codex metadata.json 记录的 SHA-256 / 像素尺寸一致（A02-T01）
 """
 from __future__ import annotations
 
@@ -72,8 +73,35 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def check(plan: dict[str, Path]) -> list[str]:
+def metadata_problems(plan: dict[str, Path]) -> list[str]:
+    """交付文件与资源包 metadata.json 的记录一致（SHA-256、像素）。各批字段名不同：
+    A01 用 output / output_sha256，A02 起用 runtime / sha256。没有记录的文件列为问题，不静默跳过。"""
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    records: dict[Path, dict] = {}
+    for asset in manifest["assets"]:
+        if asset.get("status") not in DELIVERED or not asset.get("metadata"):
+            continue
+        meta = json.loads((ROOT / asset["metadata"]).read_text(encoding="utf-8"))
+        for entry in meta.get("assets", []):
+            path = entry.get("output") or entry.get("runtime")
+            if path:
+                records[(ROOT / path).resolve()] = entry
     problems: list[str] = []
+    for name, source in sorted(plan.items()):
+        entry = records.get(source.resolve())
+        if entry is None:
+            problems.append(f"{name}: no metadata record for {source.relative_to(ROOT)}")
+            continue
+        recorded = entry.get("output_sha256") or entry.get("sha256")
+        if recorded != sha(source):
+            problems.append(f"{name}: SHA-256 differs from metadata")
+        if list(png_size(source)) != list(entry.get("pixels", [])):
+            problems.append(f"{name}: {png_size(source)} px differs from metadata {entry.get('pixels')}")
+    return problems
+
+
+def check(plan: dict[str, Path]) -> list[str]:
+    problems: list[str] = metadata_problems(plan)
     if not plan:
         return problems if not CATALOG.exists() else [f"{CATALOG} exists but nothing is delivered"]
     if json.loads((CATALOG / "Contents.json").read_text(encoding="utf-8")) != ROOT_CONTENTS:
@@ -124,7 +152,7 @@ def main() -> int:
             print("FAIL:", line)
         if problems:
             return 1
-        print(f"OK: {len(plan)} delivered runtime PNGs match Assets.xcassets (@3x, byte-identical)")
+        print(f"OK: {len(plan)} delivered runtime PNGs match Assets.xcassets (@3x, byte-identical; SHA-256 and pixels match metadata.json)")
         return 0
     write(plan)
     total = sum(p.stat().st_size for p in plan.values())
