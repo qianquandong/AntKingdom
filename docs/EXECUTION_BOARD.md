@@ -2,7 +2,7 @@
 
 更新：2026-10-12。Claude 开工先更新本表，不把任务列表当完成清单。
 
-**当前第一优先：按 [最新复核](reviews/2026-10-11-followup-review.md) 交付可安装核心真机包，并修发行支线 D-14 广告暂停漏洞。** D-13 原问题已有确定性修复与模拟器 20/20 证据，Issue #11 仍因签名/真机未完成保持开放。美术接入修 D-15 食物源方板并补两 scheme 与动态验收；A02 不阻塞核心包。
+**当前第一优先：按 [10-12交接](reviews/2026-10-12-art-device-handoff.md) 修 D-16 卵跳位、发行 A02 接入与剩余验收，交付带44张新美术的真机测试版。** D-13/D-14/D-15代码与CI已有修复证据；旧包 unsigned、占位美术、未安装。签名安装和设备验收分开回填，后续美术不拖延新美术首包。
 
 关联：[Issue #6 原修复清单](https://github.com/qianquandong/AntKingdom/issues/6)；[首次评审记录](reviews/2026-10-11-claude-review.md)；[A00 样张](../assets/source/keyframe/README.md)；[A01-01 环境资源首批](../assets/source/a01-01/README.md)。下方历史阶段队列不是当前完成度；Claude 应合并其分支已有报告的实际证据，逐项替换历史状态，不覆盖更完整的记录。
 
@@ -13,29 +13,30 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | D13_CODE_CI_PASSED / DEVICE_NOT_RUN / D14_OPEN | 复核核心 d5251f6：Swift 91/91、Python 31/31；D-13 20/20 模拟器。发行 ff92393 新增两条广告暂停失败用例；未签名安装、未合并 main |
-| Codex 正式美术资源 | A01_CORE_IMPORTED / A02_REVIEWED | A01 两批 27 PNG / 8 组已在 PR #14/#15 核心分支接入；D-15 与双轨/动态视觉待验。A02-01 新交付 17 PNG / 3 组，按 #17 接入；累计制作44张，未正式批准/真机终验 |
+| iOS 工程/客户端 | D13_D14_D15_CODE_CI_PASSED / D16_OPEN | D14独立Swift157/157；A02核心93/93、单元16、两机型UI18+1skip。固定SHA/run见10-12交接；未合并main、设备未验 |
+| Codex 正式美术资源 | A01_A02_CORE_IMPORTED / RELEASE_A02_PENDING | 三批44 PNG / 11组reviewed；PR #18核心已导入。发行尚缺A02，D-16卵跳位待修 |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
-| Apple 开发者账号与签名 | UNKNOWN | 用户在 C00 提供账号就绪状态，不提供密码到仓库 |
+| Apple 开发者账号与签名 | SIGNING_BLOCKED | 有Mac不等于已提供签名Team；旧包unsigned，用户本机完成账号授权，不提交凭据 |
 | TestFlight / App Store | NOT_STARTED | 不得把计划写成已经上传/上线 |
 
 ## 2. 当前任务与历史阶段队列
 
 | 优先级 | ID | 主责 | 当前状态 | 交付物 |
 |---|---|---|---|---|
-| P1，先执行 | D-13 交付 | Claude / 用户 | CODE_CI_PASSED / NOT_INSTALLED | 固定版本/build、构建产物与日志、签名安装、真机验收；未安装不能关单 |
-| P1，发行修复 | D-14 | Claude | REPRODUCED | 广告暂停与后台/恢复首帧的交互；两条复现测试、正式集成测试及固定 CI |
-| P2，美术修复 | D-15 | Claude | OPEN | 食物源透明边缘下铺正式土层，消除浅色矩形底板；补 A01 两 scheme 和动态证据 |
-| 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 固定 SHA 的签名核心包或 TestFlight build、安装证据；缺签名条件则 SIGNING_BLOCKED |
+| P1，交付 | D-13 设备 | Claude / 用户 | CODE_CI_PASSED / NOT_INSTALLED | 保留已通过修复；新美术候选重跑适用回归、签名安装与#11真机矩阵 |
+| P1，整合回归 | D-14 | Claude | CODE_CI_PASSED / SDK_DEVICE_NOT_RUN | b70ca58/209cf38及CI38212443075；保留修复，补真实SDK/设备证据 |
+| P2，整合回归 | D-15 | Claude | CODE_SIM_VISUAL_PASSED / DEVICE_NOT_RUN | 正式土层底图修复已复核；新候选保持无浅色方板 |
+| P1，先修 | D-16 | Claude | OPEN | 卵身份绑定固定槽位；先孵化不让另一枚左移18pt；E01–E06和录像 |
+| P1，新美术包 | ART_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 新SHA/tag/build>2，带44张美术；signed安装/TestFlight及至少一台设备证据 |
 | 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵、日志与实际收益/总结对照 |
 | 已交付 | A01-01 | Codex | REVIEWED | 9 张环境贴图，已在 PR #14 核心分支导入 |
-| 修复/验收 | A01-01 集成 | Claude / Codex | CORE_IMPORTED / REVIEW_PENDING | 修 D-15；补发行 target、采样和耗尽/补给证据 |
+| 修复/验收 | A01-01 集成 | Claude / Codex | IMPORTED / DEVICE_NOT_RUN | D-15与源循环已有模拟器证据；整合后双轨与设备复核 |
 | 已交付 | A01-02 | Codex | REVIEWED | 16 种通路 + Queen/Pantry，共18 PNG；已在 PR #15 核心分支导入 |
 | 修复/验收 | A01-02 集成 | Claude / Codex | CORE_IMPORTED / REVIEW_PENDING | [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)：双scheme、比例/层级/移动/缩放与真机验收 |
 | 本轮美术 | A02-01 | Codex | REVIEWED | 工蚁14帧、cargo、卵两态，共17 PNG；桌面尺寸/alpha/对齐及64次浏览器seek检查通过 |
-| 核心安装不等待 | A02-01 集成 | Claude / Codex | READY_FOR_INTERNAL_INTEGRATION | [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)：A02-T01…T06、两scheme、原速/慢放/设备证据 |
+| P1，修复/验收 | A02-01 集成 | Claude / Codex | CORE_IMPORTED / RELEASE_PENDING | #17：D-16/E01–E06、四向与改路、双scheme和设备；不可再写核心未导入 |
 | 后续美术 | 地表 / A02反馈 | Codex | PLANNED | 地表背景、裂纹碎屑/路线状态；UI/音效及发行资源另按计划 |
 
 以下为初始阶段队列，保留作依赖参考；执行时以开发分支报告和上述当前优先级为准。
@@ -115,4 +116,4 @@ Codex 回传资源时记录 ID、版本、尺寸、锚点、帧序、来源、�
 
 本轮接入补充：
 
-> Codex 新交付 A02-01 的17张角色资源，读取 assets/source/a02-01/README.md 并执行 Issue #17。完整导入idle2/walk6/carry6、独立cargo、卵两态，保持32pt/16pt/24pt、统一锚点、cargo局部+11pt及现有孵化规则。按A02-T01…T06回传循环/装卸/转向/0-2卵、两个scheme、小屏/标准屏和物理iPhone证据；缺少设备标NOT_RUN。A01两批27张已在核心分支导入，继续补#13剩余验收。累计制作44张/11组，其余资源与发行验收仍未完成。
+本轮执行以 [10-12新美术真机包交接](reviews/2026-10-12-art-device-handoff.md) 为准：A02核心已导入，修D-16、补发行和设备验收；带新美术包需新tag/build与安装证据。缺设备/真实SDK的项目逐项NOT_RUN。

@@ -4,17 +4,15 @@
 
 沟通、技术文档、提交说明使用中文。所有玩家可见文案、商品文案和商店宣传文案使用英文。main 保存 PRD、地图、Python 基准和制作资料，iOS 实现在 Claude 分支；按 SHA 与实际证据判断进度，不宣称未验收的客户端、美术或真机测试已完成。
 
-## 本轮最高执行优先级（2026-10-11）
+## 本轮最高执行优先级（2026-10-12）
 
-**更新：先读 [最新复核与验收](docs/reviews/2026-10-11-followup-review.md)。** D-13 原问题代码/模拟器回归已有通过证据，下一步交付实际可安装的核心真机包；发行广告支线另有 D-14 两条确定性失败用例，必须修复主动广告暂停与后台/恢复首帧的交互。A01 接入还需修 D-15 食物源方形底板、补两 scheme 与动态视觉证据。核心安装交付不等待 A02；不要重复把根因写成未知，也不要把编译当安装。`docs/reviews/repro/` 是复现交接材料，Claude 应接入对应发行分支的正式测试。
+先读 [新美术真机包修复交接](docs/reviews/2026-10-12-art-device-handoff.md)。D-13、D-14、D-15 已有代码/CI修复证据，不重复列为根因未知。**现在优先修 D-16 卵槽位跳动、把 A02-01 同步到发行 CrumbKingdom，并交付带 A01/A02 共44张新美术的实际可安装真机包。** 这更新此前“占位包先交”的顺序；后续美术不拖延首次新美术包交付。
 
-先完成 **[D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)** 的签名安装与真机交付，保留已通过的代码和模拟器证据，按 [Issue #16](https://github.com/qianquandong/AntKingdom/issues/16) 补交构建产物、固定版本/build 与设备记录。保持代码修复、签名安装、真机验收三段状态；不能以 CI 重跑成功关单，签名条件缺失写 SIGNING_BLOCKED，不假称已交付。
+1. [Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)：卵从创建到孵化保留固定槽位；补 E01–E06、四向转弯/装卸/改路、两 scheme、小屏及动态验收。A02 已在 PR #18 核心分支导入，不再写“未接入”；发行仍缺 A02。
+2. [Issue #16](https://github.com/qianquandong/AntKingdom/issues/16)：保留 D-14/D-15 修复，整合后重跑适用回归，真实 SDK / 设备项独立记录。
+3. [Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)：交付新固定 SHA/tag、递增 build、签名安装或可访问 TestFlight 入口、至少一台物理 iPhone 新美术证据。旧 0.1.0(2) 是 unsigned 占位包，不是可安装/TestFlight交付。签名条件缺失准确标 SIGNING_BLOCKED，并交齐已验证工程与 Mac 步骤。
 
-暂停新增玩法/商业化扩展，保留既有分支；不要重复已经有证据的 M0–M2 工作。Codex 的 [A01-01 资源包](assets/source/a01-01/README.md) 已供内部集成，D-13 测试包可先用占位资源；正式资源导入另做可追溯提交，发行门槛不放宽。
-
-**[A01-02 通路与房间](assets/source/a01-02/README.md)** 的 18 张 PNG 已在 PR #15 核心分支接入；按 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13) 和最新复核补 D-15、两个 scheme 与动态视觉/设备验收，不能重复写“尚未导入”。
-
-本轮新增 **[A02-01 工蚁、货物与卵](assets/source/a02-01/README.md)**：17 张 PNG（idle2 / walk6 / carry6 / cargo1 / egg2），按 **[Issue #17](https://github.com/qianquandong/AntKingdom/issues/17)** 独立接入。已核对 d5251f6 的命名、32pt 身体、16pt cargo 与 +11pt 偏移、24pt 卵、4/10/10fps、最后2秒 ready 阈值。原稿、对齐参数、64次浏览器 seek 检查和 A02-T01…T06 验收随包交付。制作累计 44 张 / 11 组；A02 尚未进入客户端，地表/反馈/UI/音效/发行外观仍缺失。核心安装包不等待这批美术。
+Codex 已交 [A01-01](assets/source/a01-01/README.md)、[A01-02](assets/source/a01-02/README.md)、[A02-01](assets/source/a02-01/README.md) 三批44张 / 11组，状态 reviewed，设备终验未完成。Codex 继续补地表背景和挖掘反馈，Claude 继续代码与构建；不扩大玩法或商业化范围。下方初始 M0–M3 流程仅供依赖参考，不要重做已有证据的任务。
 
 ## 开始阅读
 
