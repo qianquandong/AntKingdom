@@ -234,7 +234,9 @@ jobs:
           exit $status
 
       - name: UI 测试（小屏 iPhone SE，最旧已安装 iOS 运行时）
-        timeout-minutes: 20
+        # A01 美术截图/平移录像加入后，这一步常规耗时 15–17 分钟（run 38205368547 / 38206627796 / 38206625111），
+        # m5-ads run 38206933405 在 runner 繁忙时超过原 20 分钟上限被终止；放宽上限，不跳过任何用例
+        timeout-minutes: 35
         run: |
           small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
           echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
