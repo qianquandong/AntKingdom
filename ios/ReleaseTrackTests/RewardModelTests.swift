@@ -48,6 +48,8 @@ final class RewardModelTests: XCTestCase {
             XCTAssertEqual(model.status, .ready, "free play continues: \(mode)")
             XCTAssertFalse(model.justEarned, "\(mode)")
             XCTAssertEqual(model.messageKey, mode == .close ? nil : "reward.unavailable", "\(mode)")
+            // D-14：展示过的广告（提前关闭、展示失败）暂停与恢复各一次；无填充不展示、不暂停
+            XCTAssertEqual(h.suspensions, mode == .nofill ? [] : [true, false], "\(mode)")
         }
     }
 

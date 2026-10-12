@@ -40,7 +40,7 @@ markers=("-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.p
 if [ "$track" = "--release-track" ]; then
   markers+=("-ak-fixture-chapters" "Test Map (Debug)" "debug_fixture" "-ak-store" "FakeStoreService"
             "-ak-fail-writes" "XCTestConfigurationFilePath"
-            "-ak-ads" "-ak-reward-ready" "FakeRewardedAdService" "debugUnlockRewardsForTesting")
+            "-ak-ads" "-ak-reward-ready" "FakeRewardedAdService" "debugUnlockRewardsForTesting" "fake.ad")
 fi
 for marker in "${markers[@]}"; do
   if has_string "$marker"; then

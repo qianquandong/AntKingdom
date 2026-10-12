@@ -15,6 +15,7 @@
 		1C287016F3C11F3953253E82 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
 		1D03F6BF412690F1952361D2 /* CampaignViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514527D290688985650AF25 /* CampaignViews.swift */; };
 		1D4ADA72153D3BE4DAA6E59E /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
+		20911F366080CE58E560B711 /* AdPauseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */; };
 		2A43E88BEE487773D498897B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
 		2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
 		2A90342127FA23F44F77D4D1 /* CampaignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD98DCC0444745681BA853EA /* CampaignModel.swift */; };
@@ -195,6 +196,7 @@
 		B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleUITests.swift; sourceTree = "<group>"; };
 		B2771D18CFD038A6E6BB01EC /* ShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopModel.swift; sourceTree = "<group>"; };
 		B33DCDC579343B1633AD3D94 /* FakeRewardedAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRewardedAdService.swift; sourceTree = "<group>"; };
+		B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdPauseIntegrationTests.swift; sourceTree = "<group>"; };
 		B8D22135A456EE1FB87CC7DA /* AssetNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNames.swift; sourceTree = "<group>"; };
 		B9DD89CAE54804CF68A354EB /* CrumbKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrumbKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignBundleTests.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 		3CCA3430ADA017DD6593291C /* ReleaseTrackTests */ = {
 			isa = PBXGroup;
 			children = (
+				B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */,
 				BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */,
 				5DD00D2B9D279A7D94471484 /* RewardModelTests.swift */,
 				98FC325F566B2AB6F6DD1875 /* StoreTests.swift */,
@@ -733,6 +736,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20911F366080CE58E560B711 /* AdPauseIntegrationTests.swift in Sources */,
 				3E77316496E495DF03769462 /* CampaignBundleTests.swift in Sources */,
 				9796058698F4F95741B50718 /* RewardModelTests.swift in Sources */,
 				FF47CA59B268E142703DA4C4 /* StoreTests.swift in Sources */,

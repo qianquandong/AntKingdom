@@ -80,6 +80,7 @@ final class GameController: ObservableObject {
     /// 正式版：设置里的 Privacy Choices（UMP 要求时显示）。核心版为 nil。
     var privacyChoices: (() -> Void)?
     /// 全屏广告展示期间暂停前台步进（RELEASE_SCOPE 第 3 章）；场景仍刷新，不累积补算时间。
+    /// 发行轨同时让生命周期进入有意暂停（CampaignCoordinator.beginAdPause，D-14），收益以生命周期为准。
     var isSuspended = false
     /// 核心版用提示条宣布“原型完成”；正式版改由章节完成页宣布（RELEASE_SCOPE 第 6 节）。
     var announcesPrototypeComplete = true
@@ -132,7 +133,8 @@ final class GameController: ObservableObject {
         case .run:
             break
         }
-        // 全屏广告展示期间不推进（RELEASE_SCOPE 第 3 章）；准入照常调用，生命周期的前台帧时钟保持更新
+        // 全屏广告展示期间不推进（RELEASE_SCOPE 第 3 章）。收益与离线由生命周期的有意暂停判定（D-14：
+        // 暂停中准入返回 .hold），这里只是表现层的第二道保险
         guard !isSuspended else { return }
         session.tick(frameDelta: delta)
         advanceHold()
@@ -153,7 +155,7 @@ final class GameController: ObservableObject {
     func refreshDebugLifecycle() {
         guard let trace = lifecycleTrace, trace.sequence != traceSeen else { return }
         traceSeen = trace.sequence
-        debugLifecycle = trace.tail(24)
+        debugLifecycle = trace.tail(40)
     }
     #endif
 

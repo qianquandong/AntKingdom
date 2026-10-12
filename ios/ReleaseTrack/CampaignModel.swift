@@ -46,7 +46,14 @@ final class CampaignModel: ObservableObject {
     private let appVersion: String
     private let arguments: [String]
 
-    init(arguments: [String] = ProcessInfo.processInfo.arguments) {
+    /// `store` / `wallClock` / `adService` / `storeService` / `observesSystemLifecycle` 只供单元测试注入
+    /// （D-14 集成时序测试：可控墙钟与脚本化广告）；App 使用默认值。
+    init(arguments: [String] = ProcessInfo.processInfo.arguments,
+         store injectedStore: SaveStore? = nil,
+         wallClock: WallClock = SystemWallClock(),
+         adService injectedAdService: RewardedAdService? = nil,
+         storeService injectedStoreService: StoreService? = nil,
+         observesSystemLifecycle: Bool = true) {
         self.arguments = arguments
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
         let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
@@ -83,8 +90,11 @@ final class CampaignModel: ObservableObject {
             adService = UnavailableAdService()
         }
         #endif
+        if let injectedStore { store = injectedStore }
+        if let injectedAdService { adService = injectedAdService }
+        if let injectedStoreService { storeService = injectedStoreService }
         self.store = store
-        self.wallClock = SystemWallClock()
+        self.wallClock = wallClock
         self.catalog = try? CampaignModel.loadCatalog(fixture: fixture)
         shop = ShopModel(
             service: storeService, bundleId: bundleId,
@@ -109,16 +119,16 @@ final class CampaignModel: ObservableObject {
         rewards.retrySaveHandler = { [weak self] in self?.campaign?.retryRewardSave() ?? .savePending }
         rewards.pendingProvider = { [weak self] in self?.campaign?.hasUnsavedReward ?? false }
         rewards.suspend = { [weak self] suspended in
-            guard let self, case .running(let controller) = self.phase else { return }
+            guard let self else { return }
+            // D-14：广告暂停由生命周期负责——展示期间帧不推进、不结算，按 Home/锁屏时广告时长不算离线；
+            // 完成、提前关闭、展示失败都只调用一次结束，重复调用幂等
+            if suspended { self.campaign?.beginAdPause() } else { self.campaign?.endAdPause() }
+            guard case .running(let controller) = self.phase else { return }
             controller.isSuspended = suspended
-            if !suspended {
-                // 广告结束：展示时长不算前台、也不算离线（D-13 帧停顿检测从现在重新计）
-                self.campaign?.lifecycle.restartFrameClock()
-                controller.onResume?()
-            }
+            if !suspended { controller.onResume?() }   // 场景丢弃广告期间的帧间隔
         }
         launch()
-        observeApplicationLifecycle()
+        if observesSystemLifecycle { observeApplicationLifecycle() }
         #if DEBUG
         if options.failWrites, let memory = store as? MemorySaveStore {
             memory.failWrites = true   // 启动之后的写入全部失败（UI 测试写盘失败提示）

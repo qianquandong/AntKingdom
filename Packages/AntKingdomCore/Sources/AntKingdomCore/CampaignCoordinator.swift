@@ -189,6 +189,7 @@ public final class CampaignCoordinator {
         next.session.apply(.setHaptics(settings.haptics))
         _ = next.session.drainEvents()
         next.session.boostRemaining = progress.rewards.boostRemaining   // boost 作用于当前活动章节
+        if lifecycle.isPaused { next.beginIntentionalPause() }           // 暂停属于玩家这次观看，不随章节丢失
         lifecycle = next
         activeChapter = chapter
         progress.activeChapterId = id
@@ -241,6 +242,21 @@ public final class CampaignCoordinator {
         syncRewards()
         return saveProgress() ? .granted : .savePending
     }
+
+    /// 全屏奖励广告开始展示（D-14）：先把此前的有效前台秒记入账本，再让当前章节进入有意暂停——
+    /// 广告期间不推进 Food/源/卵/boost/有效前台秒，不做离线或帧停顿结算；此时切后台，广告时长不算离线。
+    /// 与 `endAdPause()` 成对调用；重复调用幂等。
+    public func beginAdPause() {
+        syncRewards()
+        lifecycle.beginIntentionalPause()
+    }
+
+    /// 广告关闭（完成、提前关闭、展示失败）：结束暂停，下一帧重新计帧。重复或无对应开始时忽略。
+    public func endAdPause() {
+        lifecycle.endIntentionalPause()
+    }
+
+    public var isAdPaused: Bool { lifecycle.isPaused }
 
     #if DEBUG
     /// 仅 Debug（UI 测试）：把累计有效前台直接记为解锁所需的 600 秒，不必真实等待。
@@ -304,6 +320,7 @@ public final class CampaignCoordinator {
             fresh.session.apply(.setHaptics(settings.haptics))
             _ = fresh.session.drainEvents()
             fresh.session.boostRemaining = rewards.boostRemaining
+            if lifecycle.isPaused { fresh.beginIntentionalPause() }
             lifecycle = fresh
             lifecycle.save()
         }

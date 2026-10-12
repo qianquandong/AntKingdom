@@ -31,7 +31,7 @@ public enum LaunchResult {
 public enum ForegroundFrame: Equatable, Sendable {
     /// 正常推进本帧
     case run
-    /// 后台区间尚未结算（例如恢复首帧早于 `.active` 到达）：本帧不推进、不保存
+    /// 后台区间尚未结算（例如恢复首帧早于 `.active` 到达），或处于有意暂停（全屏广告，D-14）：本帧不推进、不保存
     case hold
     /// 两帧之间停顿超过阈值却没有记录后台（`.background` 迟到或缺失）：已把停顿区间按离线结算；
     /// 本帧丢弃帧间隔，不再推进
@@ -46,6 +46,8 @@ public enum ForegroundFrame: Equatable, Sendable {
 /// - 高水位是见过的最大墙钟，因此系统时间回拨不产生负时间，回拨后再拨回也不会重复领取。
 /// - 实际离开时刻取本次前台最后一帧的墙钟：`.background` 回调迟到时，迟到的那段不算成在线。
 /// - 同一离开区间恰好结算一次：重复的后台/前台通知直接忽略；帧停顿检测与后台记录互斥。
+/// - 有意暂停（全屏奖励广告，D-14）是第三种状态：既不是前台推进，也不是离线。暂停期间帧一律不推进、
+///   不结算；此时切后台，离开时刻取后台回调时刻（广告前的最后一帧会把广告时长算成离线）。
 /// - 唯一负责人：开始离线（`enterBackground` 或帧停顿）、结算（`becomeActive` 或帧停顿）、恢复在线、保存都在本类。
 public final class LifecycleCoordinator {
     /// 两帧墙钟间隔超过此值、且没有记录后台时，视为 App 没在运行（被挂起而 `.background` 未送达或迟到），
@@ -63,9 +65,13 @@ public final class LifecycleCoordinator {
     public private(set) var awayReference: Double?
     /// 本次在前台最后一帧的墙钟（启动后、回到前台后第一帧之前为 nil）
     public private(set) var lastFrameWall: Double?
+    /// 有意暂停（全屏奖励广告）开始时的墙钟；未暂停为 nil（D-14）
+    public private(set) var pausedSince: Double?
+    public var isPaused: Bool { pausedSince != nil }
     /// 仅调试：结构化生命周期日志（Release 不创建）
     public var trace: LifecycleTrace?
     private var heldFrames = 0
+    private var pausedFrames = 0
 
     init(session: GameSession, repository: SaveRepository, wallClock: WallClock, wallHighWater: Double,
          monotonic: MonotonicClock = SystemMonotonicClock(), trace: LifecycleTrace? = nil) {
@@ -110,19 +116,21 @@ public final class LifecycleCoordinator {
 
     /// 进入后台：冻结离开基准并立即保存（多次通知只处理第一次）。
     /// 离开时刻取最后一个前台帧（回调迟到时更早）；还没有帧记录时取回调时刻。
+    /// 有意暂停中（广告展示时按 Home/锁屏）取回调时刻：广告遮住 SpriteKit 时最后一帧可能早在广告开始之前，
+    /// 用它会把广告展示时长算成离线（D-14）。回调迟到的那一小段不算离线，宁少不多。
     public func enterBackground() {
         let now = wallClock.now()
         guard !isInBackground else {
             log("background", "duplicate ignored")
             return
         }
-        let departure = lastFrameWall.map { min($0, now) } ?? now
+        let departure = isPaused ? now : (lastFrameWall.map { min($0, now) } ?? now)
         let reference = departure.isFinite ? max(wallHighWater, departure) : wallHighWater
         isInBackground = true
         awayReference = reference
         wallHighWater = max(wallHighWater, reference)   // 离开时刻也是见过的墙钟：回拨后再拨回不能重复领取
         heldFrames = 0
-        log("background", "departure=\(traceNumber(departure)) callback=\(traceNumber(now))")
+        log("background", "departure=\(traceNumber(departure)) callback=\(traceNumber(now))\(isPaused ? " paused" : "")")
         save(reason: "background")
     }
 
@@ -139,18 +147,25 @@ public final class LifecycleCoordinator {
         awayReference = nil
         lastFrameWall = nil
         heldFrames = 0
+        if isPaused { log("active", "still paused: frames held until the pause ends") }
         save(reason: "active")
         return summary
     }
 
     /// 每个前台帧推进之前调用（D-13）：
     /// - 离开区间未结算（后台已记录、`becomeActive` 尚未处理）→ `.hold`，本帧不推进、不保存；
+    /// - 有意暂停中（广告仍在展示，包括回到前台而广告未关）→ `.hold`，不推进、不保存、不做帧停顿结算；
     /// - 距上一帧的墙钟间隔超过 `frameGapThreshold` 且没有后台记录 → 把这段按离线结算一次 → `.resumed`；
     /// - 否则 `.run`。
     public func admitForegroundFrame() -> ForegroundFrame {
         if isInBackground {
             heldFrames += 1
             if heldFrames == 1 { log("frame", "held: interval not settled yet") }
+            return .hold
+        }
+        if isPaused {
+            pausedFrames += 1
+            if pausedFrames == 1 { log("frame", "held: intentional pause") }
             return .hold
         }
         let now = wallClock.now()
@@ -167,11 +182,35 @@ public final class LifecycleCoordinator {
         return .resumed(summary)
     }
 
-    /// 有意的暂停（全屏奖励广告）结束：重新开始计帧间隔。广告展示时 SpriteKit 可能不出帧，
-    /// 这段时间既不推进前台、也不能被帧停顿检测当成离线（RELEASE_SCOPE 第 3 章：展示期间暂停）。
-    public func restartFrameClock() {
+    /// 有意暂停开始（全屏奖励广告展示，RELEASE_SCOPE 第 3 章“展示期间暂停”，D-14）。暂停期间：
+    /// - 前台帧一律 `.hold`：不推进、不保存、不做帧停顿结算；广告期间 SpriteKit 有帧或没帧，结果一致；
+    /// - 切后台时离开时刻取回调时刻，广告展示时长既不算前台、也不算离线；
+    /// - 回到前台只结算真正的后台区间；广告仍未关闭则保持暂停，直到 `endIntentionalPause()`。
+    /// 与结束成对使用；重复开始只记第一次。
+    public func beginIntentionalPause() {
+        guard pausedSince == nil else {
+            log("pause", "duplicate begin ignored")
+            return
+        }
+        let now = wallClock.now()
+        pausedSince = now.isFinite ? now : wallHighWater
+        pausedFrames = 0
+        log("pause", "begin")
+    }
+
+    /// 有意暂停结束（广告完成、提前关闭或展示失败都调用一次）。重复或没有对应开始的调用直接忽略。
+    /// 结束后重新计帧：下一帧只作为基准，暂停期间的时间不补算（帧停顿检测从这一帧起照常工作）。
+    /// 在后台结束（广告在后台被关闭）时只解除暂停，后台区间仍由 `becomeActive` 结算一次。
+    public func endIntentionalPause() {
+        guard let since = pausedSince else {
+            log("pause", "end without begin ignored")
+            return
+        }
+        let now = wallClock.now()
+        pausedSince = nil
         lastFrameWall = nil
-        log("frame", "clock restarted after an intentional pause")
+        log("pause", "end after=\(traceNumber(now.isFinite ? max(0, now - since) : 0)) held=\(pausedFrames)")
+        pausedFrames = 0
     }
 
     /// 关键操作后与定时自动保存。失败不抛给玩家，记录后由 UI 提示 error.save。
