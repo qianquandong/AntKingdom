@@ -109,7 +109,13 @@ final class CampaignModel: ObservableObject {
         rewards.retrySaveHandler = { [weak self] in self?.campaign?.retryRewardSave() ?? .savePending }
         rewards.pendingProvider = { [weak self] in self?.campaign?.hasUnsavedReward ?? false }
         rewards.suspend = { [weak self] suspended in
-            if case .running(let controller)? = self?.phase { controller.isSuspended = suspended }
+            guard let self, case .running(let controller) = self.phase else { return }
+            controller.isSuspended = suspended
+            if !suspended {
+                // 广告结束：展示时长不算前台、也不算离线（D-13 帧停顿检测从现在重新计）
+                self.campaign?.lifecycle.restartFrameClock()
+                controller.onResume?()
+            }
         }
         launch()
         observeApplicationLifecycle()

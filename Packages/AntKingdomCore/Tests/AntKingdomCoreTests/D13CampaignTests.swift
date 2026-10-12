@@ -67,4 +67,18 @@ final class D13CampaignTests: XCTestCase {
         guard case .resumed(let summary?) = c.admitForegroundFrame() else { return XCTFail("gap") }
         XCTAssertEqual(summary.simulatedSeconds, 65, "only the active chapter is settled")
     }
+
+    /// 全屏奖励广告展示约 30 秒、期间没有帧：广告结束后重新计帧，不把展示时长算成离线收益或前台推进。
+    func testAdPauseIsNeitherForegroundNorOffline() throws {
+        let wall = FakeWall(50_000)
+        let c = try campaign(wall)
+        XCTAssertEqual(c.admitForegroundFrame(), .run)
+        let before = c.session.makeState()
+        wall.time += 30                       // 广告展示，SpriteKit 不出帧
+        c.lifecycle.restartFrameClock()       // 广告关闭
+        XCTAssertEqual(c.admitForegroundFrame(), .run, "no gap settlement for the ad")
+        XCTAssertEqual(c.session.makeState(), before)
+        wall.time += 0.25
+        XCTAssertEqual(c.admitForegroundFrame(), .run)
+    }
 }

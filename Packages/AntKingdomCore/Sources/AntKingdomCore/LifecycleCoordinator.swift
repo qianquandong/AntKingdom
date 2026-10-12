@@ -167,6 +167,13 @@ public final class LifecycleCoordinator {
         return .resumed(summary)
     }
 
+    /// 有意的暂停（全屏奖励广告）结束：重新开始计帧间隔。广告展示时 SpriteKit 可能不出帧，
+    /// 这段时间既不推进前台、也不能被帧停顿检测当成离线（RELEASE_SCOPE 第 3 章：展示期间暂停）。
+    public func restartFrameClock() {
+        lastFrameWall = nil
+        log("frame", "clock restarted after an intentional pause")
+    }
+
     /// 关键操作后与定时自动保存。失败不抛给玩家，记录后由 UI 提示 error.save。
     /// 离开区间未结算时，存档时间记为离开基准：保存不能吃掉尚未结算的离线时间（冷启动也从离开时刻起算）。
     @discardableResult
