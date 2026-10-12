@@ -433,8 +433,9 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         let frame = MapGeometry.frame(of: queen)
         for index in 0..<count {
             let egg: SKNode
-            if let texture = ArtLibrary.texture(AssetNames.egg(ready: false)) {
-                egg = SKSpriteNode(texture: texture, size: CGSize(width: 24, height: 24))
+            if let textures = ArtLibrary.eggTextures() {
+                // catalog @3x 的 96 px 默认是 32 pt；卵显式按 24 pt 显示（A02-01 显示契约）
+                egg = SKSpriteNode(texture: textures.normal, size: CGSize(width: 24, height: 24))
             } else {
                 let shape = SKShapeNode(ellipseOf: CGSize(width: 12, height: 16))
                 shape.fillColor = UIColor(hex: 0xFFF8EC)
@@ -448,14 +449,16 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
     }
 
-    /// 卵的“将孵化”态（只在有正式资源时切图；阈值为表现层暂定值，待 Codex 确认）。
-    private static let eggReadySeconds = 2.0
+    /// 卵的“将孵化”态：剩余孵化时间 ≤ 2 秒（A02-01 确认的表现阈值）。只换纹理，位置与 24 pt 大小不变；
+    /// 不影响孵化规则（暂停孵化订单只停新订单，已有卵照常倒计时并切换）。
+    static let eggReadySeconds = 2.0
 
     private func updateEggStates(_ remaining: [Double]) {
-        guard let ready = ArtLibrary.texture(AssetNames.egg(ready: true)),
-              let normal = ArtLibrary.texture(AssetNames.egg(ready: false)) else { return }
+        guard let textures = ArtLibrary.eggTextures() else { return }
         for (node, seconds) in zip(eggNodes, remaining) {
-            (node as? SKSpriteNode)?.texture = seconds <= GameScene.eggReadySeconds ? ready : normal
+            guard let sprite = node as? SKSpriteNode else { continue }
+            let texture = seconds <= GameScene.eggReadySeconds ? textures.ready : textures.normal
+            if sprite.texture !== texture { sprite.texture = texture }
         }
     }
 

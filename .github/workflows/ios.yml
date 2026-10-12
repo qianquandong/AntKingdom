@@ -200,6 +200,22 @@ jobs:
           ls -la build/videos
           exit $status
 
+      - name: 录制 A02 动作检查（工蚁循环与装卸、卵两态与孵化）
+        timeout-minutes: 15
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          # eggs_two：两枚卵、孵化订单关闭——已有卵照常倒计时，最后 2 秒切 ready，到点孵化，不新增卵
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-eggs_two.mov" 32 -ak-scenario eggs_two
+          xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A02-ant-motion.mov &
+          rec=$!
+          sleep 2
+          status=0
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData -only-testing:AntKingdomUITests/AntMotionUITests CODE_SIGNING_ALLOWED=NO test-without-building || status=$?
+          kill -INT "$rec" || true
+          wait "$rec" || true
+          ls -la build/videos
+          exit $status
+
       - name: 录制 A01 动态检查（食物源有货→耗尽→补给；慢速平移与缩放）
         timeout-minutes: 15
         run: |

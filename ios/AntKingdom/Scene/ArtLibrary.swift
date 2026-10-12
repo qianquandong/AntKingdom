@@ -31,6 +31,32 @@ enum ArtLibrary {
         return texture
     }
 
+    @MainActor private static var antFramesLoaded = false
+    @MainActor private static var antFrameCache: [AssetNames.AntPose: [SKTexture]]?
+
+    /// A02-01 工蚁身体：idle 2 / walk 6 / carry 6 共 14 帧必须整组可加载才用正式身体；
+    /// 只有部分帧（例如找到 walk_1 而缺 carry_6）时整组回退占位，不混用、不以单帧存在判断动画完整。
+    @MainActor static func antFrames() -> [AssetNames.AntPose: [SKTexture]]? {
+        if antFramesLoaded { return antFrameCache }
+        antFramesLoaded = true
+        var frames: [AssetNames.AntPose: [SKTexture]] = [:]
+        for pose in AssetNames.AntPose.allCases {
+            let textures = (1...pose.frameCount).compactMap { texture(AssetNames.ant(pose, frame: $0)) }
+            guard textures.count == pose.frameCount else { return nil }
+            frames[pose] = textures
+        }
+        antFrameCache = frames
+        return frames
+    }
+
+    /// A02-01 卵两态：普通与将孵化必须都在才用正式图，否则整组用占位
+    @MainActor static func eggTextures() -> (normal: SKTexture, ready: SKTexture)? {
+        guard let normal = texture(AssetNames.egg(ready: false)), let ready = texture(AssetNames.egg(ready: true)) else {
+            return nil
+        }
+        return (normal, ready)
+    }
+
     /// 是否显示占位资源 ID（仅 Debug）
     static var labelsPlaceholders: Bool {
         #if DEBUG
