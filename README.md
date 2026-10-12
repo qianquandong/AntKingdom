@@ -25,7 +25,7 @@
 | [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |
 | [App Store 手册](docs/APP_STORE_RUNBOOK.md) | 签名、TestFlight、隐私/IAP、商店资料、提审与上线后处理 |
 
-Claude 下一项优先执行 [D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)：先定位并修复离线收益漏算，完成规定回归，交付可安装的核心 iPhone 测试包。要求见 [本轮交接](docs/reviews/2026-10-11-d13-handoff.md)，此前评审保留在 [Issue #6 交接](docs/reviews/2026-10-11-claude-review.md)。Codex 两批累计交付 27 张环境/房间贴图，8 个资源组 reviewed；Claude 按 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13) 独立接入。地表、角色、UI/音频等其余资源以及运行时/真机验收尚未完成。
+Claude 下一项按 [最新复核与验收](docs/reviews/2026-10-11-followup-review.md) 执行：D-13 原问题代码/模拟器测试通过，继续 Issue #11 的签名安装与真机包交付；发行支线优先修 D-14 广告暂停收益漏洞（含两条复现测试），美术修 D-15 食物源方板并补两 scheme 验收。A01 两批 27 张已在核心分支接入，正式批准和真机验收仍未完成。A02 制作不阻塞核心安装包。
 
 ## 核心规则资料
 

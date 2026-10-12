@@ -2,7 +2,7 @@
 
 更新：2026-10-11。Claude 开工先更新本表，不把任务列表当完成清单。
 
-**当前第一优先：Claude 修复 [D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)，完成回归后交付可安装核心真机包。** [本轮修复要求](reviews/2026-10-11-d13-handoff.md)列出复现、20 轮模拟器/10 轮真机往返及签名交付标准。未确认根因时不能以重跑通过关单。
+**当前第一优先：按 [最新复核](reviews/2026-10-11-followup-review.md) 交付可安装核心真机包，并修发行支线 D-14 广告暂停漏洞。** D-13 原问题已有确定性修复与模拟器 20/20 证据，Issue #11 仍因签名/真机未完成保持开放。美术接入修 D-15 食物源方板并补两 scheme 与动态验收；A02 不阻塞核心包。
 
 关联：[Issue #6 原修复清单](https://github.com/qianquandong/AntKingdom/issues/6)；[首次评审记录](reviews/2026-10-11-claude-review.md)；[A00 样张](../assets/source/keyframe/README.md)；[A01-01 环境资源首批](../assets/source/a01-01/README.md)。下方历史阶段队列不是当前完成度；Claude 应合并其分支已有报告的实际证据，逐项替换历史状态，不覆盖更完整的记录。
 
@@ -13,8 +13,8 @@
 | 核心 PRD/数值基准 | DONE | 基线提交 eae0215，30 项 Python 回归及 GitHub CI 通过 |
 | 全流程计划/交接 | READY | 本组文档已形成；供 Claude 执行 |
 | Mac 可用 | CONFIRMED | 用户确认有 Mac，可安装 Xcode；具体版本待 C00 记录 |
-| iOS 工程/客户端 | IMPLEMENTED_IN_BRANCHES / D13_OPEN | 已复核 14845d2 的修复与 CI 38175736095；最新复核分支 86a7654 含补充报告。R01–R04 已有代码/CI 修复证据，D-13 根因未确认；未合入 main、真机未验收 |
-| Codex 正式美术资源 | A01_01_02_REVIEWED / NOT_INTEGRATED | 两批累计 27 PNG / 8 资源组，含 16 种通路、Queen/Pantry；[A01-02](../assets/source/a01-02/README.md) 已做方向/配对/透明与布局检视。地表、角色、UI/音频等仍 planned，A00 仍 draft |
+| iOS 工程/客户端 | D13_CODE_CI_PASSED / DEVICE_NOT_RUN / D14_OPEN | 复核核心 d5251f6：Swift 91/91、Python 31/31；D-13 20/20 模拟器。发行 ff92393 新增两条广告暂停失败用例；未签名安装、未合并 main |
+| Codex 正式美术资源 | A01_CORE_IMPORTED / FINAL_REVIEW_PENDING | 两批 27 PNG / 8 组已在 PR #14/#15 核心分支接入；D-15 方板与双轨/动态视觉验收待补，未正式批准；A02-01 制作中 |
 | 核心真机/用户试玩 | NOT_RUN | M2 构建后按测试矩阵执行 |
 | 正式版内容 | PLANNED | 三小地图；A04 两张新增图尚待交付 |
 | 商业化方向 | CONFIRMED | 免费 + 内购/可选奖励广告；具体首版产品见增量规格 |
@@ -25,7 +25,9 @@
 
 | 优先级 | ID | 主责 | 当前状态 | 交付物 |
 |---|---|---|---|---|
-| P1，先执行 | D-13 | Claude | OPEN | 根因、稳定复现、修复、规定回归、更新 M2 与 CI 证据 |
+| P1，先执行 | D-13 交付 | Claude / 用户 | CODE_CI_PASSED / NOT_INSTALLED | 固定版本/build、构建产物与日志、签名安装、真机验收；未安装不能关单 |
+| P1，发行修复 | D-14 | Claude | REPRODUCED | 广告暂停与后台/恢复首帧的交互；两条复现测试、正式集成测试及固定 CI |
+| P2，美术修复 | D-15 | Claude | OPEN | 食物源透明边缘下铺正式土层，消除浅色矩形底板；补 A01 两 scheme 和动态证据 |
 | 紧随修复 | CORE_DEVICE_BUILD | Claude / 用户 | NOT_DELIVERED | 固定 SHA 的签名核心包或 TestFlight build、安装证据；缺签名条件则 SIGNING_BLOCKED |
 | 包安装后 | DEVICE_ACCEPTANCE | 用户 / Claude | NOT_RUN | Issue #11 真机矩阵、日志与实际收益/总结对照 |
 | 并行 | A01-01 | Codex | REVIEWED | 9 张环境贴图，详见交付包；尚未导入客户端 |

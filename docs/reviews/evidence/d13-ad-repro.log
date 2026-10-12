@@ -1,0 +1,88 @@
+warning: 'src': found 1 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /src/Tests/AntKingdomCoreTests/Fixtures/save_v1_sample.json
+Building for debugging...
+[0/17] Write sources
+[3/17] Write swift-version-24593BA9C3E375BF.txt
+[5/40] Compiling AntKingdomCore Cosmetics.swift
+[6/40] Compiling AntKingdomCore DebugScenarios.swift
+[7/42] Compiling AntKingdomCore Colony.swift
+[8/42] Compiling AntKingdomCore CoreInfo.swift
+[9/42] Compiling AntKingdomCore GameCommand.swift
+[10/42] Compiling AntKingdomCore GameSession+State.swift
+[11/42] Compiling AntKingdomCore TransportPlanner.swift
+[12/42] Compiling AntKingdomCore TutorialGuide.swift
+[13/42] Compiling AntKingdomCore ScriptedReplay.swift
+[14/42] Compiling AntKingdomCore SessionSnapshot.swift
+[15/42] Compiling AntKingdomCore Time.swift
+[16/42] Compiling AntKingdomCore TransportFixtures.swift
+[17/42] Emitting module AntKingdomCore
+[18/42] Compiling AntKingdomCore CampaignCoordinator.swift
+[19/42] Compiling AntKingdomCore Chapters.swift
+[20/42] Compiling AntKingdomCore Rules.swift
+[21/42] Compiling AntKingdomCore SaveRepository.swift
+[22/42] Compiling AntKingdomCore MapDefinition.swift
+[23/42] Compiling AntKingdomCore Pathfinder.swift
+[24/42] Compiling AntKingdomCore PlayerProgress.swift
+[25/42] Compiling AntKingdomCore Rewards.swift
+[26/42] Compiling AntKingdomCore GridPoint.swift
+[27/42] Compiling AntKingdomCore LifecycleCoordinator.swift
+[28/42] Compiling AntKingdomCore GameSession.swift
+[29/42] Compiling AntKingdomCore GameState.swift
+[30/43] Wrapping AST for AntKingdomCore for debugging
+[32/64] Compiling ak_sim main.swift
+[33/64] Emitting module ak_sim
+[35/65] Compiling AntKingdomCoreTests TestSupport.swift
+[35/66] Wrapping AST for ak-sim for debugging
+[36/66] Write Objects.LinkFileList
+[37/66] Linking ak-sim
+[39/66] Compiling AntKingdomCoreTests TimeAndInputTests.swift
+[40/66] Compiling AntKingdomCoreTests TransportTests.swift
+[41/66] Compiling AntKingdomCoreTests TutorialTests.swift
+[42/66] Compiling AntKingdomCoreTests SessionTests.swift
+[43/66] Compiling AntKingdomCoreTests CosmeticsTests.swift
+[44/66] Compiling AntKingdomCoreTests D13AdInterruptionReviewTests.swift
+[45/66] Compiling AntKingdomCoreTests ColonyTestSupport.swift
+[46/66] Compiling AntKingdomCoreTests CoreInfoTests.swift
+[47/66] Compiling AntKingdomCoreTests D13CampaignTests.swift
+[48/66] Compiling AntKingdomCoreTests D13LifecycleTests.swift
+[49/66] Emitting module AntKingdomCoreTests
+[50/66] Compiling AntKingdomCoreTests CampaignTests.swift
+[51/66] Compiling AntKingdomCoreTests ChapterTests.swift
+[52/66] Compiling AntKingdomCoreTests DebugScenarioTests.swift
+[53/66] Compiling AntKingdomCoreTests EconomyTests.swift
+[54/66] Compiling AntKingdomCoreTests MapTests.swift
+[55/66] Compiling AntKingdomCoreTests ReferenceDiffTests.swift
+[56/66] Compiling AntKingdomCoreTests RewardTests.swift
+[57/66] Compiling AntKingdomCoreTests SaveAndLifecycleTests.swift
+[58/67] /tmp/ak-review-build/x86_64-unknown-linux-gnu/debug/AntKingdomCorePackageDiscoveredTests.derived/all-discovered-tests.swift
+[59/67] Write sources
+[60/67] Wrapping AST for AntKingdomCoreTests for debugging
+[62/70] Compiling AntKingdomCorePackageDiscoveredTests all-discovered-tests.swift
+[63/70] Emitting module AntKingdomCorePackageDiscoveredTests
+[64/70] Compiling AntKingdomCorePackageDiscoveredTests AntKingdomCoreTests.swift
+[65/71] /tmp/ak-review-build/x86_64-unknown-linux-gnu/debug/AntKingdomCorePackageTests.derived/runner.swift
+[66/71] Write sources
+[67/71] Wrapping AST for AntKingdomCorePackageDiscoveredTests for debugging
+[69/73] Emitting module AntKingdomCorePackageTests
+[70/73] Compiling AntKingdomCorePackageTests runner.swift
+[71/74] Wrapping AST for AntKingdomCorePackageTests for debugging
+[72/74] Write Objects.LinkFileList
+[73/74] Linking AntKingdomCorePackageTests.xctest
+Build complete! (12.97s)
+Test Suite 'Selected tests' started at 2026-10-12 04:08:28.796
+Test Suite 'D13AdInterruptionReviewTests' started at 2026-10-12 04:08:28.797
+Test Case 'D13AdInterruptionReviewTests.testFrameBeforeAdDismissalDoesNotSettleTheAdGap' started at 2026-10-12 04:08:28.797
+/src/Tests/AntKingdomCoreTests/D13AdInterruptionReviewTests.swift:44: error: D13AdInterruptionReviewTests.testFrameBeforeAdDismissalDoesNotSettleTheAdGap : failed - Ad gap was settled before the suspended-frame guard
+/src/Tests/AntKingdomCoreTests/D13AdInterruptionReviewTests.swift:46: error: D13AdInterruptionReviewTests.testFrameBeforeAdDismissalDoesNotSettleTheAdGap : XCTAssertEqual failed: ("GameState(mapId: "backyard", mapVersion: 1, dugCells: [(2,4), (2,5), (2,6)], digTaps: [], food: 12.499999999999984, ants: 5, larvae: [], hatching: true, pantryTopLeft: nil, patchRemaining: ["sugar": 0.0, "cookie": 587.5000000000045], refillLeft: 60.0, nextPatchId: "sugar", refills: 0, elapsed: 30.0, hauled: 12.499999999999984, spent: 0.0, pendingTick: 0.0, settings: AntKingdomCore.GameState.Settings(sound: true, haptics: true), flags: AntKingdomCore.GameState.Flags(firstSourceConnected: true, pantryBuiltOnce: false, pantryMovedOnce: false, prototypeComplete: false, connectedSources: ["cookie"], bestRouteGain: 0.0, chapterComplete: false))") is not equal to ("GameState(mapId: "backyard", mapVersion: 1, dugCells: [(2,4), (2,5), (2,6)], digTaps: [], food: 0.0, ants: 5, larvae: [], hatching: true, pantryTopLeft: nil, patchRemaining: ["cookie": 600.0, "sugar": 0.0], refillLeft: 60.0, nextPatchId: "sugar", refills: 0, elapsed: 0.0, hauled: 0.0, spent: 0.0, pendingTick: 0.0, settings: AntKingdomCore.GameState.Settings(sound: true, haptics: true), flags: AntKingdomCore.GameState.Flags(firstSourceConnected: true, pantryBuiltOnce: false, pantryMovedOnce: false, prototypeComplete: false, connectedSources: ["cookie"], bestRouteGain: 0.0, chapterComplete: false))") - A frame emitted while the ad is still presented must not generate income
+Test Case 'D13AdInterruptionReviewTests.testFrameBeforeAdDismissalDoesNotSettleTheAdGap' failed (0.012 seconds)
+Test Case 'D13AdInterruptionReviewTests.testHomeDuringAdDoesNotCountTheAdAsOffline' started at 2026-10-12 04:08:28.808
+/src/Tests/AntKingdomCoreTests/D13AdInterruptionReviewTests.swift:30: error: D13AdInterruptionReviewTests.testHomeDuringAdDoesNotCountTheAdAsOffline : XCTAssertEqual failed: ("95.0") is not equal to ("65.0") - The 30 seconds spent watching the ad in foreground must be excluded
+Test Case 'D13AdInterruptionReviewTests.testHomeDuringAdDoesNotCountTheAdAsOffline' failed (0.214 seconds)
+Test Suite 'D13AdInterruptionReviewTests' failed at 2026-10-12 04:08:29.022
+	 Executed 2 tests, with 3 failures (0 unexpected) in 0.225 (0.225) seconds
+Test Suite 'Selected tests' failed at 2026-10-12 04:08:29.022
+	 Executed 2 tests, with 3 failures (0 unexpected) in 0.225 (0.225) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: x86_64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

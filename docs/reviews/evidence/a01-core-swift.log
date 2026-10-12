@@ -1,0 +1,285 @@
+warning: 'antkingdomcore': found 1 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /repo/Packages/AntKingdomCore/Tests/AntKingdomCoreTests/Fixtures/save_v1_sample.json
+Building for debugging...
+[0/17] Write sources
+[3/17] Write swift-version-24593BA9C3E375BF.txt
+[5/36] Compiling AntKingdomCore GameSession+State.swift
+[6/36] Compiling AntKingdomCore GameSession.swift
+[7/37] Compiling AntKingdomCore Colony.swift
+[8/37] Compiling AntKingdomCore CoreInfo.swift
+[9/37] Compiling AntKingdomCore DebugScenarios.swift
+[10/37] Compiling AntKingdomCore GameCommand.swift
+[11/37] Emitting module AntKingdomCore
+[12/37] Compiling AntKingdomCore TutorialGuide.swift
+[13/37] Compiling AntKingdomCore GameState.swift
+[14/37] Compiling AntKingdomCore GridPoint.swift
+[15/37] Compiling AntKingdomCore TransportPlanner.swift
+[16/37] Compiling AntKingdomCore LifecycleCoordinator.swift
+[17/37] Compiling AntKingdomCore MapDefinition.swift
+[18/37] Compiling AntKingdomCore Pathfinder.swift
+[19/37] Compiling AntKingdomCore Rules.swift
+[20/37] Compiling AntKingdomCore SaveRepository.swift
+[21/37] Compiling AntKingdomCore ScriptedReplay.swift
+[22/37] Compiling AntKingdomCore TransportFixtures.swift
+[23/37] Compiling AntKingdomCore SessionSnapshot.swift
+[24/37] Compiling AntKingdomCore Time.swift
+[25/38] Wrapping AST for AntKingdomCore for debugging
+[27/53] Emitting module ak_sim
+[28/53] Compiling ak_sim main.swift
+[29/54] Wrapping AST for ak-sim for debugging
+[30/54] Write Objects.LinkFileList
+[32/54] Compiling AntKingdomCoreTests TimeAndInputTests.swift
+[33/55] Compiling AntKingdomCoreTests DebugScenarioTests.swift
+[34/55] Compiling AntKingdomCoreTests MapTests.swift
+[35/55] Compiling AntKingdomCoreTests TestSupport.swift
+[36/55] Compiling AntKingdomCoreTests TransportTests.swift
+[36/55] Linking ak-sim
+[38/55] Compiling AntKingdomCoreTests ColonyTestSupport.swift
+[39/55] Compiling AntKingdomCoreTests CoreInfoTests.swift
+[40/55] Emitting module AntKingdomCoreTests
+[41/55] Compiling AntKingdomCoreTests D13LifecycleTests.swift
+[42/55] Compiling AntKingdomCoreTests SaveAndLifecycleTests.swift
+[43/55] Compiling AntKingdomCoreTests SessionTests.swift
+[44/55] Compiling AntKingdomCoreTests TutorialTests.swift
+[45/55] Compiling AntKingdomCoreTests ReferenceDiffTests.swift
+[46/55] Compiling AntKingdomCoreTests EconomyTests.swift
+[47/56] /tmp/ak-build/x86_64-unknown-linux-gnu/debug/AntKingdomCorePackageDiscoveredTests.derived/all-discovered-tests.swift
+[48/56] Write sources
+[49/56] Wrapping AST for AntKingdomCoreTests for debugging
+[51/59] Compiling AntKingdomCorePackageDiscoveredTests all-discovered-tests.swift
+[52/59] Compiling AntKingdomCorePackageDiscoveredTests AntKingdomCoreTests.swift
+[53/59] Emitting module AntKingdomCorePackageDiscoveredTests
+[54/60] /tmp/ak-build/x86_64-unknown-linux-gnu/debug/AntKingdomCorePackageTests.derived/runner.swift
+[55/60] Write sources
+[56/60] Wrapping AST for AntKingdomCorePackageDiscoveredTests for debugging
+[58/62] Emitting module AntKingdomCorePackageTests
+[59/62] Compiling AntKingdomCorePackageTests runner.swift
+[60/63] Wrapping AST for AntKingdomCorePackageTests for debugging
+[61/63] Write Objects.LinkFileList
+[62/63] Linking AntKingdomCorePackageTests.xctest
+Build complete! (11.38s)
+Test Suite 'All tests' started at 2026-10-12 04:09:13.441
+Test Suite 'debug.xctest' started at 2026-10-12 04:09:13.442
+Test Suite 'CoreInfoTests' started at 2026-10-12 04:09:13.442
+Test Case 'CoreInfoTests.testBaselineIsRecorded' started at 2026-10-12 04:09:13.442
+Test Case 'CoreInfoTests.testBaselineIsRecorded' passed (0.001 seconds)
+Test Suite 'CoreInfoTests' passed at 2026-10-12 04:09:13.443
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'D13LifecycleTests' started at 2026-10-12 04:09:13.443
+Test Case 'D13LifecycleTests.testClockRollbackAndRecoveryWithFrames' started at 2026-10-12 04:09:13.443
+Test Case 'D13LifecycleTests.testClockRollbackAndRecoveryWithFrames' passed (0.124 seconds)
+Test Case 'D13LifecycleTests.testDuplicateBackgroundAndActiveSettleExactlyOnce' started at 2026-10-12 04:09:13.567
+Test Case 'D13LifecycleTests.testDuplicateBackgroundAndActiveSettleExactlyOnce' passed (0.119 seconds)
+Test Case 'D13LifecycleTests.testDurationsAndStatesMatchTheReferenceSimulation' started at 2026-10-12 04:09:13.686
+Test Case 'D13LifecycleTests.testDurationsAndStatesMatchTheReferenceSimulation' passed (2.712 seconds)
+Test Case 'D13LifecycleTests.testKillAfterABackgroundSaveStillSettlesFromDeparture' started at 2026-10-12 04:09:16.398
+Test Case 'D13LifecycleTests.testKillAfterABackgroundSaveStillSettlesFromDeparture' passed (0.138 seconds)
+Test Case 'D13LifecycleTests.testKillWhileWritesKeepFailingFallsBackToTheLastSuccessfulSave' started at 2026-10-12 04:09:16.536
+Test Case 'D13LifecycleTests.testKillWhileWritesKeepFailingFallsBackToTheLastSuccessfulSave' passed (0.121 seconds)
+Test Case 'D13LifecycleTests.testLateBackgroundCallbackCountsFromTheLastFrame' started at 2026-10-12 04:09:16.657
+Test Case 'D13LifecycleTests.testLateBackgroundCallbackCountsFromTheLastFrame' passed (0.018 seconds)
+Test Case 'D13LifecycleTests.testLateEventsAfterAGapSettlementDoNotPayTwice' started at 2026-10-12 04:09:16.675
+Test Case 'D13LifecycleTests.testLateEventsAfterAGapSettlementDoNotPayTwice' passed (0.018 seconds)
+Test Case 'D13LifecycleTests.testMissingBackgroundIsSettledOnceByTheFrameGap' started at 2026-10-12 04:09:16.693
+Test Case 'D13LifecycleTests.testMissingBackgroundIsSettledOnceByTheFrameGap' passed (0.017 seconds)
+Test Case 'D13LifecycleTests.testResumeFramesBeforeActiveAreHeldAndNothingIsSaved' started at 2026-10-12 04:09:16.711
+Test Case 'D13LifecycleTests.testResumeFramesBeforeActiveAreHeldAndNothingIsSaved' passed (0.019 seconds)
+Test Case 'D13LifecycleTests.testSaveBetweenBackgroundAndActiveDoesNotEatTheOfflineInterval' started at 2026-10-12 04:09:16.729
+Test Case 'D13LifecycleTests.testSaveBetweenBackgroundAndActiveDoesNotEatTheOfflineInterval' passed (0.018 seconds)
+Test Case 'D13LifecycleTests.testShortInactiveAndHitchesAreNotOffline' started at 2026-10-12 04:09:16.747
+Test Case 'D13LifecycleTests.testShortInactiveAndHitchesAreNotOffline' passed (0.001 seconds)
+Test Case 'D13LifecycleTests.testWriteFailureDuringBackgroundStillSettlesOnceAndColdStartDoesNotRepay' started at 2026-10-12 04:09:16.748
+Test Case 'D13LifecycleTests.testWriteFailureDuringBackgroundStillSettlesOnceAndColdStartDoesNotRepay' passed (0.118 seconds)
+Test Suite 'D13LifecycleTests' passed at 2026-10-12 04:09:16.867
+	 Executed 12 tests, with 0 failures (0 unexpected) in 3.423 (3.423) seconds
+Test Suite 'DebugScenarioTests' started at 2026-10-12 04:09:16.867
+Test Case 'DebugScenarioTests.testEveryScenarioProducesAValidState' started at 2026-10-12 04:09:16.867
+Test Case 'DebugScenarioTests.testEveryScenarioProducesAValidState' passed (0.257 seconds)
+Test Case 'DebugScenarioTests.testRejectedDebugReplacementLeavesStateUntouched' started at 2026-10-12 04:09:17.124
+Test Case 'DebugScenarioTests.testRejectedDebugReplacementLeavesStateUntouched' passed (0.0 seconds)
+Test Case 'DebugScenarioTests.testScenarioContents' started at 2026-10-12 04:09:17.124
+Test Case 'DebugScenarioTests.testScenarioContents' passed (0.168 seconds)
+Test Case 'DebugScenarioTests.testTunnelGalleryCoversEveryReachableMask' started at 2026-10-12 04:09:17.292
+Test Case 'DebugScenarioTests.testTunnelGalleryCoversEveryReachableMask' passed (0.004 seconds)
+Test Suite 'DebugScenarioTests' passed at 2026-10-12 04:09:17.296
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.43 (0.43) seconds
+Test Suite 'EconomyTests' started at 2026-10-12 04:09:17.296
+Test Case 'EconomyTests.testActualDigConnectsFiniteSource' started at 2026-10-12 04:09:17.296
+Test Case 'EconomyTests.testActualDigConnectsFiniteSource' passed (0.002 seconds)
+Test Case 'EconomyTests.testFixedGeometryPopulationSweep' started at 2026-10-12 04:09:17.298
+Test Case 'EconomyTests.testFixedGeometryPopulationSweep' passed (0.015 seconds)
+Test Case 'EconomyTests.testFixedReplayResourcesBalance' started at 2026-10-12 04:09:17.313
+Test Case 'EconomyTests.testFixedReplayResourcesBalance' passed (0.045 seconds)
+Test Case 'EconomyTests.testFullStorageDoesNotDepleteSource' started at 2026-10-12 04:09:17.359
+Test Case 'EconomyTests.testFullStorageDoesNotDepleteSource' passed (0.001 seconds)
+Test Case 'EconomyTests.testInvalidTimeInputs' started at 2026-10-12 04:09:17.359
+Test Case 'EconomyTests.testInvalidTimeInputs' passed (0.001 seconds)
+Test Case 'EconomyTests.testNoAutoConnectionAndInfiniteFallback' started at 2026-10-12 04:09:17.360
+Test Case 'EconomyTests.testNoAutoConnectionAndInfiniteFallback' passed (0.001 seconds)
+Test Case 'EconomyTests.testOfflineCapAppliesToAllClocks' started at 2026-10-12 04:09:17.361
+Test Case 'EconomyTests.testOfflineCapAppliesToAllClocks' passed (0.149 seconds)
+Test Case 'EconomyTests.testOfflineIsNotQuarterOfFullEfficiencySimulation' started at 2026-10-12 04:09:17.510
+Test Case 'EconomyTests.testOfflineIsNotQuarterOfFullEfficiencySimulation' passed (0.053 seconds)
+Test Case 'EconomyTests.testOfflineMatchesSameEfficiencyOnline' started at 2026-10-12 04:09:17.564
+Test Case 'EconomyTests.testOfflineMatchesSameEfficiencyOnline' passed (0.059 seconds)
+Test Case 'EconomyTests.testPantryCostMovementAndRouteGain' started at 2026-10-12 04:09:17.623
+Test Case 'EconomyTests.testPantryCostMovementAndRouteGain' passed (0.001 seconds)
+Test Case 'EconomyTests.testPartialStorageOnlyDeductsCreditedFood' started at 2026-10-12 04:09:17.623
+Test Case 'EconomyTests.testPartialStorageOnlyDeductsCreditedFood' passed (0.0 seconds)
+Test Case 'EconomyTests.testPauseHatchingAllowsSavingForPantry' started at 2026-10-12 04:09:17.624
+Test Case 'EconomyTests.testPauseHatchingAllowsSavingForPantry' passed (0.007 seconds)
+Test Case 'EconomyTests.testPopulationSlotsAndConservation' started at 2026-10-12 04:09:17.631
+Test Case 'EconomyTests.testPopulationSlotsAndConservation' passed (0.025 seconds)
+Test Case 'EconomyTests.testRejectIllegalDig' started at 2026-10-12 04:09:17.656
+Test Case 'EconomyTests.testRejectIllegalDig' passed (0.0 seconds)
+Test Case 'EconomyTests.testRejectIllegalOrUnaffordablePantry' started at 2026-10-12 04:09:17.656
+Test Case 'EconomyTests.testRejectIllegalOrUnaffordablePantry' passed (0.0 seconds)
+Test Case 'EconomyTests.testRepeatedRefillAfterAllLegalSoilIsDug' started at 2026-10-12 04:09:17.657
+Test Case 'EconomyTests.testRepeatedRefillAfterAllLegalSoilIsDug' passed (0.018 seconds)
+Test Case 'EconomyTests.testSourceCannotGoNegative' started at 2026-10-12 04:09:17.675
+Test Case 'EconomyTests.testSourceCannotGoNegative' passed (0.001 seconds)
+Test Case 'EconomyTests.testUnconnectedRefillRemainsAvailable' started at 2026-10-12 04:09:17.675
+Test Case 'EconomyTests.testUnconnectedRefillRemainsAvailable' passed (0.009 seconds)
+Test Suite 'EconomyTests' passed at 2026-10-12 04:09:17.684
+	 Executed 18 tests, with 0 failures (0 unexpected) in 0.387 (0.387) seconds
+Test Suite 'MapTests' started at 2026-10-12 04:09:17.684
+Test Case 'MapTests.testBuiltInMapMatchesDesignFile' started at 2026-10-12 04:09:17.684
+Test Case 'MapTests.testBuiltInMapMatchesDesignFile' passed (0.006 seconds)
+Test Case 'MapTests.testFootprintsAndCountsMatchPRD' started at 2026-10-12 04:09:17.690
+Test Case 'MapTests.testFootprintsAndCountsMatchPRD' passed (0.0 seconds)
+Test Case 'MapTests.testSourceOrderAndPriorities' started at 2026-10-12 04:09:17.690
+Test Case 'MapTests.testSourceOrderAndPriorities' passed (0.0 seconds)
+Test Case 'MapTests.testValidatorRejectsBrokenMaps' started at 2026-10-12 04:09:17.691
+Test Case 'MapTests.testValidatorRejectsBrokenMaps' passed (0.001 seconds)
+Test Suite 'MapTests' passed at 2026-10-12 04:09:17.691
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Suite 'ReferenceDiffTests' started at 2026-10-12 04:09:17.692
+Test Case 'ReferenceDiffTests.testFixtureResultsMatchPython' started at 2026-10-12 04:09:17.692
+Test Case 'ReferenceDiffTests.testFixtureResultsMatchPython' passed (0.019 seconds)
+Test Case 'ReferenceDiffTests.testOfflineScenariosMatchPython' started at 2026-10-12 04:09:17.711
+Test Case 'ReferenceDiffTests.testOfflineScenariosMatchPython' passed (0.237 seconds)
+Test Case 'ReferenceDiffTests.testPopulationSweepOnFullyDugMapMatchesPython' started at 2026-10-12 04:09:17.948
+Test Case 'ReferenceDiffTests.testPopulationSweepOnFullyDugMapMatchesPython' passed (0.03 seconds)
+Test Case 'ReferenceDiffTests.testReplayTraceMatchesPythonEverySecond' started at 2026-10-12 04:09:17.978
+Test Case 'ReferenceDiffTests.testReplayTraceMatchesPythonEverySecond' passed (0.089 seconds)
+Test Case 'ReferenceDiffTests.testTransportScenariosMatchPythonRouteByRoute' started at 2026-10-12 04:09:18.067
+Test Case 'ReferenceDiffTests.testTransportScenariosMatchPythonRouteByRoute' passed (0.016 seconds)
+Test Suite 'ReferenceDiffTests' passed at 2026-10-12 04:09:18.083
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.392 (0.392) seconds
+Test Suite 'SaveAndLifecycleTests' started at 2026-10-12 04:09:18.083
+Test Case 'SaveAndLifecycleTests.testBackgroundThirtySecondsMatchesQuarterRateStateMachine' started at 2026-10-12 04:09:18.083
+Test Case 'SaveAndLifecycleTests.testBackgroundThirtySecondsMatchesQuarterRateStateMachine' passed (0.008 seconds)
+Test Case 'SaveAndLifecycleTests.testBothCorruptIsReportedNotSilentlyWiped' started at 2026-10-12 04:09:18.092
+Test Case 'SaveAndLifecycleTests.testBothCorruptIsReportedNotSilentlyWiped' passed (0.001 seconds)
+Test Case 'SaveAndLifecycleTests.testClockRollbackGivesNothingAndRollForwardDoesNotRepay' started at 2026-10-12 04:09:18.092
+Test Case 'SaveAndLifecycleTests.testClockRollbackGivesNothingAndRollForwardDoesNotRepay' passed (0.007 seconds)
+Test Case 'SaveAndLifecycleTests.testColdLaunchAfterKillSettlesOnceFromLastSave' started at 2026-10-12 04:09:18.099
+Test Case 'SaveAndLifecycleTests.testColdLaunchAfterKillSettlesOnceFromLastSave' passed (0.071 seconds)
+Test Case 'SaveAndLifecycleTests.testCommittedV1SampleStillLoads' started at 2026-10-12 04:09:18.170
+Test Case 'SaveAndLifecycleTests.testCommittedV1SampleStillLoads' passed (0.006 seconds)
+Test Case 'SaveAndLifecycleTests.testCorruptMainFallsBackToLastValidBackup' started at 2026-10-12 04:09:18.176
+Test Case 'SaveAndLifecycleTests.testCorruptMainFallsBackToLastValidBackup' passed (0.025 seconds)
+Test Case 'SaveAndLifecycleTests.testFailedWriteKeepsPreviousSave' started at 2026-10-12 04:09:18.201
+Test Case 'SaveAndLifecycleTests.testFailedWriteKeepsPreviousSave' passed (0.134 seconds)
+Test Case 'SaveAndLifecycleTests.testFileStoreWritesAtomicallyAndRecoversFromTruncation' started at 2026-10-12 04:09:18.336
+Test Case 'SaveAndLifecycleTests.testFileStoreWritesAtomicallyAndRecoversFromTruncation' passed (0.035 seconds)
+Test Case 'SaveAndLifecycleTests.testFreshWhenNothingSaved' started at 2026-10-12 04:09:18.371
+Test Case 'SaveAndLifecycleTests.testFreshWhenNothingSaved' passed (0.0 seconds)
+Test Case 'SaveAndLifecycleTests.testInvalidStateInsideAValidFileIsRejected' started at 2026-10-12 04:09:18.371
+Test Case 'SaveAndLifecycleTests.testInvalidStateInsideAValidFileIsRejected' passed (0.001 seconds)
+Test Case 'SaveAndLifecycleTests.testNewerSchemaIsNotDowngradedOrOverwritten' started at 2026-10-12 04:09:18.372
+Test Case 'SaveAndLifecycleTests.testNewerSchemaIsNotDowngradedOrOverwritten' passed (0.0 seconds)
+Test Case 'SaveAndLifecycleTests.testOneAndTwoHoursAreCappedAndSettledOnlyOnce' started at 2026-10-12 04:09:18.372
+Test Case 'SaveAndLifecycleTests.testOneAndTwoHoursAreCappedAndSettledOnlyOnce' passed (0.256 seconds)
+Test Case 'SaveAndLifecycleTests.testResetErasesProgressButKeepsSettings' started at 2026-10-12 04:09:18.628
+Test Case 'SaveAndLifecycleTests.testResetErasesProgressButKeepsSettings' passed (0.001 seconds)
+Test Case 'SaveAndLifecycleTests.testRoundTripPreservesEveryField' started at 2026-10-12 04:09:18.629
+Test Case 'SaveAndLifecycleTests.testRoundTripPreservesEveryField' passed (0.024 seconds)
+Test Case 'SaveAndLifecycleTests.testSaveFailureIsSurfacedNotFatal' started at 2026-10-12 04:09:18.653
+Test Case 'SaveAndLifecycleTests.testSaveFailureIsSurfacedNotFatal' passed (0.001 seconds)
+Test Suite 'SaveAndLifecycleTests' passed at 2026-10-12 04:09:18.654
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.57 (0.57) seconds
+Test Suite 'SessionTests' started at 2026-10-12 04:09:18.654
+Test Case 'SessionTests.testConnectingCookieEmitsConnectedAndSwitchesSource' started at 2026-10-12 04:09:18.654
+Test Case 'SessionTests.testConnectingCookieEmitsConnectedAndSwitchesSource' passed (0.001 seconds)
+Test Case 'SessionTests.testFrameRateDoesNotChangeEconomy' started at 2026-10-12 04:09:18.655
+Test Case 'SessionTests.testFrameRateDoesNotChangeEconomy' passed (0.45 seconds)
+Test Case 'SessionTests.testLongFrameHiccupIsCappedNotDoubleCounted' started at 2026-10-12 04:09:19.105
+Test Case 'SessionTests.testLongFrameHiccupIsCappedNotDoubleCounted' passed (0.001 seconds)
+Test Case 'SessionTests.testPantryCommandsAreAtomic' started at 2026-10-12 04:09:19.106
+Test Case 'SessionTests.testPantryCommandsAreAtomic' passed (0.001 seconds)
+Test Case 'SessionTests.testPauseHatchingKeepsExistingEggs' started at 2026-10-12 04:09:19.107
+Test Case 'SessionTests.testPauseHatchingKeepsExistingEggs' passed (0.003 seconds)
+Test Case 'SessionTests.testPrototypeCompleteIsReportedOnce' started at 2026-10-12 04:09:19.110
+Test Case 'SessionTests.testPrototypeCompleteIsReportedOnce' passed (0.664 seconds)
+Test Case 'SessionTests.testRejectedTapsDoNotChangeState' started at 2026-10-12 04:09:19.774
+Test Case 'SessionTests.testRejectedTapsDoNotChangeState' passed (0.0 seconds)
+Test Case 'SessionTests.testResetRestoresInitialStateButKeepsSettings' started at 2026-10-12 04:09:19.775
+Test Case 'SessionTests.testResetRestoresInitialStateButKeepsSettings' passed (0.001 seconds)
+Test Case 'SessionTests.testRouteImprovedOnlyWhenSameSourceGetsFaster' started at 2026-10-12 04:09:19.775
+Test Case 'SessionTests.testRouteImprovedOnlyWhenSameSourceGetsFaster' passed (0.003 seconds)
+Test Case 'SessionTests.testSnapshotReportsRoutesAndBusyCells' started at 2026-10-12 04:09:19.778
+Test Case 'SessionTests.testSnapshotReportsRoutesAndBusyCells' passed (0.001 seconds)
+Test Case 'SessionTests.testStateRoundTripAfterReplay' started at 2026-10-12 04:09:19.779
+Test Case 'SessionTests.testStateRoundTripAfterReplay' passed (0.036 seconds)
+Test Case 'SessionTests.testThreeEffectiveTapsOpenACell' started at 2026-10-12 04:09:19.816
+Test Case 'SessionTests.testThreeEffectiveTapsOpenACell' passed (0.001 seconds)
+Test Case 'SessionTests.testValidationRejectsCorruptStates' started at 2026-10-12 04:09:19.817
+Test Case 'SessionTests.testValidationRejectsCorruptStates' passed (0.0 seconds)
+Test Suite 'SessionTests' passed at 2026-10-12 04:09:19.817
+	 Executed 13 tests, with 0 failures (0 unexpected) in 1.162 (1.162) seconds
+Test Suite 'TimeAndInputTests' started at 2026-10-12 04:09:19.817
+Test Case 'TimeAndInputTests.testHoldDigsFiveTimesPerSecond' started at 2026-10-12 04:09:19.817
+Test Case 'TimeAndInputTests.testHoldDigsFiveTimesPerSecond' passed (0.0 seconds)
+Test Case 'TimeAndInputTests.testManualTapLimitIsEightPerSecond' started at 2026-10-12 04:09:19.817
+Test Case 'TimeAndInputTests.testManualTapLimitIsEightPerSecond' passed (0.0 seconds)
+Test Case 'TimeAndInputTests.testOfflineClockClamps' started at 2026-10-12 04:09:19.818
+Test Case 'TimeAndInputTests.testOfflineClockClamps' passed (0.0 seconds)
+Test Case 'TimeAndInputTests.testTickAccumulatorQuantizes' started at 2026-10-12 04:09:19.818
+Test Case 'TimeAndInputTests.testTickAccumulatorQuantizes' passed (0.0 seconds)
+Test Suite 'TimeAndInputTests' passed at 2026-10-12 04:09:19.818
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'TransportTests' started at 2026-10-12 04:09:19.818
+Test Case 'TransportTests.testBFSUsesRowMajorStartsAndUpLeftRightDownNeighbors' started at 2026-10-12 04:09:19.818
+Test Case 'TransportTests.testBFSUsesRowMajorStartsAndUpLeftRightDownNeighbors' passed (0.0 seconds)
+Test Case 'TransportTests.testCandidatePathsAreBoundedAndSorted' started at 2026-10-12 04:09:19.819
+Test Case 'TransportTests.testCandidatePathsAreBoundedAndSorted' passed (0.001 seconds)
+Test Case 'TransportTests.testDeterministicBoundedMonotonicRerouting' started at 2026-10-12 04:09:19.819
+Test Case 'TransportTests.testDeterministicBoundedMonotonicRerouting' passed (0.005 seconds)
+Test Case 'TransportTests.testDisconnectedSourceDoesNotGenerateIncome' started at 2026-10-12 04:09:19.824
+Test Case 'TransportTests.testDisconnectedSourceDoesNotGenerateIncome' passed (0.0 seconds)
+Test Case 'TransportTests.testLongerBypassCanRelieveCongestion' started at 2026-10-12 04:09:19.824
+Test Case 'TransportTests.testLongerBypassCanRelieveCongestion' passed (0.001 seconds)
+Test Case 'TransportTests.testMultipleSourcesShareCorridorCapacity' started at 2026-10-12 04:09:19.825
+Test Case 'TransportTests.testMultipleSourcesShareCorridorCapacity' passed (0.0 seconds)
+Test Case 'TransportTests.testOneCellSevenAntsHasNoSelfCongestion' started at 2026-10-12 04:09:19.825
+Test Case 'TransportTests.testOneCellSevenAntsHasNoSelfCongestion' passed (0.0 seconds)
+Test Case 'TransportTests.testStartOnSinkIsOneCellService' started at 2026-10-12 04:09:19.825
+Test Case 'TransportTests.testStartOnSinkIsOneCellService' passed (0.0 seconds)
+Test Case 'TransportTests.testThreeHandCalculatedCases' started at 2026-10-12 04:09:19.825
+Test Case 'TransportTests.testThreeHandCalculatedCases' passed (0.005 seconds)
+Test Suite 'TransportTests' passed at 2026-10-12 04:09:19.830
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds
+Test Suite 'TutorialTests' started at 2026-10-12 04:09:19.830
+Test Case 'TutorialTests.testBusyTunnelShowsBypassHint' started at 2026-10-12 04:09:19.830
+Test Case 'TutorialTests.testBusyTunnelShowsBypassHint' passed (0.001 seconds)
+Test Case 'TutorialTests.testCompletionHintAfterReplay' started at 2026-10-12 04:09:19.831
+Test Case 'TutorialTests.testCompletionHintAfterReplay' passed (0.166 seconds)
+Test Case 'TutorialTests.testHintSequenceFollowsPlayerProgress' started at 2026-10-12 04:09:19.997
+Test Case 'TutorialTests.testHintSequenceFollowsPlayerProgress' passed (0.024 seconds)
+Test Case 'TutorialTests.testOldSaveWithoutNewFlagStillDecodes' started at 2026-10-12 04:09:20.022
+Test Case 'TutorialTests.testOldSaveWithoutNewFlagStillDecodes' passed (0.0 seconds)
+Test Case 'TutorialTests.testRefillEmitsFoodArrivedForTheRefilledPatch' started at 2026-10-12 04:09:20.022
+Test Case 'TutorialTests.testRefillEmitsFoodArrivedForTheRefilledPatch' passed (0.072 seconds)
+Test Case 'TutorialTests.testSuggestedPantrySpotIsLegalAndNearTheSource' started at 2026-10-12 04:09:20.094
+Test Case 'TutorialTests.testSuggestedPantrySpotIsLegalAndNearTheSource' passed (0.001 seconds)
+Test Suite 'TutorialTests' passed at 2026-10-12 04:09:20.096
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.265 (0.265) seconds
+Test Suite 'debug.xctest' passed at 2026-10-12 04:09:20.096
+	 Executed 91 tests, with 0 failures (0 unexpected) in 6.651 (6.651) seconds
+Test Suite 'All tests' passed at 2026-10-12 04:09:20.096
+	 Executed 91 tests, with 0 failures (0 unexpected) in 6.651 (6.651) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: x86_64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
