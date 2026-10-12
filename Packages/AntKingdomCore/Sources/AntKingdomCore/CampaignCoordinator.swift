@@ -59,7 +59,8 @@ public final class CampaignCoordinator {
 
     /// 冷启动：读全局进度（或迁移/推导）→ 载入当前章节并结算一次离线 → 记录目标 → 保存进度。
     public static func launch(store: SaveStore, appVersion: String, wallClock: WallClock,
-                              catalog: ChapterCatalog) -> (CampaignCoordinator?, CampaignLaunchResult) {
+                              catalog: ChapterCatalog,
+                              trace: LifecycleTrace? = nil) -> (CampaignCoordinator?, CampaignLaunchResult) {
         let progressRepository = ProgressRepository(store: store)
         var progress: PlayerProgress
         var recoveredBackup = false
@@ -79,7 +80,8 @@ public final class CampaignCoordinator {
         progress.normalize(catalog)
         let chapter = catalog.chapter(progress.activeChapterId) ?? catalog.first
         let (lifecycle, result) = LifecycleCoordinator.launch(
-            repository: repository(chapter, store: store, appVersion: appVersion), wallClock: wallClock, map: chapter.map)
+            repository: repository(chapter, store: store, appVersion: appVersion), wallClock: wallClock, map: chapter.map,
+            trace: trace)
         switch result {
         case .ready(_, let offline, let fromBackup):
             guard let lifecycle else { return (nil, .chapterSaveUnavailable(chapterId: chapter.id, .unreadable("state"))) }
@@ -157,7 +159,7 @@ public final class CampaignCoordinator {
         let settings = session.settings
         let (next, result) = LifecycleCoordinator.launch(
             repository: CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion),
-            wallClock: wallClock, map: chapter.map, settleOffline: false)
+            wallClock: wallClock, map: chapter.map, settleOffline: false, trace: lifecycle.trace)
         guard let next else {
             if case .saveUnavailable(let error) = result { throw CampaignError.saveFailed(error) }
             throw CampaignError.saveFailed(.unreadable("chapter"))
@@ -191,7 +193,7 @@ public final class CampaignCoordinator {
         let chapter = catalog.first
         let (fresh, _) = LifecycleCoordinator.launch(
             repository: CampaignCoordinator.repository(chapter, store: store, appVersion: appVersion),
-            wallClock: wallClock, map: chapter.map, settleOffline: false)
+            wallClock: wallClock, map: chapter.map, settleOffline: false, trace: lifecycle.trace)
         if let fresh {
             fresh.session.apply(.setSound(settings.sound))
             fresh.session.apply(.setHaptics(settings.haptics))
@@ -214,6 +216,14 @@ public final class CampaignCoordinator {
     /// 回到前台：只结算当前章节一次。目标由下一帧的 evaluate() 记录并宣布。
     public func becomeActive() -> OfflineSummary? {
         lifecycle.becomeActive()
+    }
+
+    /// 每帧推进之前的准入（D-13）：与核心版同一规则——离开区间未结算时不推进不保存，
+    /// 帧停顿而没有后台记录时由当前章节结算一次离线。
+    public func admitForegroundFrame() -> ForegroundFrame {
+        let admission = lifecycle.admitForegroundFrame()
+        if case .resumed = admission { saveProgress() }
+        return admission
     }
 
     @discardableResult

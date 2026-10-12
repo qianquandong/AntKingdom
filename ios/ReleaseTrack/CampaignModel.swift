@@ -1,5 +1,6 @@
 import AntKingdomCore
 import SwiftUI
+import UIKit
 
 /// 章节完成页要显示的内容（每局宣布一次）。
 struct ChapterCompletion: Identifiable, Equatable {
@@ -61,6 +62,7 @@ final class CampaignModel: ObservableObject {
         self.wallClock = SystemWallClock()
         self.catalog = try? CampaignModel.loadCatalog(fixture: fixture)
         launch()
+        observeApplicationLifecycle()
     }
 
     /// 从 bundle 的 chapters.json 与地图文件载入目录；只收入已交付地图的章节。
@@ -89,8 +91,12 @@ final class CampaignModel: ObservableObject {
             phase = .catalogUnavailable
             return
         }
+        var trace: LifecycleTrace?
+        #if DEBUG
+        trace = LifecycleTrace()      // D-13 诊断：只在 Debug 构建
+        #endif
         let (campaign, result) = CampaignCoordinator.launch(store: store, appVersion: appVersion,
-                                                            wallClock: wallClock, catalog: catalog)
+                                                            wallClock: wallClock, catalog: catalog, trace: trace)
         switch result {
         case .ready(let offline, _, _):
             guard let campaign else { return }
@@ -120,7 +126,11 @@ final class CampaignModel: ObservableObject {
         controller.announcesPrototypeComplete = false
         controller.resetTitleKey = "settings.reset_all"
         controller.resetDialogKey = "dialog.reset_all"
-        controller.persist = { [weak self] in self?.campaign?.lifecycle.save() ?? false }
+        controller.persist = { [weak self] in self?.campaign?.lifecycle.save(reason: "controller") ?? false }
+        controller.admitFrame = { [weak self] in self?.campaign?.admitForegroundFrame() ?? .run }
+        #if DEBUG
+        controller.lifecycleTrace = campaign.lifecycle.trace
+        #endif
         controller.resetHandler = { [weak self] in self?.resetAllProgress() }
         controller.openChapters = { [weak self] in self?.sheets.showChapters = true }
         controller.afterEvents = { [weak self, weak controller] in
@@ -203,17 +213,41 @@ final class CampaignModel: ObservableObject {
     }
 
     func scenePhaseChanged(_ newPhase: ScenePhase) {
-        guard let campaign, case .running(let controller) = phase else { return }
+        campaign?.lifecycle.note("phase", String(describing: newPhase))
         switch newPhase {
         case .background:
-            campaign.enterBackground()
+            handleBackground(source: "scenePhase")
         case .active:
-            if let summary = campaign.becomeActive(), summary.isWorthShowing {
-                controller.offlineSummary = summary
-            }
-            controller.onResume?()
+            handleActive(source: "scenePhase")
         default:
             break
         }
+    }
+
+    /// D-13：除 scenePhase 外再监听 UIKit 通知（与核心版 AppModel 相同）；协调器对重复事件幂等。
+    private func observeApplicationLifecycle() {
+        let center = NotificationCenter.default
+        center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleBackground(source: "didEnterBackground") }
+        }
+        center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.handleActive(source: "didBecomeActive") }
+        }
+    }
+
+    private func handleBackground(source: String) {
+        guard let campaign, case .running = phase else { return }
+        campaign.lifecycle.note("signal", "background via \(source)")
+        campaign.enterBackground()
+    }
+
+    private func handleActive(source: String) {
+        guard let campaign, case .running(let controller) = phase else { return }
+        campaign.lifecycle.note("signal", "active via \(source)")
+        if let summary = campaign.becomeActive(), summary.isWorthShowing {
+            controller.offlineSummary = summary
+            campaign.lifecycle.note("summary", "presented hauled=\(Int(summary.hauledFood.rounded()))")
+        }
+        controller.onResume?()
     }
 }
