@@ -51,6 +51,18 @@ jobs:
           echo "- 标准：$(cat build/sim-standard.txt)；小屏：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "generic/platform=iOS Simulator" -derivedDataPath build/DerivedData             CODE_SIGNING_ALLOWED=NO build-for-testing
 
+      - name: 预热模拟器与 App（冷启动的 XCUITest launch 曾超时，不计入往返轮次）
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          for sim in "$SIM_STANDARD" "$SIM_SMALL"; do
+            xcrun simctl boot "$sim" 2>/dev/null || true
+            xcrun simctl bootstatus "$sim" -b
+            xcrun simctl install "$sim" "$app"
+            xcrun simctl launch "$sim" com.example.CrumbKingdom -ak-ephemeral || true
+            sleep 8
+            xcrun simctl terminate "$sim" com.example.CrumbKingdom || true
+          done
+
       - name: 标准机型 10 轮
         timeout-minutes: 30
         env:
