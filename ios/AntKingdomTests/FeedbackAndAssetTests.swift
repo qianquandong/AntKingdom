@@ -66,6 +66,22 @@ final class FeedbackAndAssetTests: XCTestCase {
         XCTAssertEqual(names, AssetNames.contract)
     }
 
+    /// A01-01：已导入的 9 张运行时 PNG 都能从 App 加载，且按 @3x 解读（144 px = 48 pt，288 px = 96 pt），
+    /// 不会被当成 144 pt 绘制。
+    func testA01ArtLoadsAtItsPointSize() {
+        let expected: [String: CGFloat] = [
+            "terrain_soil_1": 48, "terrain_soil_2": 48, "terrain_soil_3": 48, "terrain_stone": 48,
+            "source_cookie_full": 96, "source_cookie_empty": 96,
+            "source_sugar_full": 48, "source_sugar_empty": 48, "source_sap": 48,
+        ]
+        for (name, points) in expected {
+            let image = UIImage(named: name)
+            XCTAssertNotNil(image, name)
+            XCTAssertEqual(image?.size, CGSize(width: points, height: points), name)
+            XCTAssertEqual(image?.scale, 3, name)
+        }
+    }
+
     /// 每个资源要么完整导入、要么完全缺失（客户端整组用占位），不允许半套资源混用；
     /// 缺音效文件时播放静默跳过。
     func testAssetsAreAllOrNothingAndMissingAudioIsSilent() {

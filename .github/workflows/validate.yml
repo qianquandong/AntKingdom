@@ -25,5 +25,6 @@ jobs:
       - run: python tools/check_strings.py
       - run: python tools/export_strings.py --check
       - run: python tools/export_reference.py --check
+      - run: python tools/import_art.py --check
       - name: 资源就绪报告（信息性；发行前改用 --strict）
         run: set -o pipefail; python tools/check_assets.py | tee -a "$GITHUB_STEP_SUMMARY"

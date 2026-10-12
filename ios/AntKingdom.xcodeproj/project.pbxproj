@@ -12,6 +12,7 @@
 		12666765F469231E02DF90EB /* AntKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */; };
 		1D4ADA72153D3BE4DAA6E59E /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
 		2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
+		2E6660ED50AB9230CD5FA45E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 100B22119B0E7ECA54E370E1 /* Assets.xcassets */; };
 		30A44CFA38615D653C6EC1B8 /* LifecycleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */; };
 		32E363F0E63DA0400130FEDF /* LifecycleRoundTripUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */; };
 		427F6927A4725868A1799876 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A427BAB9E5A691739E2C2A /* Feedback.swift */; };
@@ -61,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		0408614A7C162CB5C9689C1B /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		100B22119B0E7ECA54E370E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1647B87EE8765C3C300BAEDA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackSettingsUITests.swift; sourceTree = "<group>"; };
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		1765348D62BE78E2FA87BDE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				100B22119B0E7ECA54E370E1 /* Assets.xcassets */,
 				DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */,
 			);
 			path = Resources;
@@ -364,6 +367,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E6660ED50AB9230CD5FA45E /* Assets.xcassets in Resources */,
 				6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */,
 				994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */,
 			);
