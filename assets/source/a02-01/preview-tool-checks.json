@@ -1,0 +1,54 @@
+{
+  "tool": "HyperFrames 0.8.149",
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "findings": [
+      {
+        "code": "duplicate_media_discovery_risk",
+        "severity": "warning",
+        "message": "Detected 2 matching img entries with the same source/start/duration."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"content\"> is a timeline element that contains nested <h1>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions."
+      }
+    ]
+  },
+  "validate": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "contrastFailures": 0,
+    "sampled_times": [
+      0.6,
+      1.8,
+      3,
+      4.2,
+      5.4
+    ]
+  },
+  "inspect": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "samples": [
+      0.333,
+      1,
+      1.667,
+      2.333,
+      3,
+      3.667,
+      4.333,
+      5,
+      5.667
+    ]
+  },
+  "warning_review": {
+    "duplicate_media_discovery_risk": "有意同时显示放大与32pt视图；每个图有独立ID；64次seek检查验证每视图只显示一帧。",
+    "nested_structure_needs_subcomposition": "单页静态QA排版与一个6秒时间线，无独立子场景；当前仅资产检视，不导出视频。"
+  },
+  "scope": "Desktop preview only. NOT iOS gameplay or device evidence."
+}
