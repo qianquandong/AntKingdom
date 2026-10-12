@@ -1,0 +1,607 @@
+{
+  "schema_version": 1,
+  "delivery": "A01-02",
+  "version": "1.0.0",
+  "created_at": "2026-10-11",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status": "reviewed",
+  "generation_tool": "image_gen.imagegen (built-in)",
+  "source": "本项目原创文字提示词与本批生成图；未引入第三方素材。AI 生成栅格原稿，不宣称独占版权。",
+  "export": "Sharp 0.35.5：保持比例导出尺寸、编码 sRGB；不绘制、不旋转贴图、不修色或改 alpha。检视图另做排版。",
+  "runtime_mapping_reference": "86a7654:design/asset_runtime_names.json",
+  "assets": [
+    {
+      "id": "room_queen",
+      "group": "room_queen",
+      "mask": null,
+      "master": "assets/source/a01-02/masters/room_queen.png",
+      "output": "assets/game/rooms/queen/room_queen.png",
+      "pixels": [
+        432,
+        288
+      ],
+      "logical_points": [
+        144,
+        96
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-6e5ceadd-b7c3-4960-850b-3218243387de.png",
+      "prompt_id": "queen_cutout",
+      "edit_parent": "reference_sources/room_queen-initial.png",
+      "master_pixels": [
+        1536,
+        1024
+      ],
+      "master_sha256": "ddb3090702b55e351c5de1817dfb85347b39027113aeba531533a345638dab39",
+      "output_sha256": "2fca012d86dd1e5615bf9b6788bd53023513a8453feb0581a7a33a84ded54abc"
+    },
+    {
+      "id": "room_pantry",
+      "group": "room_pantry",
+      "mask": null,
+      "master": "assets/source/a01-02/masters/room_pantry.png",
+      "output": "assets/game/rooms/pantry/room_pantry.png",
+      "pixels": [
+        288,
+        288
+      ],
+      "logical_points": [
+        96,
+        96
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": true,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-8b5fcfc2-9518-402b-be74-20434f9a43de.png",
+      "prompt_id": "pantry",
+      "edit_parent": null,
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "ef4d942b1ebbfd8aa3602fc690ffa2c53aec36b07ebd268718f99883728ee6b2",
+      "output_sha256": "73f522886cf3927dfb5d9ffa025979ba2fa2c58c43a2b4550e196ae000ce5317"
+    },
+    {
+      "id": "terrain_tunnel_masks_0",
+      "group": "terrain_tunnel_masks",
+      "mask": 0,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_0.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_0.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-34bb1c55-b883-4334-9e9a-d1de051a85d9.png",
+      "prompt_id": "mask0",
+      "edit_parent": "reference_sources/tunnel-floor-initial.png",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "0095ea71e29af1ee1ba5eea1a164f4ebdd565d232ecc15827f5942f7331f4b88",
+      "output_sha256": "b10b8294893a3d5bc6dacfc2eec75fc978d94fe0c271b0c3e1a2ac5f823aa9cc"
+    },
+    {
+      "id": "terrain_tunnel_masks_1",
+      "group": "terrain_tunnel_masks",
+      "mask": 1,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_1.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_1.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-273a2b45-e824-4f23-b4ba-2e88a8457bf3.png",
+      "prompt_id": "mask1",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "1dd5793269ab6c9415a20b8f3511048461276568b0237bcec06b72468b3320d8",
+      "output_sha256": "319763162ef8f2c2bb6426fb7ac18e4ed46f6df528e5b2d7322cfb669455c84c"
+    },
+    {
+      "id": "terrain_tunnel_masks_2",
+      "group": "terrain_tunnel_masks",
+      "mask": 2,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_2.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_2.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-dcbd4735-d392-431a-96a4-ccffa65e56be.png",
+      "prompt_id": "mask2",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "efaccabc558f1eec029ffbdc800b76bffa3f0f5f45181bf719becf7460bd76dd",
+      "output_sha256": "5b22274e0d5783fa84700f46c15a178cec7b7eb8614258c6e478914e2bcc68c7"
+    },
+    {
+      "id": "terrain_tunnel_masks_3",
+      "group": "terrain_tunnel_masks",
+      "mask": 3,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_3.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_3.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-fa1af679-cd86-41a5-b43f-068c63f3a964.png",
+      "prompt_id": "mask3",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "4ec35b552eac15c176b2effa66cb7876b044d6320ed973f289b907ad311fd760",
+      "output_sha256": "cb3483ee8e139d691d78f3e018c3a5c32d2ffa5bbe5597e8a7ba9e993f11d708"
+    },
+    {
+      "id": "terrain_tunnel_masks_4",
+      "group": "terrain_tunnel_masks",
+      "mask": 4,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_4.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_4.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-6eaa7ef7-5ecb-45b1-b98d-c25287babaf8.png",
+      "prompt_id": "mask4_revision2",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "4ab60be59ddf29595b6198fabcbfaa00e72ad469b6a10dc6f967603506426ae8",
+      "output_sha256": "92d2150b9d95eea785e8711e9527332eb91affee01deb206b92ab37a831bea9a",
+      "revision": 2
+    },
+    {
+      "id": "terrain_tunnel_masks_5",
+      "group": "terrain_tunnel_masks",
+      "mask": 5,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_5.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_5.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-ce291a82-5365-46d4-bee0-752434b7fadf.png",
+      "prompt_id": "mask5",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "c23e94d781ba10f6c41098aeaa641059e07acc3d83920fc5f447ec61b60f4b4e",
+      "output_sha256": "338043fe2d7420b0b464969edf3b3357347a930f7336e801ae7aed8752dc549b"
+    },
+    {
+      "id": "terrain_tunnel_masks_6",
+      "group": "terrain_tunnel_masks",
+      "mask": 6,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_6.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_6.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-75658726-77ad-4c6f-be0a-ca3b1d4ba682.png",
+      "prompt_id": "mask6",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "55617ca003b6733c278514654edb01dd13c177d04c085df302ea4a0f7d7eeb95",
+      "output_sha256": "ba08efed446f69366aaee1fc31cf2e956fd61336f9aef2536cf494da67585a5f"
+    },
+    {
+      "id": "terrain_tunnel_masks_7",
+      "group": "terrain_tunnel_masks",
+      "mask": 7,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_7.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_7.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-390cff7c-f9e8-43bb-a6ad-eb4dc3aff447.png",
+      "prompt_id": "mask7",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "1cb56940ca999ff7892c7648db5072712657a075cf7d008250a875e6d3b46adb",
+      "output_sha256": "304da241b9a79d5370bdcf2e6debdab3a631de9baac9a168a157f93599963e7d"
+    },
+    {
+      "id": "terrain_tunnel_masks_8",
+      "group": "terrain_tunnel_masks",
+      "mask": 8,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_8.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_8.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-41d7bac7-5017-40e9-81ca-019d4a1b49fc.png",
+      "prompt_id": "mask8",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "20c7bcfdbc303962690c2251a2f706bc5d4ac736cc5f36593d0b1c15f43ee6d1",
+      "output_sha256": "6b4aabc387f60adf222dc5213cc9df2f0c9b566c5d265022bff553830d643e9b"
+    },
+    {
+      "id": "terrain_tunnel_masks_9",
+      "group": "terrain_tunnel_masks",
+      "mask": 9,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_9.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_9.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-fcb9db12-dd3b-4c28-b937-f345a6c3bd0b.png",
+      "prompt_id": "mask9",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "52662ed987637816da733dc9ff4a0992bbf13994f9a72c6126536a4efb10f82f",
+      "output_sha256": "5735c7def6bab4f56bbe4d0a17df3d8c7cb7fbb4eb416753dddbb3f014dbd265"
+    },
+    {
+      "id": "terrain_tunnel_masks_10",
+      "group": "terrain_tunnel_masks",
+      "mask": 10,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_10.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_10.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-e3854913-7993-4ebc-84ff-b85f096eab31.png",
+      "prompt_id": "mask10",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "5eedaf959412a09029ef6a0805d9fc3f6a0e25b3032985d1f89a5432ee3cad1d",
+      "output_sha256": "ec6d232f3464c76f736bc7d0819a64d4eabd72b8dc3b5922c53ad3c5e247d553"
+    },
+    {
+      "id": "terrain_tunnel_masks_11",
+      "group": "terrain_tunnel_masks",
+      "mask": 11,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_11.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_11.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-fdf69557-356a-4510-8851-224203d63e80.png",
+      "prompt_id": "mask11",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "12ec916a6299be37e294ab172007cea656bea13aa5346b6a8987ac3251d21ddb",
+      "output_sha256": "bbd8ab44d13ea0c48b3a348ce972ae31844490c551df5795227be846b5045d67"
+    },
+    {
+      "id": "terrain_tunnel_masks_12",
+      "group": "terrain_tunnel_masks",
+      "mask": 12,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_12.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_12.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-f636281e-7a7f-4aa5-9ee1-2b8f82a784ec.png",
+      "prompt_id": "mask12",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "99c5580358569317853b486cedf6e26de1b85248ddae31649841391c7a081e0a",
+      "output_sha256": "b7d501d85f3cec47213db6cde886888b2156f8a9bb10040011df3a5de8c30d20"
+    },
+    {
+      "id": "terrain_tunnel_masks_13",
+      "group": "terrain_tunnel_masks",
+      "mask": 13,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_13.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_13.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-a553be60-1545-46c5-aa4b-f4e8b944898f.png",
+      "prompt_id": "mask13",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "b5b0fdc66153a4c0bc350e8aacc5326a5a0d797ac932214c6bfa7a4437b4f83a",
+      "output_sha256": "eda5769d286638ae2d38b5ab61479ed899bf17faaef8dd00978b4847e1553a24"
+    },
+    {
+      "id": "terrain_tunnel_masks_14",
+      "group": "terrain_tunnel_masks",
+      "mask": 14,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_14.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_14.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-bb4cfb10-4977-4777-976a-8743aee851eb.png",
+      "prompt_id": "mask14",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "cdfcf796e0d7cf176866362b184d88ac8a0efc619e5b0121a8c3dcabe722cc08",
+      "output_sha256": "2f854105544477903d0a047cbcb186addb3aad834f1518531dcdb489d4184fe5"
+    },
+    {
+      "id": "terrain_tunnel_masks_15",
+      "group": "terrain_tunnel_masks",
+      "mask": 15,
+      "master": "assets/source/a01-02/masters/terrain_tunnel_masks_15.png",
+      "output": "assets/game/terrain/tunnel/terrain_tunnel_masks_15.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "logical_points": [
+        48,
+        48
+      ],
+      "scale": 3,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "alpha": false,
+      "frames": 1,
+      "status": "reviewed",
+      "generated_file": "exec-ff2df2f7-8bd4-46d9-aaf2-2e79e22c3735.png",
+      "prompt_id": "mask15_revision2",
+      "edit_parent": "terrain_tunnel_masks_0",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "master_sha256": "d18c2a609a55271c9b59c7e38717c918a45e21c30302853e7960089c640adebe",
+      "output_sha256": "3a5d6da41a738fc9251f3c8ce6a75200266ed2ede6b2b6a50a2be7f9a86ffd9d",
+      "revision": 2
+    }
+  ],
+  "desktop_review": "尺寸/色彩/透明、16 种方向、128 个通口配对、实际大小和布局检视；运行时/真机 NOT_RUN。",
+  "reference_sources": [
+    {
+      "path": "assets/source/a01-02/reference_sources/room_queen-initial.png",
+      "sha256": "8da159f010e59927b273fa99b4ce40b649fc52ca6ebbf7efc1c325fdf1254868",
+      "use": "前置编辑输入，不进入 App"
+    },
+    {
+      "path": "assets/source/a01-02/reference_sources/tunnel-floor-initial.png",
+      "sha256": "67780b2cc8c0a9481f0d204a89b81b332794535608f6a5704bdc633832ab7191",
+      "use": "前置编辑输入，不进入 App"
+    }
+  ],
+  "integration_issue": "https://github.com/qianquandong/AntKingdom/issues/13"
+}

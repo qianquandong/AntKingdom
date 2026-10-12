@@ -350,15 +350,18 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         pantryNode?.removeFromParent()
         pantryNode = nil
         guard !cells.isEmpty else { return }
-        let node = roomNode(cells: cells, color: UIColor(hex: 0xB98A5E), assetID: "room_pantry")
-        let shelves = CGMutablePath()
-        for dy in [-20.0, 0.0, 20.0] {
-            shelves.move(to: CGPoint(x: -30, y: dy)); shelves.addLine(to: CGPoint(x: 30, y: dy))
+        let node = roomNode(cells: cells, color: UIColor(hex: 0xB98A5E), assetID: AssetNames.pantry)
+        // 占位货架线只在没有正式贴图时画（A01-02：room_pantry 加载后不叠加）
+        if node.childNode(withName: "art") == nil {
+            let shelves = CGMutablePath()
+            for dy in [-20.0, 0.0, 20.0] {
+                shelves.move(to: CGPoint(x: -30, y: dy)); shelves.addLine(to: CGPoint(x: 30, y: dy))
+            }
+            let lines = SKShapeNode(path: shelves)
+            lines.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.5)
+            lines.lineWidth = 2
+            node.addChild(lines)
         }
-        let lines = SKShapeNode(path: shelves)
-        lines.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.5)
-        lines.lineWidth = 2
-        node.addChild(lines)
         entityLayer.addChild(node)
         pantryNode = node
     }

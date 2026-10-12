@@ -200,6 +200,23 @@ jobs:
           ls -la build/videos
           exit $status
 
+      - name: 录制 A01 动态检查（食物源有货→耗尽→补给；慢速平移与缩放）
+        timeout-minutes: 15
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          for scenario in source_cycle_cookie source_cycle_sugar; do
+            bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A01-$scenario.mov" 25 -ak-scenario "$scenario"
+          done
+          xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A01-pan-zoom.mov &
+          rec=$!
+          sleep 2
+          status=0
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData             -only-testing:AntKingdomUITests/ArtPanZoomUITests CODE_SIGNING_ALLOWED=NO test-without-building || status=$?
+          kill -INT "$rec" || true
+          wait "$rec" || true
+          ls -la build/videos
+          exit $status
+
       - name: UI 测试（小屏 iPhone SE，最旧已安装 iOS 运行时）
         timeout-minutes: 20
         run: |
@@ -224,7 +241,7 @@ jobs:
         timeout-minutes: 25
         run: |
           app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
-          for scenario in fresh connected busy pantry_ready replay300 replay600; do
+          for scenario in fresh connected busy pantry_ready pantry_built replay300 replay600 tunnel_gallery; do
             bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "scenario-$scenario" -ak-scenario "$scenario"
           done
           # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算

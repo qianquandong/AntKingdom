@@ -4,6 +4,8 @@
 
 本批使用内置 `image_gen` 生成原稿，Sharp 0.35.5 仅做尺寸导出、sRGB 编码和检视表排版，未在导出时绘画、去背或改色。图内无玩家文字；文案继续由 SwiftUI 使用英文显示。
 
+后续交付：[A01-02 通路与房间](../a01-02/README.md)已提供 16 种通路与 Queen/Pantry，执行 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13)；本页保留首批制作时的交付范围与检视记录。
+
 ## 文件与规格
 
 路径均相对仓库根目录，名称对齐 Claude `86a7654` 的 `design/asset_runtime_names.json` / `AssetNames`，不需要另起别名。所有锚点 `(0.5, 0.5)`，静态单帧，@3x。
