@@ -34,4 +34,22 @@ final class DebugScenarioTests: XCTestCase {
         XCTAssertThrowsError(try session.debugReplaceState { $0.food = 99 })   // 不守恒
         XCTAssertEqual(session.makeState(), before)
     }
+
+    /// A01-02：通路截图场景让四邻遮罩 1–15 全部出现在可见通路格上（N1 E2 S4 W8，N = y − 1）。
+    func testTunnelGalleryCoversEveryReachableMask() throws {
+        let session = GameSession()
+        try DebugScenario.tunnelGallery.apply(to: session)
+        let open = session.colony.walkable
+        XCTAssertTrue(DebugScenario.tunnelGalleryCells.allSatisfy(open.contains), "every gallery cell was dug")
+        var seen = Set<Int>()
+        for p in open where session.map.tile(at: p) == .soil || session.map.tile(at: p) == .tunnel {
+            var mask = 0
+            if open.contains(GridPoint(p.x, p.y - 1)) { mask |= 1 }
+            if open.contains(GridPoint(p.x + 1, p.y)) { mask |= 2 }
+            if open.contains(GridPoint(p.x, p.y + 1)) { mask |= 4 }
+            if open.contains(GridPoint(p.x - 1, p.y)) { mask |= 8 }
+            seen.insert(mask)
+        }
+        XCTAssertEqual(seen, Set(1...15))
+    }
 }

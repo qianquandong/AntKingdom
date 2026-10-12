@@ -15,6 +15,9 @@ public enum DebugScenario: String, CaseIterable, Sendable {
     case replay300
     /// 按 PRD 6.2 固定操作推进到 600 秒（人口与容量上限）
     case replay600
+    /// A01-02 截图：按可挖前沿顺序挖开 16 格，让通路网同时出现四邻遮罩 1–15（直道、转角、三岔、四向、尽头）。
+    /// 遮罩 0（四邻都不通）在游戏中不会出现——每个挖开的格都与已有通路相连
+    case tunnelGallery = "tunnel_gallery"
 
     public func apply(to session: GameSession) throws {
         session.apply(.reset)
@@ -54,8 +57,15 @@ public enum DebugScenario: String, CaseIterable, Sendable {
             try replay(session, until: 300)
         case .replay600:
             try replay(session, until: 600)
+        case .tunnelGallery:
+            for p in DebugScenario.tunnelGalleryCells { session.apply(.debugCompleteCell(p)) }
+            try session.debugReplaceState { $0.hatching = false }
         }
     }
+
+    /// 挖开顺序（每一步都是可挖前沿）
+    public static let tunnelGalleryCells = [(3, 5), (2, 3), (5, 1), (5, 5), (2, 5), (3, 6), (6, 1), (6, 3), (3, 2), (3, 1),
+                                            (1, 5), (6, 2), (2, 6), (4, 6), (1, 4), (6, 4)].map { GridPoint($0.0, $0.1) }
 
     private func connect(_ session: GameSession) {
         for p in ScriptedReplay.actions[30] ?? [] { session.apply(.debugCompleteCell(p)) }

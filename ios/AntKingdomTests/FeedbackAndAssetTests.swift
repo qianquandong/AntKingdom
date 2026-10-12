@@ -66,18 +66,23 @@ final class FeedbackAndAssetTests: XCTestCase {
         XCTAssertEqual(names, AssetNames.contract)
     }
 
-    /// A01-01：已导入的 9 张运行时 PNG 都能从 App 加载，且按 @3x 解读（144 px = 48 pt，288 px = 96 pt），
-    /// 不会被当成 144 pt 绘制。
+    /// A01-01 + A01-02：已导入的 27 张运行时 PNG 都能从 App 加载，且按 @3x 解读
+    /// （144 px = 48 pt，288 px = 96 pt，432×288 px = 144×96 pt），不会被当成像素尺寸的 pt 绘制。
     func testA01ArtLoadsAtItsPointSize() {
-        let expected: [String: CGFloat] = [
-            "terrain_soil_1": 48, "terrain_soil_2": 48, "terrain_soil_3": 48, "terrain_stone": 48,
-            "source_cookie_full": 96, "source_cookie_empty": 96,
-            "source_sugar_full": 48, "source_sugar_empty": 48, "source_sap": 48,
+        var expected: [String: CGSize] = [
+            "terrain_soil_1": .init(width: 48, height: 48), "terrain_soil_2": .init(width: 48, height: 48),
+            "terrain_soil_3": .init(width: 48, height: 48), "terrain_stone": .init(width: 48, height: 48),
+            "source_cookie_full": .init(width: 96, height: 96), "source_cookie_empty": .init(width: 96, height: 96),
+            "source_sugar_full": .init(width: 48, height: 48), "source_sugar_empty": .init(width: 48, height: 48),
+            "source_sap": .init(width: 48, height: 48),
+            "room_queen": .init(width: 144, height: 96), "room_pantry": .init(width: 96, height: 96),
         ]
-        for (name, points) in expected {
+        for mask in 0...15 { expected[AssetNames.tunnel(mask: mask)] = .init(width: 48, height: 48) }
+        XCTAssertEqual(expected.count, 27)
+        for (name, size) in expected {
             let image = UIImage(named: name)
             XCTAssertNotNil(image, name)
-            XCTAssertEqual(image?.size, CGSize(width: points, height: points), name)
+            XCTAssertEqual(image?.size, size, name)
             XCTAssertEqual(image?.scale, 3, name)
         }
     }
