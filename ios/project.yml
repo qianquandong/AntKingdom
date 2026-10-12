@@ -72,6 +72,9 @@ targets:
         PRODUCT_NAME: AntKingdom
         # 仅 iPhone。XcodeGen 的 iOS target 默认 "1,2"，会覆盖项目级设置（D-07），必须在 target 上写明
         TARGETED_DEVICE_FAMILY: "1"
+        # App 图标是 A06 资源，尚未交付：不放占位图标充数。有了 Assets.xcassets 后 actool 会按默认名 AppIcon 查找并报错，
+        # 先置空；A06 app_icon 交付并导入后改回 AppIcon（发行前 check_assets.py --strict 仍会因缺图标失败）
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
   AntKingdomTests:
     type: bundle.unit-test
     platform: iOS

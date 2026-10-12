@@ -100,7 +100,7 @@ def check(plan: dict[str, Path]) -> list[str]:
 
 def write(plan: dict[str, Path]) -> None:
     CATALOG.mkdir(parents=True, exist_ok=True)
-    (CATALOG / "Contents.json").write_text(json.dumps(ROOT_CONTENTS, indent=2) + "\n", encoding="utf-8")
+    (CATALOG / "Contents.json").write_text(json.dumps(ROOT_CONTENTS, indent=2) + "\n", encoding="utf-8", newline="\n")
     for folder in CATALOG.glob("*.imageset"):
         if folder.name[: -len(".imageset")] not in plan:
             shutil.rmtree(folder)
@@ -110,7 +110,7 @@ def write(plan: dict[str, Path]) -> None:
         for old in folder.iterdir():
             old.unlink()
         shutil.copyfile(source, folder / f"{name}@3x.png")
-        (folder / "Contents.json").write_text(json.dumps(imageset_contents(name), indent=2) + "\n", encoding="utf-8")
+        (folder / "Contents.json").write_text(json.dumps(imageset_contents(name), indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def main() -> int:

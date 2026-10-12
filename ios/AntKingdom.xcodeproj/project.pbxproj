@@ -453,7 +453,7 @@
 		26CBCDBD7CD53195CBCDD696 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AntKingdom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -638,7 +638,7 @@
 		922BFB892E4A759EB3F3D0B9 /* TestFlight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AntKingdom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -770,7 +770,7 @@
 		EAD5E11441361E97E73BFFA9 /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = AntKingdom/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
