@@ -97,8 +97,8 @@ final class AntRouteTests: XCTestCase {
         // 改路：把 Pantry 从 (1,2) 移到 (1,4)，路线变化 → 整组重建，没有残留旧节点
         let routesBefore = snapshot.routes
         let foodBefore = s.colony.food
-        s.apply(.movePantry(topLeft: GridPoint(1, 4)))
-        XCTAssertTrue(s.drainEvents().contains(.pantryMoved(topLeft: GridPoint(1, 4))))
+        XCTAssertEqual(s.apply(.movePantry(topLeft: GridPoint(1, 4))), .pantryMoved(topLeft: GridPoint(1, 4)))
+        XCTAssertTrue(s.drainEvents().contains(.pantryMoved))
         snapshot = s.snapshot()
         XCTAssertNotEqual(snapshot.routes, routesBefore)
         XCTAssertEqual(s.colony.food, foodBefore, accuracy: 1e-9, "moving is free; animation adds nothing")
