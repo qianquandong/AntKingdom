@@ -1,0 +1,911 @@
+{
+  "version": "A02-01 1.0.0",
+  "tool": "Playwright / msedge",
+  "browser_version": "155.0.4283.45",
+  "viewport": [
+    1040,
+    680
+  ],
+  "samples_checked": 64,
+  "all_images_decoded": true,
+  "errors": [],
+  "samples": [
+    {
+      "t": 0.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 0.11,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 0.21000000000000002,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 0.31,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 0.41000000000000003,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 0.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 0.61,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 0.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 0.81,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 0.91,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 1.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 1.11,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 1.21,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 1.31,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 1.41,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 1.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 1.61,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 1.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 1.81,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 1.91,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 2.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 2.11,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 2.21,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 2.3099999999999996,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 2.4099999999999997,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 2.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 2.61,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 2.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 2.8099999999999996,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 2.9099999999999997,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 3.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 3.11,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 3.21,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 3.3099999999999996,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 3.4099999999999997,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 3.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 3.61,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 3.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 3.8099999999999996,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 3.9099999999999997,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-ready",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 4.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 4.109999999999999,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 4.21,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 4.31,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 4.41,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 4.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 4.609999999999999,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 4.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 4.81,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 4.91,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 5.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 5.109999999999999,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 5.21,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 5.31,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 5.41,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    },
+    {
+      "t": 5.51,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-2",
+        "carry-native-2",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-2",
+        "walk-native-2"
+      ]
+    },
+    {
+      "t": 5.609999999999999,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 5.71,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-4",
+        "carry-native-4",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-4",
+        "walk-native-4"
+      ]
+    },
+    {
+      "t": 5.81,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 5.91,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-6",
+        "carry-native-6",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-6",
+        "walk-native-6"
+      ]
+    },
+    {
+      "t": 0.26,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-normal",
+        "idle-large-2",
+        "idle-native-2",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 2.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-3",
+        "carry-native-3",
+        "egg-ready",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-3",
+        "walk-native-3"
+      ]
+    },
+    {
+      "t": 4.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-5",
+        "carry-native-5",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-5",
+        "walk-native-5"
+      ]
+    },
+    {
+      "t": 0.01,
+      "visible": [
+        "cargo-large",
+        "cargo-native",
+        "carry-large-1",
+        "carry-native-1",
+        "egg-normal",
+        "idle-large-1",
+        "idle-native-1",
+        "walk-large-1",
+        "walk-native-1"
+      ]
+    }
+  ],
+  "scope": "Desktop seek/frame-visibility check; does not validate iOS code or physical-device performance."
+}

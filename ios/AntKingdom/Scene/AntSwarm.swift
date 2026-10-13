@@ -65,12 +65,13 @@ struct AntSwarm {
         }
     }
 
-    /// 按姿态播帧（idle 4fps，walk/carry 10fps）。缺任何一帧时保持当前图，不混用占位。
+    /// 按姿态播帧（idle 4fps，walk/carry 10fps），帧序 1→N→1 循环。只换纹理：不加 SKAction、
+    /// 不改节点位置（世界坐标只由 place 按路线计算），身体只有一个精灵。
     private func animate(_ ant: Ant, pose: AssetNames.AntPose, time: TimeInterval) {
-        guard let body = ant.body else { return }
+        guard let body = ant.body, let frames = ArtLibrary.antFrames()?[pose], !frames.isEmpty else { return }
         let fps = pose == .idle ? 4.0 : 10.0
-        let frame = Int((time + ant.phase) * fps) % pose.frameCount + 1
-        if let texture = ArtLibrary.texture(AssetNames.ant(pose, frame: frame)) { body.texture = texture }
+        let index = Int(max(0, (time + ant.phase) * fps)) % frames.count
+        if body.texture !== frames[index] { body.texture = frames[index] }
     }
 
     private func place(_ ant: Ant, fraction: Double, carrying: Bool, returning: Bool) {
@@ -128,8 +129,10 @@ struct AntSwarm {
     private func makeAnt(layer: SKNode, route: Int, phase: Double, lateral: CGFloat) -> Ant {
         let node = SKNode()
         var body: SKSpriteNode?
-        if let texture = ArtLibrary.texture(AssetNames.ant(.walk, frame: 1)) {
-            let sprite = SKSpriteNode(texture: texture, size: CGSize(width: 32, height: 32))
+        if let frames = ArtLibrary.antFrames(), let first = frames[.walk]?.first {
+            // 96 px @3x → 32 pt，中心锚点，朝右（与占位相同的朝向约定）
+            let sprite = SKSpriteNode(texture: first, size: CGSize(width: 32, height: 32))
+            sprite.name = "body"
             node.addChild(sprite)
             body = sprite
         } else {
@@ -149,6 +152,7 @@ struct AntSwarm {
             antennae.lineWidth = 1
             node.addChild(antennae)
         }
+        // 货物独立一层：父节点局部 (11,0)pt，随父节点一起旋转（不再按世界坐标旋转）；身体帧里没有食物
         let cargo: SKNode
         if let texture = ArtLibrary.texture(AssetNames.cargo) {
             cargo = SKSpriteNode(texture: texture, size: CGSize(width: 16, height: 16))
@@ -161,6 +165,8 @@ struct AntSwarm {
         }
         cargo.position = CGPoint(x: 11, y: 0)
         cargo.isHidden = true
+        cargo.name = "cargo"
+        cargo.zPosition = 1
         node.addChild(cargo)
         layer.addChild(node)
         return Ant(node: node, body: body, cargo: cargo, route: route, phase: phase, lateral: lateral)

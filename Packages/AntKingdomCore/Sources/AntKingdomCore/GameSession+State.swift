@@ -10,7 +10,8 @@ extension GameSession {
             mapId: map.id, mapVersion: map.version,
             dugCells: dug,
             digTaps: digTaps.keys.sortedByKey().map { GameState.DigTap(cell: $0, taps: digTaps[$0]!) },
-            food: colony.food, ants: colony.ants, larvae: colony.larvae, hatching: colony.hatching,
+            food: colony.food, ants: colony.ants, larvae: colony.larvae, eggSlots: colony.eggs.map(\.slot),
+            hatching: colony.hatching,
             pantryTopLeft: colony.pantry.min(by: GridPoint.keyLess),
             patchRemaining: patches,
             refillLeft: colony.refillLeft,
@@ -32,6 +33,7 @@ extension GameSession {
         colony.food = state.food
         colony.ants = state.ants
         colony.larvae = state.larvae
+        colony.restoreEggSlots(state.eggSlots)
         colony.hatching = state.hatching
         colony.elapsed = state.elapsed
         colony.refillLeft = state.refillLeft

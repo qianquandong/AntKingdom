@@ -9,9 +9,17 @@ xcrun simctl boot "$udid" 2>/dev/null || true
 xcrun simctl bootstatus "$udid" -b
 xcrun simctl install "$udid" "$app"
 xcrun simctl terminate "$udid" "$bundle" 2>/dev/null || true
-xcrun simctl io "$udid" recordVideo --codec h264 --force "$out" &
+log="$(mktemp)"
+xcrun simctl io "$udid" recordVideo --codec h264 --force "$out" >"$log" 2>&1 &
 rec=$!
-sleep 2
+# 等录像真正开始再启动 App：runner 繁忙时 recordVideo 可能晚十几秒才出帧（run 38212447159 的 eggs_two 录像
+# 首帧时第一枚卵已经孵化）。最多等 30 秒
+for _ in $(seq 1 60); do
+  grep -q "Recording started" "$log" && break
+  sleep 0.5
+done
+cat "$log"
+sleep 1
 xcrun simctl launch "$udid" "$bundle" "$@" || echo "launch failed"
 sleep "$seconds"
 xcrun simctl terminate "$udid" "$bundle" 2>/dev/null || true

@@ -32,6 +32,7 @@ struct AntKingdomApp: App {
 /// - `-ak-reset-save`：启动前删除本机存档，之后照常持久化（杀进程恢复测试用）
 /// - `-ak-reduce-motion`：强制“减少动态”（模拟器测试 QA T31，不改系统设置）
 /// - `-ak-gallery`：显示通路遮罩/土层逐格检视页（A01-02 美术核对），不进入游戏
+/// - `-ak-zoom <倍数>`：初始镜头缩放（钳制到最小总览 / 最大 1.6 倍），美术截图用；UI 测试的捏合手势在 CI 上缩小不可靠
 struct LaunchOptions {
     var scenario: DebugScenario?
     var ephemeral = false
@@ -39,6 +40,7 @@ struct LaunchOptions {
     var resetSave = false
     var reduceMotion = false
     var gallery = false
+    var zoom: Double?
 
     init(arguments: [String]) {
         func value(after flag: String) -> String? {
@@ -51,6 +53,7 @@ struct LaunchOptions {
         resetSave = arguments.contains("-ak-reset-save")
         reduceMotion = arguments.contains("-ak-reduce-motion")
         gallery = arguments.contains("-ak-gallery")
+        zoom = value(after: "-ak-zoom").flatMap(Double.init)
     }
 }
 #endif

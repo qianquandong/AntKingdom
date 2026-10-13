@@ -25,6 +25,8 @@ public struct SessionSnapshot: Equatable, Sendable {
     public let populationCap: Int
     /// 每个卵的剩余秒数
     public let eggs: [Double]
+    /// 与 eggs 一一对应的固定槽（D-16）：表现层按槽放卵，孵化只移除那一枚
+    public let eggSlots: [Int]
     public let hatching: Bool
     public let isStorageFull: Bool
     public let activeSourceId: String?
@@ -67,7 +69,7 @@ extension GameSession {
             .allSatisfy { ($0.remaining ?? 0) <= Rules.epsilon }
         return SessionSnapshot(
             food: colony.food, capacity: colony.capacity, ants: colony.ants, populationCap: Rules.populationCap,
-            eggs: colony.larvae, hatching: colony.hatching, isStorageFull: colony.isStorageFull,
+            eggs: colony.larvae, eggSlots: colony.eggs.map(\.slot), hatching: colony.hatching, isStorageFull: colony.isStorageFull,
             activeSourceId: active, expectedFoodPerMinute: plan.rate * 60,
             averageTripSeconds: plan.averageTripSeconds, routes: routes, loads: plan.loads,
             busyCells: plan.busyCells, sources: sources, walkable: colony.walkable, pantryCells: colony.pantry,

@@ -34,7 +34,11 @@ jobs:
   d13-roundtrips:
     name: D-13 前后台往返回归（标准与小屏各 10 轮 × 65 秒）
     # 每轮重启到同一可结算状态；任何一轮失败都保留日志，不重跑、不删轮（Issue #11）
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/claude/d13-lifecycle'
+    # 新美术候选线 claude/a02-01-art 的每个候选 SHA 也跑（Codex 10-12：不能拿旧 tag 的 20 轮代替新候选）
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.ref == 'refs/heads/claude/d13-lifecycle' ||
+      github.ref == 'refs/heads/claude/a02-01-art'
     runs-on: macos-15
     timeout-minutes: 80
     steps:
@@ -125,7 +129,8 @@ jobs:
   ios-simulator:
     name: Xcode 构建与模拟器测试（macOS）
     runs-on: macos-15
-    timeout-minutes: 75
+    # A01/A02/D-16 证据（录像、小屏、两轮截图）加入后整条约 110 分钟（38328225956）；原 75 分钟上限放宽，不删步骤
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
 
@@ -186,6 +191,41 @@ jobs:
           fi
           ls -la build/attachments || true
 
+      # 交付包放在证据步骤之前：录像 / 小屏 / 截图再长也不会挡住产物上传（CI 38328225956 在 75 分钟上限处被终止，打包被跳过）
+      - name: TestFlight 配置无签名编译（真机架构；调试入口已剔除、未接广告/内购）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail   # 检查失败不能被 tee 吞掉
+          # 版本/构建号用 project.yml 中固定的值（交付包与源码 tag 一致），不再用 run_number 覆盖
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -configuration TestFlight -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-release \
+            CODE_SIGNING_ALLOWED=NO build
+          bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app \
+            | tee build/release-check.md >> "$GITHUB_STEP_SUMMARY"
+          cat build/release-check.md
+
+      - name: 打包无签名构建产物（仅构建证据，不能直接安装）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail
+          # Debug 诊断版（含生命周期日志与 Copy Lifecycle Log），真机架构、无签名
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -configuration Debug -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-device \
+            CODE_SIGNING_ALLOWED=NO build
+          bash ci/package-unsigned.sh build/unsigned \
+            build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app TestFlight \
+            build/DerivedData-device/Build/Products/Debug-iphoneos/AntKingdom.app Debug
+          cat build/unsigned/BUILD-INFO.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 上传无签名构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: antkingdom-unsigned-${{ github.sha }}
+          path: build/unsigned
+          retention-days: 90
+
       - name: 录制 Pantry 操作录像（模拟器）
         timeout-minutes: 12
         run: |
@@ -195,6 +235,26 @@ jobs:
           sleep 2
           status=0
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom             -destination "platform=iOS Simulator,id=$SIM_STANDARD"             -derivedDataPath build/DerivedData             -only-testing:AntKingdomUITests/PantryFlowUITests             CODE_SIGNING_ALLOWED=NO test-without-building || status=$?
+          kill -INT "$rec" || true
+          wait "$rec" || true
+          ls -la build/videos
+          exit $status
+
+      - name: 录制 A02 动作检查（工蚁循环与装卸、卵两态与孵化）
+        timeout-minutes: 15
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          # eggs_two：两枚卵、孵化订单关闭——已有卵照常倒计时，最后 2 秒切 ready，到点孵化，不新增卵
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-eggs_two.mov" 32 -ak-scenario eggs_two
+          # D-16 E02：左卵 15 秒孵化后新订单占空出的左槽，右卵留在原槽（25 秒孵化后再补右槽）
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/D16-eggs_refill.mov" 32 -ak-scenario eggs_refill
+          # A02-T03：唯一蜿蜒路线，带货一程东南西北四向，总览固定镜头
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-ant_four_way.mov" 30 -ak-scenario ant_four_way -ak-zoom 0
+          xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A02-ant-motion.mov &
+          rec=$!
+          sleep 2
+          status=0
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData -only-testing:AntKingdomUITests/AntMotionUITests CODE_SIGNING_ALLOWED=NO test-without-building || status=$?
           kill -INT "$rec" || true
           wait "$rec" || true
           ls -la build/videos
@@ -218,16 +278,28 @@ jobs:
           exit $status
 
       - name: UI 测试（小屏 iPhone SE，最旧已安装 iOS 运行时）
-        timeout-minutes: 20
+        # A01 美术截图/平移录像加入后，这一步常规耗时 15–17 分钟（run 38205368547 / 38206627796 / 38206625111），
+        # m5-ads run 38206933405 在 runner 繁忙时超过原 20 分钟上限被终止；放宽上限，不跳过任何用例
+        timeout-minutes: 35
         run: |
           small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
           echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
+          echo "SIM_SMALL=$small" >> "$GITHUB_ENV"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$small" \
             -derivedDataPath build/DerivedData \
             -resultBundlePath build/AntKingdom-small.xcresult \
             -only-testing:AntKingdomUITests \
             CODE_SIGNING_ALLOWED=NO test
+
+      - name: 录制 D-16 卵槽位（小屏 E01 / E02）
+        if: always() && env.SIM_SMALL != ''
+        timeout-minutes: 10
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          mkdir -p build/videos
+          bash ci/record-scenario.sh "$SIM_SMALL" "$app" "build/videos/D16-eggs_two-small.mov" 32 -ak-scenario eggs_two
+          bash ci/record-scenario.sh "$SIM_SMALL" "$app" "build/videos/D16-eggs_refill-small.mov" 32 -ak-scenario eggs_refill
 
       - name: 导出小屏 UI 截图附件
         if: always()
@@ -246,18 +318,6 @@ jobs:
           done
           # C06：先在“15 分钟前”保存 connected 场景，再冷启动，走真实离线结算
           bash ci/capture-screenshots.sh "$SIM_STANDARD" "$app" build/screenshots "offline-900s" -ak-scenario connected -ak-away 900
-
-      - name: TestFlight 配置无签名编译（真机架构；调试入口已剔除、未接广告/内购）
-        timeout-minutes: 20
-        run: |
-          set -o pipefail   # 检查失败不能被 tee 吞掉
-          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
-            -configuration TestFlight -destination "generic/platform=iOS" \
-            -derivedDataPath build/DerivedData-release \
-            CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO build
-          bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app \
-            | tee build/release-check.md >> "$GITHUB_STEP_SUMMARY"
-          cat build/release-check.md
 
       - name: 上传证据
         if: always()

@@ -20,12 +20,13 @@
 | [A00 主界面样张](assets/source/keyframe/README.md) | 英文主界面预览、无文字底稿、提示词与接入约束；draft |
 | [A01-01 正式资源首批](assets/source/a01-01/README.md) | 9 张地形/食物源 PNG、原稿、提示词、QA 与接入标准；reviewed |
 | [A01-02 通路与房间](assets/source/a01-02/README.md) | 16 种通路 + Queen/Pantry，18 PNG、连接布局检视；[Claude 接入 #13](https://github.com/qianquandong/AntKingdom/issues/13) |
+| [A02-01 工蚁、货物与卵](assets/source/a02-01/README.md) | 14 张工蚁动作帧 + 货物 + 卵两态，17 PNG、动作检视与接入验收；[Claude 接入 #17](https://github.com/qianquandong/AntKingdom/issues/17) |
 | [资源清单](design/asset_manifest.json) | Codex 待制作资源 ID 与交付状态 |
 | [测试计划](docs/QA_TEST_PLAN.md) | 48 条客户端用例、真机矩阵、观察试玩、发行门槛 |
 | [正式版增量](docs/RELEASE_SCOPE.md) | 三个小地图、一个外观商品、一个可选奖励广告 |
 | [App Store 手册](docs/APP_STORE_RUNBOOK.md) | 签名、TestFlight、隐私/IAP、商店资料、提审与上线后处理 |
 
-Claude 下一项优先执行 [D-13 / Issue #11](https://github.com/qianquandong/AntKingdom/issues/11)：先定位并修复离线收益漏算，完成规定回归，交付可安装的核心 iPhone 测试包。要求见 [本轮交接](docs/reviews/2026-10-11-d13-handoff.md)，此前评审保留在 [Issue #6 交接](docs/reviews/2026-10-11-claude-review.md)。Codex 两批累计交付 27 张环境/房间贴图，8 个资源组 reviewed；Claude 按 [Issue #13](https://github.com/qianquandong/AntKingdom/issues/13) 独立接入。地表、角色、UI/音频等其余资源以及运行时/真机验收尚未完成。
+Claude 下一项按 [最新复核与验收](docs/reviews/2026-10-11-followup-review.md) / [Issue #16](https://github.com/qianquandong/AntKingdom/issues/16) 执行：D-13 原问题代码/模拟器测试通过，继续 Issue #11 的签名安装与真机包交付；发行支线优先修 D-14 广告暂停收益漏洞（含两条复现测试），美术修 D-15 食物源方板并补两 scheme 验收。A01 两批 27 张已在核心分支接入，正式批准和真机验收仍未完成。A02-01 新交付 17 张，累计制作 44 张 / 11 组；按 Issue #17 接入，不阻塞核心安装包。
 
 ## 核心规则资料
 

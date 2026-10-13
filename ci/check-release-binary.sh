@@ -34,7 +34,7 @@ row "UIDeviceFamily" "$family" "$([ "$family" = "Array{1}" ] && echo PASS || ech
 row "Bundle ID" "$(value CFBundleIdentifier)" "PASS"
 
 # 调试入口（启动参数、探针、调试菜单）只能存在于 Debug 构建
-for marker in "-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "Load scenario: "; do
+for marker in "-ak-scenario" "-ak-away" "-ak-reset-save" "-ak-reduce-motion" "debug.probe" "debug.lifecycle" "-ak-gallery" "-ak-zoom" "Load scenario: "; do
   if has_string "$marker"; then
     row "无调试入口：$marker" "found" "FAIL"
   else

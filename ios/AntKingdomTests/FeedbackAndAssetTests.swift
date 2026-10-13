@@ -1,5 +1,6 @@
 import AntKingdomCore
 import UIKit
+import SpriteKit
 import XCTest
 @testable import AntKingdom
 
@@ -84,6 +85,69 @@ final class FeedbackAndAssetTests: XCTestCase {
             XCTAssertNotNil(image, name)
             XCTAssertEqual(image?.size, size, name)
             XCTAssertEqual(image?.scale, 3, name)
+        }
+    }
+
+    /// A02-T01：A02-01 的 17 张都能加载，按 @3x 解读（工蚁 96 px = 32 pt、货物 48 px = 16 pt、卵 96 px = 32 pt，
+    /// 卵节点另按 24 pt 显示）；14 帧身体整组可用，卵两态都在。文件与 metadata 的 SHA-256 由 import_art.py --check 校验。
+    func testA02ArtLoadsAsCompleteGroups() throws {
+        var expected: [String: CGSize] = [AssetNames.cargo: .init(width: 16, height: 16)]
+        for pose in AssetNames.AntPose.allCases {
+            for frame in 1...pose.frameCount { expected[AssetNames.ant(pose, frame: frame)] = .init(width: 32, height: 32) }
+        }
+        expected[AssetNames.egg(ready: false)] = .init(width: 32, height: 32)
+        expected[AssetNames.egg(ready: true)] = .init(width: 32, height: 32)
+        XCTAssertEqual(expected.count, 17)
+        for (name, size) in expected {
+            let image = UIImage(named: name)
+            XCTAssertNotNil(image, name)
+            XCTAssertEqual(image?.size, size, name)
+            XCTAssertEqual(image?.scale, 3, name)
+        }
+        let frames = try XCTUnwrap(ArtLibrary.antFrames(), "all 14 body frames load as one group")
+        XCTAssertEqual(frames[.idle]?.count, 2)
+        XCTAssertEqual(frames[.walk]?.count, 6)
+        XCTAssertEqual(frames[.carry]?.count, 6)
+        XCTAssertNotNil(ArtLibrary.eggTextures())
+    }
+
+    /// A02-T03（结构部分）：每只蚂蚁只有一个身体精灵和一份货物；货物在父节点局部 (11,0)pt、随父节点旋转；
+    /// 反复更新不积累节点或 SKAction；满仓待命时不显示货物。收入不由表现层决定（AntSwarm 不改会话）。
+    func testAntsHaveOneBodyAndOneCargoAndDoNotAccumulateNodes() throws {
+        let session = GameSession(map: .backyard)
+        try DebugScenario.pantryBuilt.apply(to: session)
+        _ = session.drainEvents()
+        let before = session.makeState()
+        let snapshot = session.snapshot()
+        XCTAssertFalse(snapshot.routes.isEmpty)
+        let layer = SKNode()
+        var swarm = AntSwarm()
+        var sawCargo = false
+        for step in 0..<400 {
+            swarm.update(layer: layer, snapshot: snapshot, queen: session.map.queenCells, time: Double(step) * 0.05)
+            XCTAssertEqual(layer.children.count, snapshot.ants)
+            for ant in layer.children {
+                XCTAssertEqual(ant.children.filter { $0.name == "body" }.count, 1)
+                let cargo = try XCTUnwrap(ant.childNode(withName: "cargo"))
+                XCTAssertEqual(ant.children.filter { $0.name == "cargo" }.count, 1)
+                XCTAssertEqual(ant.children.count, 2, "no placeholder parts next to the formal body")
+                XCTAssertEqual(cargo.position, CGPoint(x: 11, y: 0))
+                XCTAssertEqual(cargo.zRotation, 0, "cargo turns with its parent, not on its own")
+                XCTAssertFalse(ant.hasActions())
+                XCTAssertEqual((ant.childNode(withName: "body") as? SKSpriteNode)?.size, CGSize(width: 32, height: 32))
+                if !cargo.isHidden { sawCargo = true }
+            }
+        }
+        XCTAssertTrue(sawCargo, "some ant carries food along the route")
+        XCTAssertEqual(session.makeState(), before, "animation never changes the economy")
+
+        let capacity = session.colony.capacity
+        try session.debugReplaceState { $0.hauled += capacity - $0.food; $0.food = capacity }
+        let full = session.snapshot()
+        XCTAssertTrue(full.isStorageFull)
+        swarm.update(layer: layer, snapshot: full, queen: session.map.queenCells, time: 3)
+        for ant in layer.children where ant.childNode(withName: "cargo") != nil {
+            XCTAssertTrue(ant.childNode(withName: "cargo")?.isHidden ?? false, "waiting at full storage carries nothing")
         }
     }
 
