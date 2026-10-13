@@ -23,3 +23,4 @@ jobs:
       - run: python tools/economy_sim.py --check
       - run: python tools/check_map.py
       - run: python tools/check_strings.py
+      - run: python tools/export_strings.py --check

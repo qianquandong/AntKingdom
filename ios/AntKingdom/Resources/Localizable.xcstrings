@@ -1,0 +1,666 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "action.build_pantry" : {
+      "comment" : "max 24 chars; 建造按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build Pantry"
+          }
+        }
+      }
+    },
+    "action.cancel" : {
+      "comment" : "max 16 chars; 取消按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "action.confirm" : {
+      "comment" : "max 16 chars; 确认按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
+    },
+    "action.move" : {
+      "comment" : "max 16 chars; 移动按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move"
+          }
+        }
+      }
+    },
+    "action.pause_hatching" : {
+      "comment" : "max 24 chars; 暂停按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause Hatching"
+          }
+        }
+      }
+    },
+    "action.reset" : {
+      "comment" : "max 20 chars; 重置按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Over"
+          }
+        }
+      }
+    },
+    "action.resume_hatching" : {
+      "comment" : "max 24 chars; 恢复按钮",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resume Hatching"
+          }
+        }
+      }
+    },
+    "cost.pantry" : {
+      "comment" : "max 16 chars; 建造费用",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "50 Food"
+          }
+        }
+      }
+    },
+    "dialog.reset" : {
+      "comment" : "max 80 chars; 重置确认",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start over? Your colony will be reset."
+          }
+        }
+      }
+    },
+    "error.not_enough_food" : {
+      "comment" : "max 40 chars; 余额不足",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You need 50 Food."
+          }
+        }
+      }
+    },
+    "error.pantry_space" : {
+      "comment" : "max 64 chars; 非法建仓",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a clear 2 x 2 space."
+          }
+        }
+      }
+    },
+    "error.save" : {
+      "comment" : "max 80 chars; 存档错误",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save unavailable. Try again or start over."
+          }
+        }
+      }
+    },
+    "event.food_arrived" : {
+      "comment" : "max 48 chars; 固定补给",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fresh food has arrived!"
+          }
+        }
+      }
+    },
+    "feedback.connected" : {
+      "comment" : "max 32 chars; 接通反馈",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food connected!"
+          }
+        }
+      }
+    },
+    "feedback.route_better" : {
+      "comment" : "max 48 chars; 真实改善",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faster route! +{percent}% Food/min"
+          }
+        }
+      }
+    },
+    "game.title" : {
+      "comment" : "max 24 chars; 工作名",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crumb Kingdom"
+          }
+        }
+      }
+    },
+    "goal.prototype_complete" : {
+      "comment" : "max 64 chars; 验证版终点",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Colony complete! Try a new layout."
+          }
+        }
+      }
+    },
+    "hud.ants" : {
+      "comment" : "max 20 chars; 成年蚂蚁",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ants: {ants}/{cap}"
+          }
+        }
+      }
+    },
+    "hud.eggs" : {
+      "comment" : "max 16 chars; 孵化数量",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eggs: {eggs}"
+          }
+        }
+      }
+    },
+    "hud.food" : {
+      "comment" : "max 28 chars; 库存",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food: {food}/{capacity}"
+          }
+        }
+      }
+    },
+    "offline.note" : {
+      "comment" : "max 64 chars; 离线规则",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Up to 1 hour at 25% transport rate."
+          }
+        }
+      }
+    },
+    "offline.summary" : {
+      "comment" : "max 64 chars; 显示实际搬入",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your ants brought in {food} Food."
+          }
+        }
+      }
+    },
+    "offline.title" : {
+      "comment" : "max 24 chars; 离线结果",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome Back"
+          }
+        }
+      }
+    },
+    "resource.food" : {
+      "comment" : "max 12 chars; 资源",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food"
+          }
+        }
+      }
+    },
+    "room.pantry" : {
+      "comment" : "max 16 chars; 房间",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantry"
+          }
+        }
+      }
+    },
+    "room.queen" : {
+      "comment" : "max 24 chars; 房间",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Queen Chamber"
+          }
+        }
+      }
+    },
+    "settings.haptics" : {
+      "comment" : "max 16 chars; 触觉",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haptics"
+          }
+        }
+      }
+    },
+    "settings.off" : {
+      "comment" : "max 8 chars; 关闭",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        }
+      }
+    },
+    "settings.on" : {
+      "comment" : "max 8 chars; 开启",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On"
+          }
+        }
+      }
+    },
+    "settings.sound" : {
+      "comment" : "max 16 chars; 音效",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound"
+          }
+        }
+      }
+    },
+    "settings.title" : {
+      "comment" : "max 20 chars; 设置",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "source.cookie" : {
+      "comment" : "max 24 chars; 食物",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cookie Crumb"
+          }
+        }
+      }
+    },
+    "source.sap" : {
+      "comment" : "max 24 chars; 食物",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sap Root"
+          }
+        }
+      }
+    },
+    "source.sugar" : {
+      "comment" : "max 24 chars; 食物",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugar Drop"
+          }
+        }
+      }
+    },
+    "source.surface" : {
+      "comment" : "max 24 chars; 兜底",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Surface Foraging"
+          }
+        }
+      }
+    },
+    "stat.expected" : {
+      "comment" : "max 32 chars; 满仓时仍可查看",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated transport rate"
+          }
+        }
+      }
+    },
+    "stat.rate" : {
+      "comment" : "max 24 chars; 预计能力",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "{rate} Food/min"
+          }
+        }
+      }
+    },
+    "stat.remaining" : {
+      "comment" : "max 24 chars; 源余量",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remaining: {food}"
+          }
+        }
+      }
+    },
+    "stat.trip" : {
+      "comment" : "max 24 chars; 完整往返",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trip: {seconds}s"
+          }
+        }
+      }
+    },
+    "stat.trip_help" : {
+      "comment" : "max 64 chars; 解释",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Round trip, including loading and unloading."
+          }
+        }
+      }
+    },
+    "state.busy" : {
+      "comment" : "max 24 chars; 拥堵",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busy tunnel"
+          }
+        }
+      }
+    },
+    "state.connected" : {
+      "comment" : "max 20 chars; 源状态",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected"
+          }
+        }
+      }
+    },
+    "state.empty_patch" : {
+      "comment" : "max 28 chars; 补给为空",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for food"
+          }
+        }
+      }
+    },
+    "state.hatching" : {
+      "comment" : "max 28 chars; 卵状态",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hatching: {seconds}s"
+          }
+        }
+      }
+    },
+    "state.no_route" : {
+      "comment" : "max 24 chars; 无路线",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not connected"
+          }
+        }
+      }
+    },
+    "state.storage_full" : {
+      "comment" : "max 24 chars; 满仓",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage full"
+          }
+        }
+      }
+    },
+    "tile.soil" : {
+      "comment" : "max 12 chars; 土格",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soil"
+          }
+        }
+      }
+    },
+    "tile.stone" : {
+      "comment" : "max 12 chars; 石头",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stone"
+          }
+        }
+      }
+    },
+    "tutorial.bypass" : {
+      "comment" : "max 64 chars; 繁忙时条件提示",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dig another path around the busy tunnel."
+          }
+        }
+      }
+    },
+    "tutorial.dig" : {
+      "comment" : "max 64 chars; 第一步",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the soil to reach the crumb."
+          }
+        }
+      }
+    },
+    "tutorial.hatching" : {
+      "comment" : "max 64 chars; 孵化说明",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New ants hatch as you gather food."
+          }
+        }
+      }
+    },
+    "tutorial.move" : {
+      "comment" : "max 64 chars; 移动说明",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move your Pantry closer to the food."
+          }
+        }
+      }
+    },
+    "tutorial.pantry" : {
+      "comment" : "max 64 chars; 建仓说明",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear a 2 x 2 space for your Pantry."
+          }
+        }
+      }
+    },
+    "tutorial.save_food" : {
+      "comment" : "max 80 chars; 攒钱说明",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause hatching to save food for a Pantry."
+          }
+        }
+      }
+    },
+    "world.backyard" : {
+      "comment" : "max 20 chars; 地图",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backyard"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
