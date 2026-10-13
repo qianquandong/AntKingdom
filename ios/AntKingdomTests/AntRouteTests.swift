@@ -68,8 +68,9 @@ final class AntRouteTests: XCTestCase {
                     carried.insert(direction)
                     // 货物的世界位置在身体中心前方 11 pt（嘴前），不绕错轴
                     let world = layer.convert(cargo.position, from: ant)
-                    XCTAssertEqual(world.x, ant.position.x + facing.dx * 11, accuracy: 1e-6)
-                    XCTAssertEqual(world.y, ant.position.y + facing.dy * 11, accuracy: 1e-6)
+                    // SpriteKit 的节点变换是单精度：允许 0.01 pt 误差（远小于 1 px）
+                    XCTAssertEqual(world.x, ant.position.x + facing.dx * 11, accuracy: 0.01)
+                    XCTAssertEqual(world.y, ant.position.y + facing.dy * 11, accuracy: 0.01)
                 }
                 checked += 1
             }
@@ -89,7 +90,8 @@ final class AntRouteTests: XCTestCase {
         swarm.update(layer: layer, snapshot: snapshot, queen: s.map.queenCells, time: 0)
         assertStructure(layer, ants: snapshot.ants)
         // 取消移动：会话没有收到命令，路线不变 → 节点不重建
-        let nodes = layer.children.map(ObjectIdentifier.init)
+        let oldNodes = layer.children                       // 强引用：避免已释放对象的地址被新节点复用
+        let nodes = oldNodes.map(ObjectIdentifier.init)
         for step in 1...20 {
             swarm.update(layer: layer, snapshot: snapshot, queen: s.map.queenCells, time: Double(step) * 0.1)
         }
@@ -106,7 +108,10 @@ final class AntRouteTests: XCTestCase {
             swarm.update(layer: layer, snapshot: snapshot, queen: s.map.queenCells, time: 3 + Double(step) * 0.1)
             assertStructure(layer, ants: snapshot.ants)
         }
-        XCTAssertTrue(Set(layer.children.map(ObjectIdentifier.init)).isDisjoint(with: nodes), "old nodes removed")
+        for old in oldNodes {
+            XCTAssertNil(old.parent, "old nodes removed")
+            XCTAssertFalse(layer.children.contains { $0 === old }, "no old node reused")
+        }
         // 满仓：运输待命，没有任何蚂蚁带货
         let capacity = s.colony.capacity
         try s.debugReplaceState { $0.hauled += capacity - $0.food; $0.food = capacity }
