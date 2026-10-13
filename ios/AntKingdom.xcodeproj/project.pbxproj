@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E3755C9645B6886194234D /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E9C27AC7A4781AED0D672 /* DebugMenu.swift */; };
 		010B14CFBC1A39C86BAC8FC6 /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC52BE7B1F9722360442BFE /* MapGeometry.swift */; };
+		02DA7268F30200AB391B6858 /* ReleaseEggSlotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */; };
 		0B11F8333EB64F9ACAAB971F /* ArtLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5085D0CA597EE4F428448C80 /* ArtLibrary.swift */; };
 		10A62465E167FAA90F1D7629 /* EggClutch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B2B75E2C2BCE116751550 /* EggClutch.swift */; };
 		12666765F469231E02DF90EB /* AntKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */; };
@@ -80,6 +81,7 @@
 		B9F249B36B03BDDE779847E1 /* FakeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955E2CBA586A7E5EF6F6F66E /* FakeStoreService.swift */; };
 		BD5A2FE11CEE265B2A7CD89E /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = A28F9389B4FFAA909B610249 /* Products.storekit */; };
 		BD7A72609D2B40466C9E1FE3 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
+		BDA2342C69EC0ADCC11312D1 /* ReleaseArtAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */; };
 		BF5F335F58B135CA24F5BFAF /* ArtPanZoomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C13CEC73D3BE9A762990F3 /* ArtPanZoomUITests.swift */; };
 		C594CD38C90D5F781A213B5E /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		C7193A8A6B4E8803646867A2 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
@@ -202,6 +204,7 @@
 		B8D22135A456EE1FB87CC7DA /* AssetNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNames.swift; sourceTree = "<group>"; };
 		B9DD89CAE54804CF68A354EB /* CrumbKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrumbKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignBundleTests.swift; sourceTree = "<group>"; };
+		BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseEggSlotUITests.swift; sourceTree = "<group>"; };
 		BCC52BE7B1F9722360442BFE /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextPanels.swift; sourceTree = "<group>"; };
 		C1532A884C9E33DBED640147 /* DebugFixtureChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFixtureChapter.swift; sourceTree = "<group>"; };
@@ -215,6 +218,7 @@
 		DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtScreenshotsUITests.swift; sourceTree = "<group>"; };
 		DBC091470391519D8FCAD1DF /* TunnelMaskGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelMaskGalleryView.swift; sourceTree = "<group>"; };
 		DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseArtAssetTests.swift; sourceTree = "<group>"; };
 		DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1B86646A82E81AB8C2F81D5 /* ReleaseLifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseLifecycleUITests.swift; sourceTree = "<group>"; };
 		F207D67579C8D4A5ACF3F848 /* AsyncOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOnce.swift; sourceTree = "<group>"; };
@@ -317,6 +321,7 @@
 			children = (
 				B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */,
 				BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */,
+				DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */,
 				5DD00D2B9D279A7D94471484 /* RewardModelTests.swift */,
 				98FC325F566B2AB6F6DD1875 /* StoreTests.swift */,
 			);
@@ -369,6 +374,7 @@
 			children = (
 				1F7647DC48D98DFDF69FF2F0 /* ChapterFlowUITests.swift */,
 				68FA879D841822499D9B34DA /* ReleaseArtScreenshotsUITests.swift */,
+				BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */,
 				E1B86646A82E81AB8C2F81D5 /* ReleaseLifecycleUITests.swift */,
 				6CAC8A7004A2767C840E26E8 /* RewardFlowUITests.swift */,
 				7D4AAE351F03169C394F220D /* ShopFlowUITests.swift */,
@@ -741,6 +747,7 @@
 			files = (
 				20911F366080CE58E560B711 /* AdPauseIntegrationTests.swift in Sources */,
 				3E77316496E495DF03769462 /* CampaignBundleTests.swift in Sources */,
+				BDA2342C69EC0ADCC11312D1 /* ReleaseArtAssetTests.swift in Sources */,
 				9796058698F4F95741B50718 /* RewardModelTests.swift in Sources */,
 				FF47CA59B268E142703DA4C4 /* StoreTests.swift in Sources */,
 			);
@@ -825,6 +832,7 @@
 			files = (
 				8DDEDF8646941D04AD97D171 /* ChapterFlowUITests.swift in Sources */,
 				F564BC0B2E8B193736514D20 /* ReleaseArtScreenshotsUITests.swift in Sources */,
+				02DA7268F30200AB391B6858 /* ReleaseEggSlotUITests.swift in Sources */,
 				329DA4C6D0BCAF96306CA5A3 /* ReleaseLifecycleUITests.swift in Sources */,
 				F996EEE8B57C9030A90B2E22 /* RewardFlowUITests.swift in Sources */,
 				B1BB05F5C374F37BC86F088F /* ShopFlowUITests.swift in Sources */,

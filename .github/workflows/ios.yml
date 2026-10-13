@@ -147,13 +147,13 @@ jobs:
             -resultBundlePath build/CrumbKingdom.xcresult \
             CODE_SIGNING_ALLOWED=NO test
 
-      - name: 发行轨美术截图（小屏 iPhone SE，A01 / D-15 两个 target 对照）
+      - name: 发行轨美术截图与 D-16 卵槽位（小屏 iPhone SE，两个 target 对照）
         if: always()
-        timeout-minutes: 15
+        timeout-minutes: 25
         run: |
           small=$(python3 ci/pick_simulator.py small 2>build/sim-release-small.txt)
           echo "- 发行轨小屏模拟器：$(cat build/sim-release-small.txt)" >> "$GITHUB_STEP_SUMMARY"
-          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme CrumbKingdom             -destination "platform=iOS Simulator,id=$small"             -derivedDataPath build/DerivedData             -resultBundlePath build/CrumbKingdom-small.xcresult             -only-testing:CrumbKingdomUITests/ReleaseArtScreenshotsUITests             CODE_SIGNING_ALLOWED=NO test
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme CrumbKingdom             -destination "platform=iOS Simulator,id=$small"             -derivedDataPath build/DerivedData             -resultBundlePath build/CrumbKingdom-small.xcresult             -only-testing:CrumbKingdomUITests/ReleaseArtScreenshotsUITests -only-testing:CrumbKingdomUITests/ReleaseEggSlotUITests CODE_SIGNING_ALLOWED=NO test
 
       - name: 导出发行轨 UI 测试截图附件
         if: always()
