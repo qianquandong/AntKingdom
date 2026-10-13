@@ -30,6 +30,9 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private var renderedDigTaps: [GridPoint: Int] = [:]
     private var renderedFrontier: Set<GridPoint> = []
     private var renderedPantry: Set<GridPoint>?
+    private var queenNode: SKShapeNode?
+    /// 已绘制的房间外观；变化时重画 Queen Chamber 与 Pantry（只是外观）
+    private var renderedStyle: RoomStyle = .standard
     private var renderedRoutes: [SessionSnapshot.RouteView] = []
     private var renderedBusy: Set<GridPoint> = []
     private var renderedEmpty: [String: Bool] = [:]
@@ -118,8 +121,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             }
         }
         addSurfaceBackdrop(map)
-        let queen = roomNode(cells: map.queenCells, color: ArtLibrary.Palette.room, assetID: AssetNames.queen)
-        entityLayer.addChild(queen)
+        renderQueen(map, style: .standard)
         for source in map.sources where source.kind != .surface {
             let color: UIColor = {
                 switch source.id {
@@ -258,6 +260,12 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             renderFrontier(snapshot.frontier)
             renderedFrontier = snapshot.frontier
         }
+        let style = controller?.roomStyle ?? .standard
+        if style != renderedStyle {
+            renderedStyle = style
+            if let map = controller?.session.map { renderQueen(map, style: style) }
+            renderedPantry = nil
+        }
         if snapshot.pantryCells != renderedPantry {
             renderPantry(snapshot.pantryCells)
             renderedPantry = snapshot.pantryCells
@@ -351,12 +359,22 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
     }
 
+    /// Queen Chamber：默认外观或 Garden 外观（占位色不同，Debug 标出资源 ID）。
+    private func renderQueen(_ map: MapDefinition, style: RoomStyle) {
+        queenNode?.removeFromParent()
+        let color = style == .garden ? UIColor(hex: 0x9DB38A) : ArtLibrary.Palette.room
+        let node = roomNode(cells: map.queenCells, color: color, assetID: AssetNames.queen(style: style))
+        entityLayer.addChild(node)
+        queenNode = node
+    }
+
     private func renderPantry(_ cells: Set<GridPoint>) {
         pantryNode?.removeFromParent()
         pantryNode = nil
         guard !cells.isEmpty else { return }
-        let node = roomNode(cells: cells, color: UIColor(hex: 0xB98A5E), assetID: AssetNames.pantry)
-        // 占位货架线只在没有正式贴图时画（A01-02：room_pantry 加载后不叠加）
+        let color = renderedStyle == .garden ? UIColor(hex: 0x86A574) : UIColor(hex: 0xB98A5E)
+        let node = roomNode(cells: cells, color: color, assetID: AssetNames.pantry(style: renderedStyle))
+        // 占位货架线只在没有正式贴图时画（A01-02：room_pantry / 外观贴图加载后不叠加）
         if node.childNode(withName: "art") == nil {
             let shelves = CGMutablePath()
             for dy in [-20.0, 0.0, 20.0] {

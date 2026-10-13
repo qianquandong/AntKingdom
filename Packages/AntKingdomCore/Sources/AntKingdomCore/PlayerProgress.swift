@@ -15,6 +15,12 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
     public var achievedGoals: [String: [String]] = [:]
     public var savedAt = 0.0
     public var sequence = 0
+    /// 任意章节首次建成 Pantry（全局成就；外观面板入口条件，RELEASE_SCOPE 第 2 章）
+    public var firstPantryBuilt = false
+    /// StoreKit 已验证权益的缓存（离线时显示用；联网后以 StoreKit 当前权益为准，不是唯一证据）
+    public var ownedProducts: [String] = []
+    /// 当前房间外观（RoomStyle 原始值）
+    public var roomStyle = RoomStyle.standard.rawValue
 
     public init(activeChapterId: String, unlockedChapterIds: [String]) {
         self.activeChapterId = activeChapterId
@@ -27,6 +33,7 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case schemaVersion, activeChapterId, unlockedChapterIds, completedChapterIds, achievedGoals, savedAt, sequence
+        case firstPantryBuilt, ownedProducts, roomStyle
     }
 
     public init(from decoder: Decoder) throws {
@@ -38,6 +45,9 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
         achievedGoals = try c.decodeIfPresent([String: [String]].self, forKey: .achievedGoals) ?? [:]
         savedAt = try c.decodeIfPresent(Double.self, forKey: .savedAt) ?? 0
         sequence = try c.decodeIfPresent(Int.self, forKey: .sequence) ?? 0
+        firstPantryBuilt = try c.decodeIfPresent(Bool.self, forKey: .firstPantryBuilt) ?? false
+        ownedProducts = try c.decodeIfPresent([String].self, forKey: .ownedProducts) ?? []
+        roomStyle = try c.decodeIfPresent(String.self, forKey: .roomStyle) ?? RoomStyle.standard.rawValue
     }
 
     public func isUnlocked(_ id: String) -> Bool { unlockedChapterIds.contains(id) }
@@ -87,6 +97,9 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
         }
         for goals in achievedGoals.values where goals.contains(where: { ChapterGoal(rawValue: $0) == nil }) {
             throw SaveError.unreadable("unknown goal")
+        }
+        guard RoomStyle(rawValue: roomStyle) != nil, Set(ownedProducts).count == ownedProducts.count else {
+            throw SaveError.unreadable("bad cosmetics")
         }
     }
 }

@@ -517,6 +517,18 @@
         }
       }
     },
+    "shop.loading" : {
+      "comment" : "max 16 chars; 商品/购买进行中（转圈的无障碍标签，C11）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading..."
+          }
+        }
+      }
+    },
     "shop.owned" : {
       "comment" : "max 16 chars; 已拥有",
       "extractionState" : "manual",
@@ -553,6 +565,18 @@
         }
       }
     },
+    "shop.preview_end" : {
+      "comment" : "max 16 chars; 结束免费预览（C11）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Preview"
+          }
+        }
+      }
+    },
     "shop.restore" : {
       "comment" : "max 24 chars; 恢复入口",
       "extractionState" : "manual",
@@ -585,6 +609,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Purchases restored."
+          }
+        }
+      }
+    },
+    "shop.save_failed" : {
+      "comment" : "max 88 chars; 已验证购买写盘失败：交易未完成，重试写盘不重新购买（R03）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Purchase received but not saved yet. Tap Try Again. You won't be charged twice."
           }
         }
       }

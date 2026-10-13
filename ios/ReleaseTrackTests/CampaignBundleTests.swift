@@ -19,12 +19,27 @@ final class CampaignBundleTests: XCTestCase {
         XCTAssertNotEqual(catalog.chapters[1].map.rows, MapDefinition.backyard.rows)
     }
 
+    /// 正式版资源的运行时名称与 design/asset_runtime_names.json 的 release_names 一致（check_assets.py 使用同一表）。
+    func testReleaseAssetNamesMatchTheContract() throws {
+        let url = try XCTUnwrap(Bundle(for: CampaignBundleTests.self)
+            .url(forResource: "asset_runtime_names", withExtension: "json"))
+        struct Doc: Decodable { let release_names: [String: [String]] }
+        let doc = try JSONDecoder().decode(Doc.self, from: Data(contentsOf: url))
+        XCTAssertEqual(doc.release_names, [
+            "garden_decor_pack": [AssetNames.queen(style: .garden), AssetNames.pantry(style: .garden)],
+            "app_icon": ["AppIcon"],
+        ])
+        XCTAssertEqual(AssetNames.queen(style: .standard), AssetNames.queen)
+        XCTAssertEqual(AssetNames.pantry(style: .standard), AssetNames.pantry)
+    }
+
     func testReleaseAndCoreStringsResolve() {
         let keys = ChapterGoal.allCases.map(\.stringKey) + [
             "chapter.select", "chapter.locked", "chapter.complete", "chapter.next", "chapter.replay",
             "chapter.replay_confirm", "chapter.keep_building", "chapter.main_goals", "chapter.extra_goals",
             "chapter.completed", "chapter.playing", "chapter.goal_count", "goal.done", "settings.reset_all",
             "dialog.reset_all", "error.chapter_save", "error.progress_newer",
+            "shop.title", "shop.garden_pack", "shop.buy", "shop.loading", "shop.preview_end", "shop.restore",
             // 核心表仍从 Localizable 读取
             "hud.food", "world.backyard", "action.close",
         ]

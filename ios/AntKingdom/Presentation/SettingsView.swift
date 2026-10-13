@@ -24,6 +24,12 @@ struct SettingsView: View {
             Form {
                 onOffRow("settings.sound", selection: $sound)
                 onOffRow("settings.haptics", selection: $haptics)
+                if let restore = controller.restorePurchases {
+                    Section {
+                        Button(L10n.text("shop.restore"), action: restore)
+                            .accessibilityIdentifier("settings.restore")
+                    }
+                }
                 Section {
                     Button(role: .destructive) {
                         confirmReset = true

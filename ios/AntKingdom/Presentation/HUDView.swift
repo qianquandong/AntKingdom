@@ -35,6 +35,15 @@ struct HUDView: View {
                     }
                 }
                 Spacer(minLength: 0)
+                if let openShop = controller.openShop {
+                    Button(action: openShop) {
+                        Image(systemName: "paintbrush.fill")
+                            .font(.system(size: 18, weight: .semibold))
+                            .frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel(L10n.text("shop.title"))
+                    .accessibilityIdentifier("hud.shop")
+                }
                 if let openChapters = controller.openChapters {
                     Button(action: openChapters) {
                         Image(systemName: "map.fill")

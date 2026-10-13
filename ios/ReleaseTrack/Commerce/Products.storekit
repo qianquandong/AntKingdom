@@ -1,0 +1,34 @@
+{
+  "identifier" : "4C7A1E21",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6740000001",
+      "localizations" : [
+        {
+          "description" : "Two cozy room styles. Yours to keep.",
+          "displayName" : "Garden Decor Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.example.CrumbKingdom.garden_decor",
+      "referenceName" : "Garden Decor Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_locale" : "en_US",
+    "_storefront" : "USA"
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
