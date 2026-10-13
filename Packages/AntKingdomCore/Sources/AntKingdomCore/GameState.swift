@@ -43,6 +43,9 @@ public struct GameState: Codable, Equatable, Sendable {
     public var ants: Int
     /// 每个卵的剩余秒数
     public var larvae: [Double]
+    /// 每个卵的固定槽（与 larvae 一一对应，D-16）。可选：旧存档没有这个键时读档按顺序分配一次；
+    /// 旧版本 App 读新存档会忽略它。只影响卵的显示位置，不影响经济
+    public var eggSlots: [Int]? = nil
     public var hatching: Bool
     public var pantryTopLeft: GridPoint?
     /// 有限补给的余量，键为源 ID（cookie / sugar）

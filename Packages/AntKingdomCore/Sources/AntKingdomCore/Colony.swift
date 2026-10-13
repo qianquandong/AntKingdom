@@ -24,6 +24,17 @@ public struct OfflineResult: Equatable, Sendable {
     public let simulatedSeconds: Double
 }
 
+/// 一枚正在孵化的卵（D-16）。`slot` 是它在 Queen Chamber 里的固定位置（0、1），从下单到孵化不变。
+public struct Egg: Equatable, Sendable {
+    public var remaining: Double
+    public var slot: Int
+
+    public init(remaining: Double, slot: Int) {
+        self.remaining = remaining
+        self.slot = slot
+    }
+}
+
 /// P0 小地图经济状态机，逐行对应 tools/economy_sim.py 的 `Colony`。
 /// 食物必须真的挖通；没有广告或付费推算。所有修改在调用者的单一执行上下文中顺序进行。
 public final class Colony {
@@ -33,7 +44,14 @@ public final class Colony {
     public internal(set) var sources: [SourceState]
     public internal(set) var food = 0.0
     public internal(set) var ants = Rules.initialAnts
-    public internal(set) var larvae: [Double] = []
+    /// 正在孵化的卵（创建顺序）。每枚卵从下单到孵化固定占一个槽（D-16）：槽只是表现层的身份与位置，
+    /// 不参与经济；孵化时长、人口、成本与 tools/economy_sim.py 完全一致。
+    public internal(set) var eggs: [Egg] = []
+    /// 每个卵的剩余秒数（与 Python 基准对照的形式）。整体赋值（存档恢复、调试）按顺序确定性分配槽 0、1……
+    public internal(set) var larvae: [Double] {
+        get { eggs.map(\.remaining) }
+        set { eggs = newValue.enumerated().map { Egg(remaining: $1, slot: $0) } }
+    }
     public internal(set) var hatching = true
     public internal(set) var elapsed = 0.0
     public internal(set) var refillLeft = Rules.refillSeconds
@@ -66,7 +84,7 @@ public final class Colony {
         other.sources = sources
         other.food = food
         other.ants = ants
-        other.larvae = larvae
+        other.eggs = eggs
         other.hatching = hatching
         other.elapsed = elapsed
         other.refillLeft = refillLeft
@@ -78,6 +96,19 @@ public final class Colony {
     }
 
     public var capacity: Double { Rules.baseStorage + (pantry.isEmpty ? 0 : Rules.pantryStorage) }
+
+    /// 新订单占用的槽：编号最小的空槽（确定性）。调用方保证 eggs.count < Rules.larvaSlots。
+    func freeEggSlot() -> Int {
+        (0..<Rules.larvaSlots).first { slot in !eggs.contains { $0.slot == slot } } ?? eggs.count
+    }
+
+    /// 按存档里的槽恢复（D-16）。槽缺失（旧存档）、数量不符、越界或重复时，按创建顺序确定性分配 0、1……一次；
+    /// 不因槽数据拒绝读档（槽只影响表现）。
+    func restoreEggSlots(_ slots: [Int]?) {
+        guard let slots, slots.count == eggs.count, Set(slots).count == slots.count,
+              slots.allSatisfy({ (0..<Rules.larvaSlots).contains($0) }) else { return }
+        for index in eggs.indices { eggs[index].slot = slots[index] }
+    }
 
     public var sinks: Set<GridPoint> { map.queenCells.union(pantry) }
 
@@ -214,19 +245,19 @@ public final class Colony {
         let end = elapsed + seconds
         while elapsed < end - Rules.epsilon {
             var dt = min(Rules.tick, end - elapsed)
-            if let soonest = larvae.min() { dt = min(dt, soonest) }
+            if let soonest = eggs.map(\.remaining).min() { dt = min(dt, soonest) }
             let patchesEmpty = sources[0].remaining! <= Rules.epsilon && sources[1].remaining! <= Rules.epsilon
             if patchesEmpty { dt = min(dt, refillLeft) }
             try harvest(seconds: dt, efficiency: efficiency)
-            larvae = larvae.map { $0 - dt }
-            ants += larvae.filter { $0 <= Rules.epsilon }.count
-            larvae = larvae.filter { $0 > Rules.epsilon }
+            for index in eggs.indices { eggs[index].remaining -= dt }
+            ants += eggs.filter { $0.remaining <= Rules.epsilon }.count
+            eggs.removeAll { $0.remaining <= Rules.epsilon }   // 只移除孵化的那枚，其余留在原槽
             if hatching {
-                while larvae.count < Rules.larvaSlots, ants + larvae.count < Rules.populationCap,
+                while eggs.count < Rules.larvaSlots, ants + eggs.count < Rules.populationCap,
                       food >= Rules.hatchCost {
                     food -= Rules.hatchCost
                     spent += Rules.hatchCost
-                    larvae.append(Rules.hatchSeconds)
+                    eggs.append(Egg(remaining: Rules.hatchSeconds, slot: freeEggSlot()))
                 }
             }
             if patchesEmpty {

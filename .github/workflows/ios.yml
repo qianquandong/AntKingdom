@@ -206,6 +206,10 @@ jobs:
           app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
           # eggs_two：两枚卵、孵化订单关闭——已有卵照常倒计时，最后 2 秒切 ready，到点孵化，不新增卵
           bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-eggs_two.mov" 32 -ak-scenario eggs_two
+          # D-16 E02：左卵 15 秒孵化后新订单占空出的左槽，右卵留在原槽（25 秒孵化后再补右槽）
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/D16-eggs_refill.mov" 32 -ak-scenario eggs_refill
+          # A02-T03：唯一蜿蜒路线，带货一程东南西北四向，总览固定镜头
+          bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-ant_four_way.mov" 30 -ak-scenario ant_four_way -ak-zoom 0
           xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A02-ant-motion.mov &
           rec=$!
           sleep 2
@@ -240,12 +244,22 @@ jobs:
         run: |
           small=$(python3 ci/pick_simulator.py small 2>build/sim-small.txt)
           echo "- 小屏模拟器：$(cat build/sim-small.txt)" >> "$GITHUB_STEP_SUMMARY"
+          echo "SIM_SMALL=$small" >> "$GITHUB_ENV"
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -destination "platform=iOS Simulator,id=$small" \
             -derivedDataPath build/DerivedData \
             -resultBundlePath build/AntKingdom-small.xcresult \
             -only-testing:AntKingdomUITests \
             CODE_SIGNING_ALLOWED=NO test
+
+      - name: 录制 D-16 卵槽位（小屏 E01 / E02）
+        if: always() && env.SIM_SMALL != ''
+        timeout-minutes: 10
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/AntKingdom.app
+          mkdir -p build/videos
+          bash ci/record-scenario.sh "$SIM_SMALL" "$app" "build/videos/D16-eggs_two-small.mov" 32 -ak-scenario eggs_two
+          bash ci/record-scenario.sh "$SIM_SMALL" "$app" "build/videos/D16-eggs_refill-small.mov" 32 -ak-scenario eggs_refill
 
       - name: 导出小屏 UI 截图附件
         if: always()

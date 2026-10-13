@@ -24,7 +24,7 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private var sourceNodes: [String: SKShapeNode] = [:]
     private var pantryNode: SKNode?
     private var selectionNode: SKShapeNode?
-    private var eggNodes: [SKNode] = []
+    private var eggs = EggClutch()
 
     private var renderedWalkable: Set<GridPoint> = []
     private var renderedDigTaps: [GridPoint: Int] = [:]
@@ -34,7 +34,6 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
     private var renderedBusy: Set<GridPoint> = []
     private var renderedEmpty: [String: Bool] = [:]
     private var renderedSelection: Selection?
-    private var renderedEggs = -1
     private var placementNode: SKNode?
     private var renderedPlacement: PantryPlacement?
     private var renderedValidity: PlacementValidity?
@@ -276,10 +275,6 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             renderBusy(snapshot.busyCells)
             renderedBusy = snapshot.busyCells
         }
-        if snapshot.eggs.count != renderedEggs {
-            renderEggs(snapshot.eggs.count, queen: map.queenCells)
-            renderedEggs = snapshot.eggs.count
-        }
         if selection != renderedSelection {
             renderSelection(selection, snapshot: snapshot, map: map)
             renderedSelection = selection
@@ -290,7 +285,9 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             renderedValidity = controller.placementValidity
         }
         ants.update(layer: antLayer, snapshot: snapshot, queen: map.queenCells, time: time)
-        updateEggStates(snapshot.eggs)
+        // D-16：卵按固定槽绘制，每帧对照（孵化与新订单可能在同一次更新里发生，数量可能不变）
+        eggs.update(layer: entityLayer, queen: MapGeometry.frame(of: map.queenCells),
+                    eggs: snapshot.eggs, slots: snapshot.eggSlots)
         // 可挖前沿呼吸提示；减少动态时保持静态（虚线框仍在，不只靠动画）
         let still = controller?.reduceMotion ?? false
         for (index, node) in frontierNodes.values.enumerated() {
@@ -432,41 +429,6 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
             icon.lineWidth = 2.5
             square.addChild(icon)
             busyLayer.addChild(square)
-        }
-    }
-
-    private func renderEggs(_ count: Int, queen: Set<GridPoint>) {
-        eggNodes.forEach { $0.removeFromParent() }
-        eggNodes = []
-        let frame = MapGeometry.frame(of: queen)
-        for index in 0..<count {
-            let egg: SKNode
-            if let textures = ArtLibrary.eggTextures() {
-                // catalog @3x 的 96 px 默认是 32 pt；卵显式按 24 pt 显示（A02-01 显示契约）
-                egg = SKSpriteNode(texture: textures.normal, size: CGSize(width: 24, height: 24))
-            } else {
-                let shape = SKShapeNode(ellipseOf: CGSize(width: 12, height: 16))
-                shape.fillColor = UIColor(hex: 0xFFF8EC)
-                shape.strokeColor = ArtLibrary.Palette.soilDeep.withAlphaComponent(0.6)
-                egg = shape
-            }
-            egg.position = CGPoint(x: frame.minX + 22 + CGFloat(index) * 18, y: frame.maxY - 22)
-            egg.zPosition = 2
-            entityLayer.addChild(egg)
-            eggNodes.append(egg)
-        }
-    }
-
-    /// 卵的“将孵化”态：剩余孵化时间 ≤ 2 秒（A02-01 确认的表现阈值）。只换纹理，位置与 24 pt 大小不变；
-    /// 不影响孵化规则（暂停孵化订单只停新订单，已有卵照常倒计时并切换）。
-    static let eggReadySeconds = 2.0
-
-    private func updateEggStates(_ remaining: [Double]) {
-        guard let textures = ArtLibrary.eggTextures() else { return }
-        for (node, seconds) in zip(eggNodes, remaining) {
-            guard let sprite = node as? SKSpriteNode else { continue }
-            let texture = seconds <= GameScene.eggReadySeconds ? textures.ready : textures.normal
-            if sprite.texture !== texture { sprite.texture = texture }
         }
     }
 
@@ -697,11 +659,13 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         #if DEBUG
         guard let view else { return }
         let origin = convertPoint(toView: CGPoint(x: 0, y: 0))
-        let probe = String(format: "origin=%.1f,%.1f tile=%.2f dug=%ld view=%.0fx%.0f",
+        // eggs=：当前活着的卵占用的槽（按卵的创建顺序），只在孵化 / 新订单时变化（D-16 的 UI 测试读取）
+        let slots = controller.latest.eggSlots.map(String.init).joined(separator: ",")
+        let probe = String(format: "origin=%.1f,%.1f tile=%.2f dug=%ld view=%.0fx%.0f eggs=%@",
                            locale: Locale(identifier: "en_US_POSIX"),
                            origin.x, origin.y, MapGeometry.tile * zoom,
                            controller.latest.walkable.count - controller.session.map.initialWalkable.count,
-                           view.bounds.width, view.bounds.height)
+                           view.bounds.width, view.bounds.height, slots.isEmpty ? "-" : slots)
         if probe != controller.debugProbe { controller.debugProbe = probe }
         controller.refreshDebugLifecycle()
         #endif

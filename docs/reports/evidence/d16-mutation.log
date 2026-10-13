@@ -1,0 +1,12 @@
+# D-16 变异检查（2026-10-12，Docker swift:6.2，Linux）
+# 临时副本中把卵槽改回原表现：每次孵化后按数组下标重新压紧（slot = index），新订单取 eggs.count
+# 运行 swift test --filter D16EggSlotTests：6 条用例失败（E01、E02、E03、E05、E06 存档、E06 离线）；E04（同时孵化后槽本来就是 0、1）、旧存档、非法槽回退、不变量按设计不区分
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:34: error: D16EggSlotTests.testE01RightEggKeepsItsSlotWhenTheLeftOneHatches : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - the right egg stays in the right slot
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:48: error: D16EggSlotTests.testE02NewOrderFillsTheFreedSlotWithoutTouchingTheOtherEgg : XCTAssertEqual failed: ("[0, 1]") is not equal to ("[1, 0]") - old right egg first, new egg in the freed left slot
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:51: error: D16EggSlotTests.testE02NewOrderFillsTheFreedSlotWithoutTouchingTheOtherEgg : XCTAssertEqual failed: ("[0, 1]") is not equal to ("[1, 0]") - 
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:67: error: D16EggSlotTests.testE03HatchAndNewOrderInOneStepKeepsCountButReplacesTheEgg : XCTAssertEqual failed: ("[0, 1]") is not equal to ("[1, 0]") - 
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:104: error: D16EggSlotTests.testE05PausedOrdersAndFullStorageDoNotFreezeExistingEggs : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - 
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:139: error: D16EggSlotTests.testE06OfflineSettlementKeepsTheSurvivorsSlot : XCTAssertEqual failed: ("[0]") is not equal to ("[1]") - 
+Packages/AntKingdomCore/Tests/AntKingdomCoreTests/D16EggSlotTests.swift:116: error: D16EggSlotTests.testE06SlotsSurviveSaveAndLoad : XCTAssertEqual failed: ("Optional([0])") is not equal to ("Optional([1])") - 
+	 Executed 10 tests, with 7 failures (0 unexpected) in 0.441 (0.441) seconds
+	 Executed 10 tests, with 7 failures (0 unexpected) in 0.441 (0.441) seconds
