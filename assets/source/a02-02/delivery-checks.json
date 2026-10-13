@@ -1,0 +1,9 @@
+{
+  "resource_contract_ref": "015d631f09eedac77143dd77cca54719a0badf85",
+  "runtime_files_hash_dimensions": 48,
+  "new_master_and_reference_hashes": "PASS",
+  "prompt_records": 6,
+  "local_document_links": 85,
+  "runtime_bytes_all": 1976063,
+  "limitations": "仅验证命名与交付metadata兼容；未创建iOS图集，未运行客户端/真机。"
+}

@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "version": "A02-02 1.0.0",
+  "created_at": "2026-10-12",
+  "owner": "Codex",
+  "integrator": "Claude",
+  "status": "reviewed",
+  "generation": "内置 image_gen；原创提示词与本仓库生成素材作参考；生成alpha原样保留。非第三方许可证，不宣称独占版权。",
+  "export_tool": "sharp@0.35.5",
+  "source_record": "prompts.json",
+  "runtime_mapping_reference": "015d631f09eedac77143dd77cca54719a0badf85:design/asset_runtime_names.json",
+  "assets": [
+    {
+      "id": "surface_backdrop",
+      "group": "surface_backdrop",
+      "source": "assets/source/a02-02/masters/surface_backdrop.png",
+      "runtime": "assets/game/environment/surface/surface_backdrop.png",
+      "pixels": [
+        1296,
+        288
+      ],
+      "catalog_scale": 3,
+      "catalog_points": [
+        432,
+        96
+      ],
+      "render_points": [
+        432,
+        48
+      ],
+      "render_crop_pixels": [
+        0,
+        72,
+        1296,
+        144
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": false,
+      "status": "reviewed",
+      "prompt_id": "surface_backdrop",
+      "generated_filename": "exec-745507e9-2add-4174-b7b9-49d57a1cf613.png",
+      "master_pixels": [
+        2172,
+        724
+      ],
+      "sha256": "7f7bea8d2451d7925f56d4d459502255d020c9a409cf08926532bfdc36348cac",
+      "master_sha256": "010e4b29e66dd37745e34746303accc8514bfe7b9368d9916139cd1b356a2e9f",
+      "bytes": 580637,
+      "export": {
+        "operation": "uniform_resize_then_center_crop",
+        "intermediate_pixels": [
+          1296,
+          432
+        ],
+        "crop": [
+          0,
+          72,
+          1296,
+          288
+        ]
+      },
+      "reference_inputs": [
+        {
+          "source": "assets/source/a01-01/masters/terrain_soil_1.png",
+          "sha256": "b5bd4bb7c2cdddb71813ec7493f96f27d91da73c4bef58adff1328cb48c10e49"
+        },
+        {
+          "source": "assets/source/a01-02/masters/room_queen.png",
+          "sha256": "ddb3090702b55e351c5de1817dfb85347b39027113aeba531533a345638dab39"
+        }
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_1",
+      "group": "dig_feedback",
+      "source": "assets/source/a02-02/masters/dig_feedback_crack_1.png",
+      "runtime": "assets/game/effects/dig/dig_feedback_crack_1.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "catalog_scale": 3,
+      "catalog_points": [
+        48,
+        48
+      ],
+      "render_points": [
+        48,
+        48
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "status": "reviewed",
+      "prompt_id": "dig_feedback_crack_1_cleanup",
+      "generated_filename": "exec-65c27556-5f94-43a7-815b-d8de42797983.png",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "sha256": "3f4d4a0ad2d52a10c1bbd4c3d394c6c0a20efce3e683e4d3d4eefee61e6ba90c",
+      "master_sha256": "405523089bbf6577f5431985a9f999b329e73135715af80b1c09b79025a0005d",
+      "bytes": 2294,
+      "export": {
+        "operation": "whole_canvas_uniform_resize",
+        "translation": [
+          0,
+          0
+        ]
+      },
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-02/reference_sources/crack_1_initial.png",
+          "sha256": "3d5e3bc3527f449da1c5306ea4ec353ceefafff67c7eda8de0ae2414819b4dea"
+        }
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_2",
+      "group": "dig_feedback",
+      "source": "assets/source/a02-02/masters/dig_feedback_crack_2.png",
+      "runtime": "assets/game/effects/dig/dig_feedback_crack_2.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "catalog_scale": 3,
+      "catalog_points": [
+        48,
+        48
+      ],
+      "render_points": [
+        48,
+        48
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "status": "reviewed",
+      "prompt_id": "dig_feedback_crack_2_readability",
+      "generated_filename": "exec-9bc40d6f-334d-4ce6-969e-e3edf7e8b50d.png",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "sha256": "04411162399b244fb4164ce392dd441ec7b6fe18b6383e074fc868a9f4c836d4",
+      "master_sha256": "64d9761edd01852992bf1b34107718389b64434890a31905fda3061b5e88b692",
+      "bytes": 4020,
+      "export": {
+        "operation": "whole_canvas_uniform_resize",
+        "translation": [
+          0,
+          0
+        ]
+      },
+      "reference_inputs": [
+        {
+          "source": "assets/source/a02-02/reference_sources/crack_2_initial.png",
+          "sha256": "1549b013122dd9ad9b5ed8afdff5ed6b56c89e3bb04d564915ab8f2f62dfb0fd"
+        }
+      ]
+    },
+    {
+      "id": "dig_feedback_crumb",
+      "group": "dig_feedback",
+      "source": "assets/source/a02-02/masters/dig_feedback_crumb.png",
+      "runtime": "assets/game/effects/dig/dig_feedback_crumb.png",
+      "pixels": [
+        36,
+        36
+      ],
+      "catalog_scale": 3,
+      "catalog_points": [
+        12,
+        12
+      ],
+      "render_points": [
+        12,
+        12
+      ],
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "transparent": true,
+      "status": "reviewed",
+      "prompt_id": "dig_feedback_crumb",
+      "generated_filename": "exec-994bc319-b882-4a4d-a947-a946a11bb229.png",
+      "master_pixels": [
+        1254,
+        1254
+      ],
+      "sha256": "36a4ea0147e095c8a612fd4251d7f334fb823cb1c51a1310242860aede3a1b0c",
+      "master_sha256": "362c8ea0bbbe2415424b848e8901aa005a87173409ba4c95c66294afe927fcd6",
+      "bytes": 970,
+      "export": {
+        "operation": "whole_canvas_uniform_resize",
+        "translation": [
+          0,
+          0
+        ]
+      },
+      "reference_inputs": [
+        {
+          "source": "assets/source/a01-01/masters/terrain_soil_1.png",
+          "sha256": "b5bd4bb7c2cdddb71813ec7493f96f27d91da73c4bef58adff1328cb48c10e49"
+        }
+      ]
+    }
+  ]
+}

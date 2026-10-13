@@ -35,10 +35,13 @@
 		994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		9E2F2A640F124D68A6FBB5C7 /* BottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46655BCDA18D4B2831BF3884 /* BottomPanel.swift */; };
 		9FD961D3AD5BF223332B3964 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E9C27AC7A4781AED0D672 /* DebugMenu.swift */; };
+		A7D43B7A586744E453F30DD6 /* SurfaceBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB9593E0403A112F5C87AF1 /* SurfaceBackdrop.swift */; };
 		A9186BF85C3EBB899CE40080 /* AssetNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D22135A456EE1FB87CC7DA /* AssetNames.swift */; };
 		B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647B87EE8765C3C300BAEDA /* L10n.swift */; };
 		BD7A72609D2B40466C9E1FE3 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
+		BF107D67F19153E8FA9AD335 /* DigFeedbackArtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B208F69AFCD6FE66F3FF95B4 /* DigFeedbackArtTests.swift */; };
 		BF5F335F58B135CA24F5BFAF /* ArtPanZoomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C13CEC73D3BE9A762990F3 /* ArtPanZoomUITests.swift */; };
+		C6DBA4A00A8032182558CE30 /* DigFeedbackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C62CF34492F3125034D87D /* DigFeedbackUITests.swift */; };
 		C7193A8A6B4E8803646867A2 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
 		C8DEDF571B02FF16091ADE9F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1D48483C2DBD31DFBB1557 /* GameScene.swift */; };
 		CE8C9DB163685993F3DD3978 /* GameController+Placement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77412A7A3D1820AE92346F4A /* GameController+Placement.swift */; };
@@ -76,6 +79,7 @@
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		382E9C27AC7A4781AED0D672 /* DebugMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
 		3E1A073027F0CE7292F95A4E /* AntKingdomCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AntKingdomCore; path = ../Packages/AntKingdomCore; sourceTree = SOURCE_ROOT; };
+		3EB9593E0403A112F5C87AF1 /* SurfaceBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurfaceBackdrop.swift; sourceTree = "<group>"; };
 		3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleRoundTripUITests.swift; sourceTree = "<group>"; };
 		4125C63167FB727DDB70C304 /* GameMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMapView.swift; sourceTree = "<group>"; };
 		46655BCDA18D4B2831BF3884 /* BottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPanel.swift; sourceTree = "<group>"; };
@@ -99,10 +103,12 @@
 		78DFF756411FC4DA8F49D6AB /* AntMotionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntMotionUITests.swift; sourceTree = "<group>"; };
 		7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackAndAssetTests.swift; sourceTree = "<group>"; };
 		7FD6A4636F6D037087E6FF33 /* EggSlotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EggSlotUITests.swift; sourceTree = "<group>"; };
+		80C62CF34492F3125034D87D /* DigFeedbackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigFeedbackUITests.swift; sourceTree = "<group>"; };
 		888B2B75E2C2BCE116751550 /* EggClutch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EggClutch.swift; sourceTree = "<group>"; };
 		9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchSmokeUITests.swift; sourceTree = "<group>"; };
 		9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryFlowUITests.swift; sourceTree = "<group>"; };
 		B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleUITests.swift; sourceTree = "<group>"; };
+		B208F69AFCD6FE66F3FF95B4 /* DigFeedbackArtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigFeedbackArtTests.swift; sourceTree = "<group>"; };
 		B8D22135A456EE1FB87CC7DA /* AssetNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNames.swift; sourceTree = "<group>"; };
 		BCC52BE7B1F9722360442BFE /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextPanels.swift; sourceTree = "<group>"; };
@@ -205,6 +211,7 @@
 				4125C63167FB727DDB70C304 /* GameMapView.swift */,
 				4C1D48483C2DBD31DFBB1557 /* GameScene.swift */,
 				BCC52BE7B1F9722360442BFE /* MapGeometry.swift */,
+				3EB9593E0403A112F5C87AF1 /* SurfaceBackdrop.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -245,6 +252,7 @@
 			children = (
 				4D477E2AFE6DD145711BB5F0 /* AntRouteTests.swift */,
 				5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */,
+				B208F69AFCD6FE66F3FF95B4 /* DigFeedbackArtTests.swift */,
 				62F8BBF45EE754CBB73C934B /* EggClutchTests.swift */,
 				7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */,
 				47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */,
@@ -268,6 +276,7 @@
 				78DFF756411FC4DA8F49D6AB /* AntMotionUITests.swift */,
 				C8C13CEC73D3BE9A762990F3 /* ArtPanZoomUITests.swift */,
 				DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */,
+				80C62CF34492F3125034D87D /* DigFeedbackUITests.swift */,
 				7FD6A4636F6D037087E6FF33 /* EggSlotUITests.swift */,
 				2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */,
 				9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */,
@@ -434,6 +443,7 @@
 				010B14CFBC1A39C86BAC8FC6 /* MapGeometry.swift in Sources */,
 				89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */,
 				6FA9E3AAFE09B7A8BD8FDBE5 /* SettingsView.swift in Sources */,
+				A7D43B7A586744E453F30DD6 /* SurfaceBackdrop.swift in Sources */,
 				32D922B16DB7357751B1CF8B /* TunnelMaskGalleryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,6 +455,7 @@
 				E1A5D69A35D85A1035C2A763 /* AntMotionUITests.swift in Sources */,
 				BF5F335F58B135CA24F5BFAF /* ArtPanZoomUITests.swift in Sources */,
 				F285A3FD8CE25835E5986906 /* ArtScreenshotsUITests.swift in Sources */,
+				C6DBA4A00A8032182558CE30 /* DigFeedbackUITests.swift in Sources */,
 				E6DECE57CFC4BDE84268BD3B /* EggSlotUITests.swift in Sources */,
 				79507EE3877DBAC4BE2C6BB5 /* FeedbackSettingsUITests.swift in Sources */,
 				D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */,
@@ -460,6 +471,7 @@
 			files = (
 				FCB0C82EDECFE8552CAEC555 /* AntRouteTests.swift in Sources */,
 				78EDC71CD308AE722E6256B6 /* AppBootstrapTests.swift in Sources */,
+				BF107D67F19153E8FA9AD335 /* DigFeedbackArtTests.swift in Sources */,
 				60E104957BFE6F44999C28B4 /* EggClutchTests.swift in Sources */,
 				83445FD63AFFB0E3B8EE521E /* FeedbackAndAssetTests.swift in Sources */,
 				51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */,

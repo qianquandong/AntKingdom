@@ -57,6 +57,9 @@ final class GameController: ObservableObject {
     var resetHandler: (() -> Void)?
     /// 回到前台：场景丢弃暂停期间的帧间隔，后台时长只由离线结算处理
     var onResume: (() -> Void)?
+    /// 一次有效但未开通的挖掘命中（格、该格累计命中数 1 或 2），单击与长按都只在命中被会话接受时调用一次；
+    /// 表现层据此放短时碎屑（A02-02）。开通（第 3 次）走通路变化，不经这里
+    var onDigHit: ((GridPoint, Int) -> Void)?
     /// 每帧推进之前的生命周期准入（D-13，AppModel / CampaignModel 注入）：离开区间未结算时不推进、不保存
     var admitFrame: (() -> ForegroundFrame)?
     #if DEBUG
@@ -203,7 +206,9 @@ final class GameController: ObservableObject {
     private func dig(_ cell: GridPoint) {
         let result = send(.tapSoil(cell))
         switch result {
-        case .tapAccepted: feedback.play(.dig, settings: latest.settings)
+        case .tapAccepted(let hit, let taps):
+            feedback.play(.dig, settings: latest.settings)
+            onDigHit?(hit, taps)
         case .cellOpened: feedback.play(.tunnelOpen, settings: latest.settings)
         case .rejected:
             onRejectedTap?(cell)
@@ -253,6 +258,7 @@ final class GameController: ObservableObject {
                 return
             }
             feedback.play(.dig, settings: latest.settings)
+            if case .tapAccepted(let hit, let taps) = result { onDigHit?(hit, taps) }
         }
         hold = current
     }
