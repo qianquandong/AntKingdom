@@ -28,7 +28,7 @@ struct SettingsView: View {
                     Button(role: .destructive) {
                         confirmReset = true
                     } label: {
-                        Text(L10n.text("action.reset"))
+                        Text(L10n.text(controller.resetTitleKey))
                     }
                     .accessibilityIdentifier("settings.reset")
                 }
@@ -46,8 +46,9 @@ struct SettingsView: View {
                         .accessibilityIdentifier("settings.close")
                 }
             }
-            .confirmationDialog(L10n.text("dialog.reset"), isPresented: $confirmReset, titleVisibility: .visible) {
-                Button(L10n.text("action.reset"), role: .destructive) {
+            .confirmationDialog(L10n.text(controller.resetDialogKey), isPresented: $confirmReset,
+                                titleVisibility: .visible) {
+                Button(L10n.text(controller.resetTitleKey), role: .destructive) {
                     controller.resetColony()
                     dismiss()
                 }

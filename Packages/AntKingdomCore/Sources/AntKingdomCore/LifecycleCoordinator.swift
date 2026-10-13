@@ -78,8 +78,10 @@ public final class LifecycleCoordinator {
     }
 
     /// 冷启动：读档 → 校验 → 结算离线（一次）→ 立即保存新的高水位。
+    /// `settleOffline = false` 用于正式版切换章节：非活动章节不后台产粮，从“现在”起算（RELEASE_SCOPE 第 1 章）。
     public static func launch(repository: SaveRepository, wallClock: WallClock,
                               map: MapDefinition = .backyard,
+                              settleOffline: Bool = true,
                               trace: LifecycleTrace? = nil) -> (LifecycleCoordinator?, LaunchResult) {
         let now = wallClock.now()
         switch repository.load() {
@@ -93,11 +95,12 @@ public final class LifecycleCoordinator {
             guard let session = try? GameSession(state: envelope.state, map: map) else {
                 return (nil, .saveUnavailable(.unreadable("state")))
             }
-            let reference = max(envelope.savedAt, envelope.wallHighWater)
+            let reference = settleOffline ? max(envelope.savedAt, envelope.wallHighWater)
+                : max(envelope.savedAt, envelope.wallHighWater, now.isFinite ? now : 0)
             let coordinator = LifecycleCoordinator(session: session, repository: repository,
                                                    wallClock: wallClock, wallHighWater: reference, trace: trace)
-            coordinator.log("launch", "loaded savedAt=\(traceNumber(envelope.savedAt))")
-            let summary = coordinator.settle(from: reference, to: now, kind: "launch")
+            coordinator.log("launch", "loaded savedAt=\(traceNumber(envelope.savedAt)) settle=\(settleOffline)")
+            let summary = settleOffline ? coordinator.settle(from: reference, to: now, kind: "launch") : nil
             coordinator.save(reason: "launch")
             return (coordinator, .ready(session, offline: summary, recoveredFromBackup: recovered))
         case .unavailable(let error):

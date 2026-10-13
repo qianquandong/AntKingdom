@@ -65,6 +65,15 @@ final class GameController: ObservableObject {
     @Published var debugLifecycle = ""
     private var traceSeen = -1
     #endif
+    /// 正式版（发行轨）钩子：每批会话事件处理之后调用（章节目标与完成页）。核心版为 nil。
+    var afterEvents: (() -> Void)?
+    /// 正式版：HUD 显示章节入口并调用它。核心版为 nil，不显示入口。
+    var openChapters: (() -> Void)?
+    /// 核心版用提示条宣布“原型完成”；正式版改由章节完成页宣布（RELEASE_SCOPE 第 6 节）。
+    var announcesPrototypeComplete = true
+    /// 设置页重置按钮与二次确认的文案 ID：核心版重置本局；正式版重置全部本地进度。
+    var resetTitleKey = "action.reset"
+    var resetDialogKey = "dialog.reset"
     private var dirty = false
     private var lastSave = -Double.infinity
     private var saveFailureShown = false
@@ -109,6 +118,7 @@ final class GameController: ObservableObject {
         session.tick(frameDelta: delta)
         advanceHold()
         handle(session.drainEvents())
+        afterEvents?()
         latest = session.snapshot()
         let now = clock.uptime()
         if now - lastSave >= GameController.autosaveInterval || (dirty && now - lastSave >= 1) {
@@ -140,8 +150,9 @@ final class GameController: ObservableObject {
     }
 
     /// 立即刷新（命令执行后），让面板与场景同帧反映结果。
-    private func refresh() {
+    func refresh() {
         handle(session.drainEvents())
+        afterEvents?()
         latest = session.snapshot()
         publish(now: clock.uptime())
     }
@@ -263,15 +274,18 @@ final class GameController: ObservableObject {
 
     /// 设置里的 Start Over（UI 已二次确认）。设置项保留。
     func resetColony() {
+        performReset { [self] in
+            if let resetHandler { resetHandler() } else { send(.reset) }
+        }
+    }
+
+    /// 在会话外部完成重置（例如正式版“重玩本章”）后，清掉交互状态并立即刷新场景与面板。
+    func performReset(_ action: () -> Void) {
         selection = nil
         placement = nil
         hold = nil
-        if let resetHandler {
-            resetHandler()
-            refresh()
-        } else {
-            send(.reset)
-        }
+        action()
+        refresh()
         onReset?()
     }
 
@@ -299,7 +313,7 @@ final class GameController: ObservableObject {
             case .storageFullChanged(true):
                 show("state.storage_full", style: .warning)
             case .prototypeComplete:
-                show("goal.prototype_complete", style: .success, duration: 6)
+                if announcesPrototypeComplete { show("goal.prototype_complete", style: .success, duration: 6) }
             default:
                 break
             }

@@ -94,44 +94,60 @@ IAP 对经济的影响必须为零。确认拒绝广告不影响免费完成，�
 
 ## 6. 新增英文文案登记
 
-这是正式版新增表；M4/M5 实现时由 Claude 并入实际 String Catalog 与检查器。核心 55 条继续使用；不要重用一个 ID 承载不同意义。
+这是正式版新增表；由 `tools/export_strings.py` 导出为 `ios/ReleaseTrack/Resources/Release.xcstrings`（只打进发行轨 target），`tools/check_strings.py` 校验 ID 唯一、与核心表不重复、无中文、占位符与长度。标注 C10 的行由 Claude 在实现章节时登记。核心 55 条继续使用；不要重用一个 ID 承载不同意义。
 
-| String ID | English Text | 说明 |
-|---|---|---|
-| `chapter.select` | Choose a Colony | 章节页 |
-| `chapter.garden_edge` | Garden Edge | 第二章 |
-| `chapter.stone_corner` | Stone Corner | 第三章 |
-| `chapter.locked` | Complete the previous colony to unlock. | 解锁条件 |
-| `chapter.complete` | Colony Ready! | 正式完成页 |
-| `chapter.next` | Next Colony | 下一章 |
-| `chapter.replay` | Start This Colony Again | 重玩 |
-| `chapter.replay_confirm` | Restart this colony? Your unlocks and purchases will stay. | 确认 |
-| `chapter.keep_building` | Keep Building | 留在本章 |
-| `shop.title` | Decorate | 外观页 |
-| `shop.garden_pack` | Garden Decor Pack | 商品 |
-| `shop.garden_description` | Two cozy room styles. Yours to keep. | 商品内容 |
-| `shop.preview` | Preview | 预览 |
-| `shop.buy` | Buy for {price} | 本地化价格 |
-| `shop.owned` | Owned | 已拥有 |
-| `shop.equip` | Use This Style | 启用 |
-| `shop.default` | Use Default Style | 恢复默认 |
-| `shop.restore` | Restore Purchases | 恢复入口 |
-| `shop.restored` | Purchases restored. | 成功 |
-| `shop.restore_empty` | No purchases found for this account. | 无权益 |
-| `shop.pending` | Your purchase is awaiting approval. | 待批准 |
-| `shop.unavailable` | The shop is unavailable. Please try again later. | 网络/商品异常 |
-| `shop.failed` | Purchase not completed. Please try again. | 失败 |
-| `reward.title` | Foraging Boost | 奖励名 |
-| `reward.description` | Watch an ad for 25% more transport for 5 minutes of active play. | 明确交换内容 |
-| `reward.watch` | Watch Ad | 主动播放 |
-| `reward.not_now` | Not Now | 返回 |
-| `reward.loading` | Loading Ad... | 加载 |
-| `reward.unavailable` | No ad available. You can keep playing. | 无填充/离线 |
-| `reward.active` | Boost: {time} remaining | 剩余时间 |
-| `reward.daily_limit` | More boosts tomorrow. | 日上限 |
-| `reward.cooldown` | Boost ready in {time} of active play. | 冷却 |
-| `settings.privacy` | Privacy Policy | 页面链接 |
-| `settings.privacy_choices` | Privacy Choices | UMP 入口 |
-| `settings.support` | Help & Support | 支持 |
+| String ID | English Text | 最大字符数 | 说明 |
+|---|---|---:|---|
+| `chapter.select` | Choose a Colony | 24 | 章节页 |
+| `chapter.garden_edge` | Garden Edge | 20 | 第二章 |
+| `chapter.stone_corner` | Stone Corner | 20 | 第三章 |
+| `chapter.locked` | Complete the previous colony to unlock. | 48 | 解锁条件 |
+| `chapter.complete` | Colony Ready! | 24 | 正式完成页 |
+| `chapter.next` | Next Colony | 20 | 下一章 |
+| `chapter.replay` | Start This Colony Again | 28 | 重玩 |
+| `chapter.replay_confirm` | Restart this colony? Your unlocks and purchases will stay. | 80 | 确认 |
+| `chapter.keep_building` | Keep Building | 20 | 留在本章 |
+| `shop.title` | Decorate | 20 | 外观页 |
+| `shop.garden_pack` | Garden Decor Pack | 28 | 商品 |
+| `shop.garden_description` | Two cozy room styles. Yours to keep. | 64 | 商品内容 |
+| `shop.preview` | Preview | 16 | 预览 |
+| `shop.buy` | Buy for {price} | 24 | 本地化价格 |
+| `shop.owned` | Owned | 16 | 已拥有 |
+| `shop.equip` | Use This Style | 24 | 启用 |
+| `shop.default` | Use Default Style | 24 | 恢复默认 |
+| `shop.restore` | Restore Purchases | 24 | 恢复入口 |
+| `shop.restored` | Purchases restored. | 40 | 成功 |
+| `shop.restore_empty` | No purchases found for this account. | 48 | 无权益 |
+| `shop.pending` | Your purchase is awaiting approval. | 48 | 待批准 |
+| `shop.unavailable` | The shop is unavailable. Please try again later. | 64 | 网络/商品异常 |
+| `shop.failed` | Purchase not completed. Please try again. | 64 | 失败 |
+| `reward.title` | Foraging Boost | 24 | 奖励名 |
+| `reward.description` | Watch an ad for 25% more transport for 5 minutes of active play. | 80 | 明确交换内容 |
+| `reward.watch` | Watch Ad | 16 | 主动播放 |
+| `reward.not_now` | Not Now | 16 | 返回 |
+| `reward.loading` | Loading Ad... | 24 | 加载 |
+| `reward.unavailable` | No ad available. You can keep playing. | 48 | 无填充/离线 |
+| `reward.active` | Boost: {time} remaining | 32 | 剩余时间 |
+| `reward.daily_limit` | More boosts tomorrow. | 32 | 日上限 |
+| `reward.cooldown` | Boost ready in {time} of active play. | 48 | 冷却 |
+| `settings.privacy` | Privacy Policy | 24 | 页面链接 |
+| `settings.privacy_choices` | Privacy Choices | 24 | UMP 入口 |
+| `settings.support` | Help & Support | 24 | 支持 |
+| `goal.connect_cookie` | Connect the Cookie Crumb | 40 | 章节主目标 1（C10） |
+| `goal.build_pantry` | Build a Pantry | 40 | 章节主目标 2（C10） |
+| `goal.full_colony` | Grow to 24 ants and 1,100 Food | 40 | 章节主目标 3（C10） |
+| `goal.connect_sugar` | Connect the Sugar Drop | 40 | 探索目标（C10） |
+| `goal.connect_sap` | Connect the Sap Root | 40 | 探索目标（C10） |
+| `goal.better_route` | Make a route 5% faster | 40 | 探索目标：冻结人口与源下布局改善 ≥5%（C10） |
+| `goal.done` | Goal complete: {goal} | 60 | 达成提示，{goal} 为上面六条之一（C10） |
+| `chapter.main_goals` | Main Goals | 24 | 完成页/章节页小标题（C10） |
+| `chapter.extra_goals` | Extra Goals | 24 | 完成页/章节页小标题（C10） |
+| `chapter.completed` | Completed | 16 | 章节状态（C10） |
+| `chapter.playing` | Playing | 16 | 当前章节（C10） |
+| `chapter.goal_count` | {done}/{total} goals | 24 | 章节页进度（C10） |
+| `settings.reset_all` | Reset All Progress | 24 | 正式版设置：重置全部本地进度（C10） |
+| `dialog.reset_all` | Reset every colony? Unlocks and goals will be lost. Purchases stay. | 80 | 二次确认（C10） |
+| `error.chapter_save` | This colony's save can't be loaded. Start this colony again? | 72 | 单章存档不可用（C10） |
+| `error.progress_newer` | This progress was saved by a newer version. Please update the game. | 80 | 全局进度来自更新版本（C10） |
 
 系统购买弹窗、ATT 和 UMP 文案按系统/SDK 正规流程处理；不把假系统界面当本游戏美术。正式版移除或替换 `goal.prototype_complete`，文案检查应区分核心测试构建与发行目标。

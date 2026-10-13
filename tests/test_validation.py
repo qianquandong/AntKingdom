@@ -50,6 +50,28 @@ class ValidationTests(unittest.TestCase):
         with redirect_stdout(io.StringIO()):
             self.assertEqual(export_strings.main(["--check"]), 0)
 
+    def test_release_strings_pass(self):
+        release = check_strings.RELEASE.read_text(encoding="utf-8")
+        prd = check_strings.PRD.read_text(encoding="utf-8")
+        self.assertFalse(check_strings.validate_release(release, prd))
+
+    def test_release_string_failures_rejected(self):
+        release = check_strings.RELEASE.read_text(encoding="utf-8")
+        prd = check_strings.PRD.read_text(encoding="utf-8")
+        bad_docs = [release.replace("| Choose a Colony |", "| 选择蚁群 |"),
+                    release.replace("`chapter.select`", "`game.title`"),
+                    release.replace("`chapter.next`", "`chapter.select`"),
+                    release.replace("| Choose a Colony | 24 |", "| Choose a Colony | 4 |"),
+                    release.replace("Buy for {price}", "Buy for {cost}"),
+                    release.replace("## 6. 新增英文文案登记", "## 6. 新增英文文案登记\n\nSee `chapter.missing`.\n"),
+                    "no section"]
+        for bad in bad_docs:
+            with self.subTest(text=bad[:40]):
+                self.assertTrue(check_strings.validate_release(bad, prd))
+
+    def test_chapter_manifest_maps_pass(self):
+        self.assertFalse(check_map.validate_chapters())
+
     def test_bad_strings_return_failure(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "PRD.md"

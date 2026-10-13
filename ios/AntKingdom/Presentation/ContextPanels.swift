@@ -7,7 +7,9 @@ struct IdlePanel: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            if let hint = TutorialGuide.hint(for: controller.snapshot) {
+            // 正式版由章节完成卡片宣布完成，不再显示核心版的 goal.prototype_complete（RELEASE_SCOPE 第 6 节）
+            if let hint = TutorialGuide.hint(for: controller.snapshot),
+               hint != .complete || controller.announcesPrototypeComplete {
                 HintCard(key: hint.stringID, icon: hint == .complete ? "star.fill" : "hand.tap")
             }
             if !controller.snapshot.hasPantry, controller.snapshot.flags.firstSourceConnected {
