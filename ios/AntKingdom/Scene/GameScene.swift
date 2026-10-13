@@ -69,6 +69,10 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         controller.onRejectedTap = { [weak self] cell in self?.shake(cell) }
         controller.onReset = { [weak self] in self?.resetCamera() }
         controller.onResume = { [weak self] in self?.resetFrameClock() }
+        // A02-02：第 2 次有效命中时在原格放一次短碎屑（事件驱动，每次命中一次；开通时的 burst 另由通路变化触发）
+        controller.onDigHit = { [weak self] cell, taps in
+            if taps == 2 { self?.burst(at: cell, crumbs: 3) }
+        }
         resetCamera()
         #if DEBUG
         // 美术截图：指定初始缩放（0 → 最小总览，很大 → 最大 1.6 倍），镜头照常钳制
@@ -167,12 +171,16 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
     }
 
-    /// 地表背景（1296×288 可裁切）：铺在地表行下面，地表格改为透明。
+    /// 地表背景（A02-02：1296×288 px，@3x 默认 432×96 pt）：铺在地表行下面，地表格改为透明。
+    /// 按地表行的宽高比**等比裁切**中间一段再显示，不把整张压扁到一行（当前 9 列 × 1 行裁 (0, 0.25, 1, 0.5)，显示 432×48 pt）。
+    /// 纯装饰：不改 `.surface` 的通行、命中、入口与收入；入口格 E 的通路节点在 tileLayer 上方照常绘制。
     private func addSurfaceBackdrop(_ map: MapDefinition) {
         let cells = Set(tileNodes.keys.filter { map.tile(at: $0) == .surface })
-        guard !cells.isEmpty, let texture = ArtLibrary.texture(AssetNames.surface) else { return }
+        guard !cells.isEmpty, let full = ArtLibrary.texture(AssetNames.surface) else { return }
         let frame = MapGeometry.frame(of: cells)
-        let backdrop = SKSpriteNode(texture: texture, size: frame.size)
+        let crop = SurfaceBackdrop.cropRect(target: frame.size, source: full.size())
+        let backdrop = SKSpriteNode(texture: SKTexture(rect: crop, in: full), size: frame.size)
+        backdrop.name = "surface.backdrop"
         backdrop.position = CGPoint(x: frame.midX, y: frame.midY)
         backdrop.zPosition = -1
         tileLayer.addChild(backdrop)
@@ -492,9 +500,12 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
 
     // MARK: 一次性视觉反馈
 
-    private func burst(at cell: GridPoint) {
+    /// 一次性土屑（dig_feedback_crumb 12 pt）：普通 `crumbs` 颗向外飞散，减少动态时只 1 颗原地淡出；约 0.35 秒后全部移除，
+    /// 不常驻、不累积。开通用 6 颗，第 2 次命中用 3 颗。
+    private func burst(at cell: GridPoint, crumbs: Int = 6) {
         let still = controller?.reduceMotion ?? false
-        for index in 0..<(still ? 1 : 6) {
+        let count = still ? 1 : crumbs
+        for index in 0..<count {
             let crumb: SKNode
             if let texture = ArtLibrary.texture(AssetNames.crumb) {
                 crumb = SKSpriteNode(texture: texture, size: CGSize(width: 12, height: 12))
@@ -505,13 +516,14 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
                 crumb = shape
             }
             crumb.position = MapGeometry.center(of: cell)
+            crumb.name = "fx.crumb"
             overlayLayer.addChild(crumb)
             if still {
                 // 减少动态：只淡出，不飞散
                 crumb.run(.sequence([.fadeOut(withDuration: 0.35), .removeFromParent()]))
                 continue
             }
-            let angle = Double(index) / 6 * 2 * .pi
+            let angle = Double(index) / Double(count) * 2 * .pi
             let move = SKAction.moveBy(x: CGFloat(cos(angle)) * 22, y: CGFloat(sin(angle)) * 22, duration: 0.35)
             crumb.run(.sequence([.group([move, .fadeOut(withDuration: 0.35)]), .removeFromParent()]))
         }
@@ -661,11 +673,13 @@ final class GameScene: SKScene, UIGestureRecognizerDelegate {
         let origin = convertPoint(toView: CGPoint(x: 0, y: 0))
         // eggs=：当前活着的卵占用的槽（按卵的创建顺序），只在孵化 / 新订单时变化（D-16 的 UI 测试读取）
         let slots = controller.latest.eggSlots.map(String.init).joined(separator: ",")
-        let probe = String(format: "origin=%.1f,%.1f tile=%.2f dug=%ld view=%.0fx%.0f eggs=%@",
+        // fx=：仍在场上的一次性土屑数（A02-02：每次命中 / 开通只放一次，约 0.35 秒后清零，不累积）
+        let crumbs = overlayLayer.children.filter { $0.name == "fx.crumb" }.count
+        let probe = String(format: "origin=%.1f,%.1f tile=%.2f dug=%ld view=%.0fx%.0f eggs=%@ fx=%ld",
                            locale: Locale(identifier: "en_US_POSIX"),
                            origin.x, origin.y, MapGeometry.tile * zoom,
                            controller.latest.walkable.count - controller.session.map.initialWalkable.count,
-                           view.bounds.width, view.bounds.height, slots.isEmpty ? "-" : slots)
+                           view.bounds.width, view.bounds.height, slots.isEmpty ? "-" : slots, crumbs)
         if probe != controller.debugProbe { controller.debugProbe = probe }
         controller.refreshDebugLifecycle()
         #endif

@@ -250,6 +250,13 @@ jobs:
           bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/D16-eggs_refill.mov" 32 -ak-scenario eggs_refill
           # A02-T03：唯一蜿蜒路线，带货一程东南西北四向，总览固定镜头
           bash ci/record-scenario.sh "$SIM_STANDARD" "$app" "build/videos/A02-ant_four_way.mov" 30 -ak-scenario ant_four_way -ak-zoom 0
+          # A02-02 A02B-03：三种 Soil 各 0→1→2→3 命中（固定镜头），用 UI 测试驱动点击
+          xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A02B-three-hits.mov &
+          rec3=$!
+          sleep 2
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom -destination "platform=iOS Simulator,id=$SIM_STANDARD" -derivedDataPath build/DerivedData -only-testing:AntKingdomUITests/DigFeedbackUITests/testThreeHitsOnEachSoilVariant CODE_SIGNING_ALLOWED=NO test-without-building || echo "three-hit recording test failed"
+          kill -INT "$rec3" || true
+          wait "$rec3" || true
           xcrun simctl io "$SIM_STANDARD" recordVideo --codec h264 --force build/videos/A02-ant-motion.mov &
           rec=$!
           sleep 2
