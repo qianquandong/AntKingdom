@@ -34,7 +34,11 @@ jobs:
   d13-roundtrips:
     name: D-13 前后台往返回归（标准与小屏各 10 轮 × 65 秒）
     # 每轮重启到同一可结算状态；任何一轮失败都保留日志，不重跑、不删轮（Issue #11）
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/claude/d13-lifecycle'
+    # 新美术候选线 claude/a02-01-art 的每个候选 SHA 也跑（Codex 10-12：不能拿旧 tag 的 20 轮代替新候选）
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.ref == 'refs/heads/claude/d13-lifecycle' ||
+      github.ref == 'refs/heads/claude/a02-01-art'
     runs-on: macos-15
     timeout-minutes: 80
     steps:

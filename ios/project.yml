@@ -17,8 +17,9 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     MARKETING_VERSION: "0.1.0"
-    # 核心测试包构建号：每次交付固定一个值并单调递增（0.1.0 (2) = D-13 核心真机测试包，Issue #11/#16）
-    CURRENT_PROJECT_VERSION: "2"
+    # 核心测试包构建号：每次交付固定一个值并单调递增
+    # 0.1.0 (2) = core-test-d13-2（D-13，占位美术）；0.1.0 (3) = core-art-test-1（A01/A02 共 44 张 + D-15/D-16，Issue #11/#17）
+    CURRENT_PROJECT_VERSION: "3"
     TARGETED_DEVICE_FAMILY: "1"
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     ENABLE_USER_SCRIPT_SANDBOXING: "YES"
