@@ -32,6 +32,13 @@ HATCH_SECONDS = 30.0
 POP_CAP = 24
 LARVA_SLOTS = 2
 REFILL_SECONDS = 60.0
+# 正式版增量（RELEASE_SCOPE 第 3 章，C12）：可选奖励广告 Foraging Boost。独立的运输倍率，
+# 不复用 0…1 的离线效率；倍率为 1 时全部核心基准结果不变。
+BOOST_MULTIPLIER = 1.25
+BOOST_SECONDS = 300.0           # 有效前台秒
+BOOST_UNLOCK_FOREGROUND = 600.0  # 首次建仓后、累计有效前台达到此值才解锁
+BOOST_COOLDOWN = 600.0          # 两次成功领取之间的有效前台秒
+BOOST_DAILY_LIMIT = 3           # 每 UTC 日
 Point = tuple[int, int]
 PathCells = tuple[Point, ...]
 
@@ -273,15 +280,15 @@ class Colony:
             self._cached_key = key
         return self._cached_plan
 
-    def harvest(self, seconds: float, efficiency: float):
-        """仅按实际入库量扣有限源；满仓时源和库存均不变。"""
+    def harvest(self, seconds: float, efficiency: float, multiplier: float = 1.0):
+        """仅按实际入库量扣有限源；满仓时源和库存均不变。multiplier 为前台奖励倍率（C12）。"""
         available = max(0.0, self.capacity - self.food)
         if available <= EPSILON:
             return 0.0
         rates = self.plan().source_rates
         desired = []
         for source in self.sources:
-            amount = rates.get(source.id, 0.0) * seconds * efficiency
+            amount = rates.get(source.id, 0.0) * seconds * efficiency * multiplier
             if source.remaining is not None:
                 amount = min(amount, source.remaining)
             desired.append((source, amount))
@@ -297,9 +304,11 @@ class Colony:
         self.hauled += credited
         return credited
 
-    def advance(self, seconds: float, efficiency=1.0):
+    def advance(self, seconds: float, efficiency=1.0, multiplier=1.0):
         if not math.isfinite(seconds) or seconds < 0 or not 0 <= efficiency <= 1:
             raise ValueError("invalid duration or efficiency")
+        if not math.isfinite(multiplier) or multiplier < 1:
+            raise ValueError("invalid transport multiplier")
         end = self.elapsed + seconds
         while self.elapsed < end - EPSILON:
             dt = min(TICK, end - self.elapsed)
@@ -308,7 +317,7 @@ class Colony:
             patches_empty = all(s.remaining <= EPSILON for s in self.sources[:2])
             if patches_empty:
                 dt = min(dt, self.refill_left)
-            self.harvest(dt, efficiency)
+            self.harvest(dt, efficiency, multiplier)
             self.larvae = [remaining - dt for remaining in self.larvae]
             self.ants += sum(remaining <= EPSILON for remaining in self.larvae)
             self.larvae = [remaining for remaining in self.larvae if remaining > EPSILON]
@@ -334,6 +343,104 @@ class Colony:
         self.advance(min(seconds, OFFLINE_CAP), OFFLINE_EFFICIENCY)
         return {"net_food": self.food - before, "hauled_food": self.hauled - hauled_before,
                 "simulated_seconds": min(seconds, OFFLINE_CAP)}
+
+
+class RewardLedger:
+    """奖励广告的全局状态（RELEASE_SCOPE 第 3 章）。只按有效前台秒推进；后台、广告展示期间不推进。
+    一次领取用一次性请求 ID 去重；日期取高水位，回拨不提前清零。不是服务端反作弊。"""
+
+    def __init__(self):
+        self.foreground = 0.0
+        self.boost_left = 0.0
+        self.last_grant = None      # 上次成功领取时的累计前台秒
+        self.day = None             # 最近处理过的 UTC 日序号（高水位）
+        self.day_count = 0
+        self.processed = set()
+
+    def status(self, pantry_built: bool, storage_full: bool, day: int, ad_available: bool = True):
+        if not pantry_built or self.foreground < BOOST_UNLOCK_FOREGROUND - EPSILON:
+            return "locked"
+        if self.boost_left > EPSILON:
+            return "active"
+        if self.last_grant is not None and self.foreground - self.last_grant < BOOST_COOLDOWN - EPSILON:
+            return "cooldown"
+        if self.day is not None and max(day, self.day) == self.day and self.day_count >= BOOST_DAILY_LIMIT:
+            return "daily_limit"
+        if storage_full:
+            return "storage_full"
+        if not ad_available:
+            return "unavailable"
+        return "ready"
+
+    def grant(self, request_id: str, day: int) -> bool:
+        """只在广告 SDK 的已赚得奖励回调里调用；重复回调返回 False，不重复授予。"""
+        if request_id in self.processed:
+            return False
+        self.processed.add(request_id)
+        if self.day is None or day > self.day:
+            self.day, self.day_count = day, 0
+        self.day_count += 1
+        self.boost_left = BOOST_SECONDS
+        self.last_grant = self.foreground
+        return True
+
+    def step(self, colony: "Colony", seconds: float):
+        """前台推进：boost 剩余部分用 1.25，其余用 1.0；在 boost 到期处切分，不多给一点。"""
+        boosted = min(self.boost_left, seconds)
+        if boosted > 0:
+            colony.advance(boosted, 1.0, BOOST_MULTIPLIER)
+        if seconds - boosted > 0:
+            colony.advance(seconds - boosted, 1.0, 1.0)
+        self.boost_left = max(0.0, self.boost_left - boosted)
+        self.foreground += seconds
+
+
+REFERENCE_ACTIONS = {30: [(2, 4), (2, 5), (2, 6)], 150: [(1, 4), (1, 5)],
+                     300: [(6, 3), (6, 2)], 360: [(6, 4), (6, 5), (6, 6), (7, 6)]}
+# 较慢的玩家节奏（同一组格子，晚挖）：用来观察 boost 解锁后仓库尚未满时的影响
+SLOW_ACTIONS = {120: [(2, 4), (2, 5), (2, 6)], 420: [(1, 4), (1, 5)],
+                900: [(6, 3), (6, 2)], 1020: [(6, 4), (6, 5), (6, 6), (7, 6)]}
+
+
+def boost_replay(actions, pantry_from, seconds, policy):
+    """真实地图回放 + 奖励广告策略：none（从不看）/ once（第一次可领时看一次）/ always（每次可领都看）。
+    只验证规则与守恒，不是收益预测。"""
+    colony, ledger = Colony(), RewardLedger()
+    grants, first_pantry, complete_at, ready_at = [], None, None, None
+    for second in range(seconds):
+        for p in actions.get(second, []):
+            colony.dig(p)
+        if second >= pantry_from and not colony.pantry and colony.food >= PANTRY_COST:
+            colony.place_pantry((1, 4))
+            first_pantry = second
+        state = ledger.status(bool(colony.pantry), colony.capacity - colony.food <= EPSILON, day=0)
+        if state == "ready" and ready_at is None:
+            ready_at = second
+        if state == "ready" and (policy == "always" or (policy == "once" and not grants)):
+            if ledger.grant(f"req-{second}", day=0):
+                grants.append(second)
+            ledger.grant(f"req-{second}", day=0)   # 重复回调：不得再次授予
+        ledger.step(colony, 1.0)
+        if complete_at is None and colony.ants >= POP_CAP and not colony.larvae and colony.pantry \
+                and colony.capacity - colony.food <= EPSILON:
+            complete_at = second + 1
+    return {"policy": policy, "seconds": seconds, "first_pantry": first_pantry, "first_ready": ready_at,
+            "grants": grants, "boost_left": ledger.boost_left, "foreground": ledger.foreground,
+            "complete_at": complete_at, "ants": colony.ants, "larvae": len(colony.larvae),
+            "food": colony.food, "capacity": colony.capacity, "hauled": colony.hauled, "spent": colony.spent,
+            "refills": colony.refills, "remaining": [s.remaining for s in colony.sources],
+            "food_conservation_error": colony.hauled - colony.spent - colony.food}
+
+
+def boost_replays():
+    rows = []
+    for name, actions, pantry_from, seconds in (("reference", REFERENCE_ACTIONS, 150, 1800),
+                                                ("slow", SLOW_ACTIONS, 420, 2400)):
+        for policy in ("none", "once", "always"):
+            row = boost_replay(actions, pantry_from, seconds, policy)
+            row["pace"] = name
+            rows.append(row)
+    return rows
 
 
 def fixture_results():
@@ -381,6 +488,7 @@ def main():
     parser.add_argument("--check", action="store_true", help="验证夹具预期值和资源守恒")
     parser.add_argument("--tables", action="store_true", help="打印 PRD 对照场景")
     parser.add_argument("--json", action="store_true", help="机器可读结果")
+    parser.add_argument("--boost", action="store_true", help="奖励广告三种策略回放（C12）")
     args = parser.parse_args()
     cases, session = fixture_results(), scripted_session()
     if args.check:
@@ -393,7 +501,18 @@ def main():
                 raise SystemExit(f"FAILED: {fixture['id']} did not converge/improve")
         if abs(session["food_conservation_error"]) > 1e-6 or session["food"] > session["capacity"]:
             raise SystemExit("FAILED: food conservation/capacity")
-        print("OK: 3 actual-grid transport cases; 600s replay conserves Food")
+        for row in boost_replays():
+            if abs(row["food_conservation_error"]) > 1e-6 or row["food"] > row["capacity"] + 1e-9:
+                raise SystemExit(f"FAILED: boost replay {row['pace']}/{row['policy']} conservation/capacity")
+            if len(row["grants"]) > BOOST_DAILY_LIMIT:
+                raise SystemExit(f"FAILED: boost replay {row['pace']}/{row['policy']} exceeded daily limit")
+        print("OK: 3 actual-grid transport cases; 600s replay conserves Food; 6 boost replays conserve Food")
+    elif args.boost:
+        print("奖励广告 Foraging Boost 回放（规则验证，非收益预测）")
+        for r in boost_replays():
+            print(f"{r['pace']:<9} {r['policy']:<6} 首次建仓={r['first_pantry']}s 首次可领={r['first_ready']} "
+                  f"领取={r['grants']} 完成={r['complete_at']} 蚂蚁={r['ants']} Food={r['food']:.1f}/{r['capacity']:.0f} "
+                  f"搬入={r['hauled']:.1f} 支出={r['spent']:.0f} 补给={r['refills']}")
     elif args.json:
         print(json.dumps({"cases": cases, "scripted_session": session}, ensure_ascii=False, indent=2))
     else:

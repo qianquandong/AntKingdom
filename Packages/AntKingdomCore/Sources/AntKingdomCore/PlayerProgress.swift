@@ -21,6 +21,8 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
     public var ownedProducts: [String] = []
     /// 当前房间外观（RoomStyle 原始值）
     public var roomStyle = RoomStyle.standard.rawValue
+    /// 奖励广告账本（C12，全局；切换/重玩章节不重置）
+    public var rewards = RewardLedger()
 
     public init(activeChapterId: String, unlockedChapterIds: [String]) {
         self.activeChapterId = activeChapterId
@@ -33,7 +35,7 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case schemaVersion, activeChapterId, unlockedChapterIds, completedChapterIds, achievedGoals, savedAt, sequence
-        case firstPantryBuilt, ownedProducts, roomStyle
+        case firstPantryBuilt, ownedProducts, roomStyle, rewards
     }
 
     public init(from decoder: Decoder) throws {
@@ -48,6 +50,7 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
         firstPantryBuilt = try c.decodeIfPresent(Bool.self, forKey: .firstPantryBuilt) ?? false
         ownedProducts = try c.decodeIfPresent([String].self, forKey: .ownedProducts) ?? []
         roomStyle = try c.decodeIfPresent(String.self, forKey: .roomStyle) ?? RoomStyle.standard.rawValue
+        rewards = try c.decodeIfPresent(RewardLedger.self, forKey: .rewards) ?? RewardLedger()
     }
 
     public func isUnlocked(_ id: String) -> Bool { unlockedChapterIds.contains(id) }
@@ -101,6 +104,7 @@ public struct PlayerProgress: Codable, Equatable, Sendable {
         guard RoomStyle(rawValue: roomStyle) != nil, Set(ownedProducts).count == ownedProducts.count else {
             throw SaveError.unreadable("bad cosmetics")
         }
+        try rewards.validate()
     }
 }
 

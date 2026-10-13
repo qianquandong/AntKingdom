@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		00E3755C9645B6886194234D /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E9C27AC7A4781AED0D672 /* DebugMenu.swift */; };
 		010B14CFBC1A39C86BAC8FC6 /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC52BE7B1F9722360442BFE /* MapGeometry.swift */; };
+		02DA7268F30200AB391B6858 /* ReleaseEggSlotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */; };
 		0B11F8333EB64F9ACAAB971F /* ArtLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5085D0CA597EE4F428448C80 /* ArtLibrary.swift */; };
 		10A62465E167FAA90F1D7629 /* EggClutch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B2B75E2C2BCE116751550 /* EggClutch.swift */; };
 		12666765F469231E02DF90EB /* AntKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */; };
 		1C287016F3C11F3953253E82 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
 		1D03F6BF412690F1952361D2 /* CampaignViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3514527D290688985650AF25 /* CampaignViews.swift */; };
 		1D4ADA72153D3BE4DAA6E59E /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
+		20911F366080CE58E560B711 /* AdPauseIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */; };
 		2A43E88BEE487773D498897B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
 		2A8286B18738DBEB5F762CC4 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
 		2A90342127FA23F44F77D4D1 /* CampaignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD98DCC0444745681BA853EA /* CampaignModel.swift */; };
@@ -31,10 +33,12 @@
 		4410F8E2907F7CC2B68BEA8A /* Release.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5E299DFF773BABD24A807619 /* Release.xcstrings */; };
 		485BEAE68C5D8D92D9FD41D6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */; };
 		4C5B1ACD2847AB6637056B53 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
+		4C7475662D77728ADAE26308 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */; };
 		50E23573E127D899B24FC37D /* EggClutch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B2B75E2C2BCE116751550 /* EggClutch.swift */; };
 		51389D92D4A7D212F34A4821 /* GameControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */; };
 		53261ABA3C645BABD70E09EE /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		579C1493C2146018183F47DE /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1D48483C2DBD31DFBB1557 /* GameScene.swift */; };
+		58F9714E231D5C6E0D72F700 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */; };
 		60E104957BFE6F44999C28B4 /* EggClutchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62F8BBF45EE754CBB73C934B /* EggClutchTests.swift */; };
 		64A911E6F9892E0354BD9B26 /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		6769F30E682842A678EFE19D /* MapGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC52BE7B1F9722360442BFE /* MapGeometry.swift */; };
@@ -49,14 +53,18 @@
 		7997844D7C695FB8B526C8D0 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7ADD374A18E5FC815F24B6 /* StoreService.swift */; };
 		7A22B7EE73018477093F196D /* BottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46655BCDA18D4B2831BF3884 /* BottomPanel.swift */; };
 		7D4262B832572A1085A165A6 /* AntSwarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */; };
+		82AFC7CAE6931BC8390094C0 /* RewardedAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41620951FD8C905FF8106875 /* RewardedAdService.swift */; };
 		83445FD63AFFB0E3B8EE521E /* FeedbackAndAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2D6ABC3685DEAAB6E3D344 /* FeedbackAndAssetTests.swift */; };
 		83CF72B8EFBDB471F8F6558C /* LifecycleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD459B95B2E87AA2529D7A9 /* LifecycleViews.swift */; };
+		8456007C56C525FA17A59F16 /* AsyncOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = F207D67579C8D4A5ACF3F848 /* AsyncOnce.swift */; };
 		85D8458E88C3BD303B7D3A30 /* LifecycleViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD459B95B2E87AA2529D7A9 /* LifecycleViews.swift */; };
 		88AEAC059A87F0FED1F0D708 /* ArtLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5085D0CA597EE4F428448C80 /* ArtLibrary.swift */; };
+		89E6C81ABBA3ABC04F424CCD /* AdMobRewardedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA4BB01E56FC46CEA4986AA /* AdMobRewardedService.swift */; };
 		89EC82D7B1C77D572978AC1A /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B70D1626E7C44AB4980112 /* RootView.swift */; };
 		8BCCAE833BD31129F82BBB39 /* ContextPanels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */; };
 		8DDEDF8646941D04AD97D171 /* ChapterFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7647DC48D98DFDF69FF2F0 /* ChapterFlowUITests.swift */; };
 		95FCAD777E515F9BA4EE5065 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481AE54E930CF5CFCE79C5B6 /* HUDView.swift */; };
+		9796058698F4F95741B50718 /* RewardModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD00D2B9D279A7D94471484 /* RewardModelTests.swift */; };
 		994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */ = {isa = PBXBuildFile; fileRef = 675B34722EA6717625FAB89B /* transport_cases.json */; };
 		9D601A93A1CB9CE3CD9FDCFA /* GameController+Placement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77412A7A3D1820AE92346F4A /* GameController+Placement.swift */; };
 		9E2F2A640F124D68A6FBB5C7 /* BottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46655BCDA18D4B2831BF3884 /* BottomPanel.swift */; };
@@ -69,9 +77,11 @@
 		B1AD2C1B7329F29C4874CF5B /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1647B87EE8765C3C300BAEDA /* L10n.swift */; };
 		B1BB05F5C374F37BC86F088F /* ShopFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AAE351F03169C394F220D /* ShopFlowUITests.swift */; };
 		B6800053A02047187EA4F22E /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E839BB53F5D0B5A969665D /* ShopView.swift */; };
+		B69931FF8BA74A17B3037FEE /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37FBDC7FA592E40243ECC09 /* RewardView.swift */; };
 		B9F249B36B03BDDE779847E1 /* FakeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955E2CBA586A7E5EF6F6F66E /* FakeStoreService.swift */; };
 		BD5A2FE11CEE265B2A7CD89E /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = A28F9389B4FFAA909B610249 /* Products.storekit */; };
 		BD7A72609D2B40466C9E1FE3 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADB3D4C007669C66FE7EB17 /* GameController.swift */; };
+		BDA2342C69EC0ADCC11312D1 /* ReleaseArtAssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */; };
 		BF5F335F58B135CA24F5BFAF /* ArtPanZoomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C13CEC73D3BE9A762990F3 /* ArtPanZoomUITests.swift */; };
 		C594CD38C90D5F781A213B5E /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82063E864DA850E7CD105BB /* Format.swift */; };
 		C7193A8A6B4E8803646867A2 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5361185EA03C5A9E5E1622F1 /* Haptics.swift */; };
@@ -82,17 +92,23 @@
 		CE8C9DB163685993F3DD3978 /* GameController+Placement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77412A7A3D1820AE92346F4A /* GameController+Placement.swift */; };
 		D60CC0F69F72E612DD29F2CC /* LaunchSmokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE1B51B54D95CE1B9E720F8 /* LaunchSmokeUITests.swift */; };
 		D98F70A0A007456FFF778BE0 /* asset_runtime_names.json in Resources */ = {isa = PBXBuildFile; fileRef = 6FBDD03F678AE0B96A5FC18E /* asset_runtime_names.json */; };
+		DAFF0CA0C21240D61021FEA6 /* RewardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB484B9A77AFBA99F9EE651D /* RewardModel.swift */; };
 		DE89401AF31EEB43B6C55E97 /* AntSwarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */; };
 		E1A5D69A35D85A1035C2A763 /* AntMotionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DFF756411FC4DA8F49D6AB /* AntMotionUITests.swift */; };
 		E6DECE57CFC4BDE84268BD3B /* EggSlotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD6A4636F6D037087E6FF33 /* EggSlotUITests.swift */; };
 		E6E8BF82263AD41182078714 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408614A7C162CB5C9689C1B /* AppModel.swift */; };
 		EC7A863D0D3549A6E30FF8D5 /* AntKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */; };
+		F1E6771108B5471EA1CF996A /* FakeRewardedAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DCDC579343B1633AD3D94 /* FakeRewardedAdService.swift */; };
 		F285A3FD8CE25835E5986906 /* ArtScreenshotsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */; };
+		F564BC0B2E8B193736514D20 /* ReleaseArtScreenshotsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FA879D841822499D9B34DA /* ReleaseArtScreenshotsUITests.swift */; };
 		F66ECC2184B445A27299B5E2 /* CrumbKingdomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F61FEF068F2FF903351F2F /* CrumbKingdomApp.swift */; };
+		F7A06F12E28D56AE131071BC /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = E71C0F51B59D809CD2A60AD3 /* GoogleMobileAds */; };
 		F947E3D3E5F7A7ED0F8D6399 /* ContextPanels.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */; };
+		F996EEE8B57C9030A90B2E22 /* RewardFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAC8A7004A2767C840E26E8 /* RewardFlowUITests.swift */; };
 		FC0615DA35BD1EED6D087D1D /* PantryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F31F3529E1BEC69174175E6 /* PantryFlowUITests.swift */; };
 		FC2978693B604201AB298816 /* GameMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4125C63167FB727DDB70C304 /* GameMapView.swift */; };
 		FCB0C82EDECFE8552CAEC555 /* AntRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D477E2AFE6DD145711BB5F0 /* AntRouteTests.swift */; };
+		FD3A7C5F54139C392608B99B /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = 058762058F3900B122BC0C62 /* GoogleUserMessagingPlatform */; };
 		FE1BD0D1E281D1EF752A7B94 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A427BAB9E5A691739E2C2A /* Feedback.swift */; };
 		FF47CA59B268E142703DA4C4 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FC325F566B2AB6F6DD1875 /* StoreTests.swift */; };
 /* End PBXBuildFile section */
@@ -134,6 +150,7 @@
 		100B22119B0E7ECA54E370E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1647B87EE8765C3C300BAEDA /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		1F7647DC48D98DFDF69FF2F0 /* ChapterFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterFlowUITests.swift; sourceTree = "<group>"; };
+		2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2C7ADD374A18E5FC815F24B6 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		2FB88F6046ABD0988D365131 /* FeedbackSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackSettingsUITests.swift; sourceTree = "<group>"; };
 		33CDB5EDF1F3B9135DE1E4B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -144,22 +161,27 @@
 		3F386864F2C92EDC1D981ECF /* LifecycleRoundTripUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleRoundTripUITests.swift; sourceTree = "<group>"; };
 		40E839BB53F5D0B5A969665D /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		4125C63167FB727DDB70C304 /* GameMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMapView.swift; sourceTree = "<group>"; };
+		41620951FD8C905FF8106875 /* RewardedAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedAdService.swift; sourceTree = "<group>"; };
 		46655BCDA18D4B2831BF3884 /* BottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPanel.swift; sourceTree = "<group>"; };
 		47A134FF8A116A4C9A1A0F28 /* GameControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerTests.swift; sourceTree = "<group>"; };
 		481AE54E930CF5CFCE79C5B6 /* HUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDView.swift; sourceTree = "<group>"; };
 		4C1D48483C2DBD31DFBB1557 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		4CA4BB01E56FC46CEA4986AA /* AdMobRewardedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobRewardedService.swift; sourceTree = "<group>"; };
 		4D477E2AFE6DD145711BB5F0 /* AntRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntRouteTests.swift; sourceTree = "<group>"; };
 		5085D0CA597EE4F428448C80 /* ArtLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtLibrary.swift; sourceTree = "<group>"; };
 		5361185EA03C5A9E5E1622F1 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		56E9DF1B94A1D91D2D0BFF54 /* AntSwarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntSwarm.swift; sourceTree = "<group>"; };
 		5A564B15A70E590E33EB6B32 /* AppBootstrapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBootstrapTests.swift; sourceTree = "<group>"; };
 		5BD459B95B2E87AA2529D7A9 /* LifecycleViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleViews.swift; sourceTree = "<group>"; };
+		5DD00D2B9D279A7D94471484 /* RewardModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardModelTests.swift; sourceTree = "<group>"; };
 		5E299DFF773BABD24A807619 /* Release.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Release.xcstrings; sourceTree = "<group>"; };
 		6046A1B36421749B07DA9776 /* AntKingdom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AntKingdom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61B70D1626E7C44AB4980112 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		62F8BBF45EE754CBB73C934B /* EggClutchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EggClutchTests.swift; sourceTree = "<group>"; };
 		675B34722EA6717625FAB89B /* transport_cases.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = transport_cases.json; sourceTree = "<group>"; };
 		68483D03BF791FB1BFF9E314 /* AntKingdomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntKingdomApp.swift; sourceTree = "<group>"; };
+		68FA879D841822499D9B34DA /* ReleaseArtScreenshotsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseArtScreenshotsUITests.swift; sourceTree = "<group>"; };
+		6CAC8A7004A2767C840E26E8 /* RewardFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardFlowUITests.swift; sourceTree = "<group>"; };
 		6FBDD03F678AE0B96A5FC18E /* asset_runtime_names.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = asset_runtime_names.json; sourceTree = "<group>"; };
 		71A427BAB9E5A691739E2C2A /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		77412A7A3D1820AE92346F4A /* GameController+Placement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameController+Placement.swift"; sourceTree = "<group>"; };
@@ -177,22 +199,29 @@
 		AA05679CDF0915CC2C38ED5C /* CrumbKingdomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrumbKingdomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0791C8077EC8DE3D35A440D /* LifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleUITests.swift; sourceTree = "<group>"; };
 		B2771D18CFD038A6E6BB01EC /* ShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopModel.swift; sourceTree = "<group>"; };
+		B33DCDC579343B1633AD3D94 /* FakeRewardedAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRewardedAdService.swift; sourceTree = "<group>"; };
+		B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdPauseIntegrationTests.swift; sourceTree = "<group>"; };
 		B8D22135A456EE1FB87CC7DA /* AssetNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNames.swift; sourceTree = "<group>"; };
 		B9DD89CAE54804CF68A354EB /* CrumbKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrumbKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignBundleTests.swift; sourceTree = "<group>"; };
+		BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseEggSlotUITests.swift; sourceTree = "<group>"; };
 		BCC52BE7B1F9722360442BFE /* MapGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapGeometry.swift; sourceTree = "<group>"; };
 		BDA084E0492CA1177C8A1E40 /* ContextPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextPanels.swift; sourceTree = "<group>"; };
 		C1532A884C9E33DBED640147 /* DebugFixtureChapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFixtureChapter.swift; sourceTree = "<group>"; };
 		C2ACB634F49DFD5C293C7268 /* CrumbKingdom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CrumbKingdom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8C13CEC73D3BE9A762990F3 /* ArtPanZoomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtPanZoomUITests.swift; sourceTree = "<group>"; };
 		CADB3D4C007669C66FE7EB17 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		CB484B9A77AFBA99F9EE651D /* RewardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardModel.swift; sourceTree = "<group>"; };
 		D263A039C40C37B9B2674AEA /* AntKingdomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D37FBDC7FA592E40243ECC09 /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
 		D41723238ECBA5EEBC53CBEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DB779C6EDBE2BC7618617BBD /* ArtScreenshotsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtScreenshotsUITests.swift; sourceTree = "<group>"; };
 		DBC091470391519D8FCAD1DF /* TunnelMaskGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunnelMaskGalleryView.swift; sourceTree = "<group>"; };
 		DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseArtAssetTests.swift; sourceTree = "<group>"; };
 		DE8C1AD9E873A37D16FC9645 /* AntKingdomUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AntKingdomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1B86646A82E81AB8C2F81D5 /* ReleaseLifecycleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseLifecycleUITests.swift; sourceTree = "<group>"; };
+		F207D67579C8D4A5ACF3F848 /* AsyncOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOnce.swift; sourceTree = "<group>"; };
 		F82063E864DA850E7CD105BB /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		FD98DCC0444745681BA853EA /* CampaignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CampaignModel.swift; sourceTree = "<group>"; };
 		FE21D80D21D5FF9BB41DA9C0 /* chapters.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chapters.json; sourceTree = "<group>"; };
@@ -212,6 +241,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB85CDF11F63D96C9E2E5BDD /* AntKingdomCore in Frameworks */,
+				F7A06F12E28D56AE131071BC /* GoogleMobileAds in Frameworks */,
+				FD3A7C5F54139C392608B99B /* GoogleUserMessagingPlatform in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,11 +271,25 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		14553AA9BEE2C02188240313 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				4CA4BB01E56FC46CEA4986AA /* AdMobRewardedService.swift */,
+				F207D67579C8D4A5ACF3F848 /* AsyncOnce.swift */,
+				B33DCDC579343B1633AD3D94 /* FakeRewardedAdService.swift */,
+				41620951FD8C905FF8106875 /* RewardedAdService.swift */,
+				CB484B9A77AFBA99F9EE651D /* RewardModel.swift */,
+				D37FBDC7FA592E40243ECC09 /* RewardView.swift */,
+			);
+			path = Ads;
+			sourceTree = "<group>";
+		};
 		1765348D62BE78E2FA87BDE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				100B22119B0E7ECA54E370E1 /* Assets.xcassets */,
 				DBC6EAED33579BEE0E1064EF /* Localizable.xcstrings */,
+				2C51413E5E8EDD6DD5B48C8D /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -274,7 +319,10 @@
 		3CCA3430ADA017DD6593291C /* ReleaseTrackTests */ = {
 			isa = PBXGroup;
 			children = (
+				B380EDFB68C7E0D7BBCD5FB1 /* AdPauseIntegrationTests.swift */,
 				BADC1D8F9780A984BD202386 /* CampaignBundleTests.swift */,
+				DC1B72EBD676B05959EF8FF7 /* ReleaseArtAssetTests.swift */,
+				5DD00D2B9D279A7D94471484 /* RewardModelTests.swift */,
 				98FC325F566B2AB6F6DD1875 /* StoreTests.swift */,
 			);
 			path = ReleaseTrackTests;
@@ -325,7 +373,10 @@
 			isa = PBXGroup;
 			children = (
 				1F7647DC48D98DFDF69FF2F0 /* ChapterFlowUITests.swift */,
+				68FA879D841822499D9B34DA /* ReleaseArtScreenshotsUITests.swift */,
+				BB04B70A6FCDAA58FE0FAC17 /* ReleaseEggSlotUITests.swift */,
 				E1B86646A82E81AB8C2F81D5 /* ReleaseLifecycleUITests.swift */,
+				6CAC8A7004A2767C840E26E8 /* RewardFlowUITests.swift */,
 				7D4AAE351F03169C394F220D /* ShopFlowUITests.swift */,
 			);
 			path = ReleaseTrackUITests;
@@ -418,6 +469,7 @@
 		F307D567FCF192110840E2BA /* ReleaseTrack */ = {
 			isa = PBXGroup;
 			children = (
+				14553AA9BEE2C02188240313 /* Ads */,
 				90FE617AC440C72A4A42AD4B /* Commerce */,
 				07D1C63A0C0DB4ABD7C8D10E /* Resources */,
 				FD98DCC0444745681BA853EA /* CampaignModel.swift */,
@@ -465,6 +517,8 @@
 			name = CrumbKingdom;
 			packageProductDependencies = (
 				3C05660889385637D06A1974 /* AntKingdomCore */,
+				E71C0F51B59D809CD2A60AD3 /* GoogleMobileAds */,
+				058762058F3900B122BC0C62 /* GoogleUserMessagingPlatform */,
 			);
 			productName = CrumbKingdom;
 			productReference = C2ACB634F49DFD5C293C7268 /* CrumbKingdom.app */;
@@ -592,6 +646,8 @@
 			mainGroup = 54608715ABF1FDC3176695A3;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				2687A999EDCA35B024D74914 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				FF0643EB88DEEF1390A2961B /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
 				669FBD473DDE3C9206790BBC /* XCLocalSwiftPackageReference "../Packages/AntKingdomCore" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -625,6 +681,7 @@
 			files = (
 				2E6660ED50AB9230CD5FA45E /* Assets.xcassets in Resources */,
 				6CE1C338F50E47CF92BCB8CD /* Localizable.xcstrings in Resources */,
+				4C7475662D77728ADAE26308 /* PrivacyInfo.xcprivacy in Resources */,
 				994DF4EC6DE0DD41C9934A5F /* transport_cases.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -643,6 +700,7 @@
 			files = (
 				3C138F2EB6FD79C430211A6A /* Assets.xcassets in Resources */,
 				485BEAE68C5D8D92D9FD41D6 /* Localizable.xcstrings in Resources */,
+				58F9714E231D5C6E0D72F700 /* PrivacyInfo.xcprivacy in Resources */,
 				4410F8E2907F7CC2B68BEA8A /* Release.xcstrings in Resources */,
 				72D753614E8E611AF19574BE /* chapters.json in Resources */,
 				AE99150F98280FBFD41E4BB3 /* map_prototype.txt in Resources */,
@@ -687,7 +745,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				20911F366080CE58E560B711 /* AdPauseIntegrationTests.swift in Sources */,
 				3E77316496E495DF03769462 /* CampaignBundleTests.swift in Sources */,
+				BDA2342C69EC0ADCC11312D1 /* ReleaseArtAssetTests.swift in Sources */,
+				9796058698F4F95741B50718 /* RewardModelTests.swift in Sources */,
 				FF47CA59B268E142703DA4C4 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -724,11 +785,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89E6C81ABBA3ABC04F424CCD /* AdMobRewardedService.swift in Sources */,
 				EC7A863D0D3549A6E30FF8D5 /* AntKingdomApp.swift in Sources */,
 				DE89401AF31EEB43B6C55E97 /* AntSwarm.swift in Sources */,
 				E6E8BF82263AD41182078714 /* AppModel.swift in Sources */,
 				88AEAC059A87F0FED1F0D708 /* ArtLibrary.swift in Sources */,
 				A3A22841541C5404DD0F05BE /* AssetNames.swift in Sources */,
+				8456007C56C525FA17A59F16 /* AsyncOnce.swift in Sources */,
 				7A22B7EE73018477093F196D /* BottomPanel.swift in Sources */,
 				2A90342127FA23F44F77D4D1 /* CampaignModel.swift in Sources */,
 				1D03F6BF412690F1952361D2 /* CampaignViews.swift in Sources */,
@@ -737,6 +800,7 @@
 				79336F5777C9BB586872D454 /* DebugFixtureChapter.swift in Sources */,
 				00E3755C9645B6886194234D /* DebugMenu.swift in Sources */,
 				50E23573E127D899B24FC37D /* EggClutch.swift in Sources */,
+				F1E6771108B5471EA1CF996A /* FakeRewardedAdService.swift in Sources */,
 				B9F249B36B03BDDE779847E1 /* FakeStoreService.swift in Sources */,
 				FE1BD0D1E281D1EF752A7B94 /* Feedback.swift in Sources */,
 				C594CD38C90D5F781A213B5E /* Format.swift in Sources */,
@@ -749,6 +813,9 @@
 				A46C2248B5BBAF80884C2BCF /* L10n.swift in Sources */,
 				85D8458E88C3BD303B7D3A30 /* LifecycleViews.swift in Sources */,
 				6769F30E682842A678EFE19D /* MapGeometry.swift in Sources */,
+				DAFF0CA0C21240D61021FEA6 /* RewardModel.swift in Sources */,
+				B69931FF8BA74A17B3037FEE /* RewardView.swift in Sources */,
+				82AFC7CAE6931BC8390094C0 /* RewardedAdService.swift in Sources */,
 				2A43E88BEE487773D498897B /* RootView.swift in Sources */,
 				CDB4007C8327FAA0431614C5 /* SettingsView.swift in Sources */,
 				9E97979B49759B0F62F3493E /* ShopModel.swift in Sources */,
@@ -764,7 +831,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DDEDF8646941D04AD97D171 /* ChapterFlowUITests.swift in Sources */,
+				F564BC0B2E8B193736514D20 /* ReleaseArtScreenshotsUITests.swift in Sources */,
+				02DA7268F30200AB391B6858 /* ReleaseEggSlotUITests.swift in Sources */,
 				329DA4C6D0BCAF96306CA5A3 /* ReleaseLifecycleUITests.swift in Sources */,
+				F996EEE8B57C9030A90B2E22 /* RewardFlowUITests.swift in Sources */,
 				B1BB05F5C374F37BC86F088F /* ShopFlowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -798,8 +868,10 @@
 		03424D40C51B007D21410266 /* AppStore */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				AK_REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/1712485313";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GAD_APPLICATION_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -948,8 +1020,10 @@
 		3DF81FAF9DCFCB566EECA6AF /* TestFlight */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				AK_REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/1712485313";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GAD_APPLICATION_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1087,8 +1161,10 @@
 		958D37C91C351240306208C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				AK_REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/1712485313";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GAD_APPLICATION_ID = "ca-app-pub-3940256099942544~1458002511";
 				INFOPLIST_FILE = ReleaseTrack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1384,7 +1460,31 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		2687A999EDCA35B024D74914 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = exactVersion;
+				version = 13.11.0;
+			};
+		};
+		FF0643EB88DEEF1390A2961B /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		058762058F3900B122BC0C62 /* GoogleUserMessagingPlatform */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF0643EB88DEEF1390A2961B /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */;
+			productName = GoogleUserMessagingPlatform;
+		};
 		3C05660889385637D06A1974 /* AntKingdomCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AntKingdomCore;
@@ -1392,6 +1492,11 @@
 		D9981BA22E18B195D8173322 /* AntKingdomCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AntKingdomCore;
+		};
+		E71C0F51B59D809CD2A60AD3 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2687A999EDCA35B024D74914 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

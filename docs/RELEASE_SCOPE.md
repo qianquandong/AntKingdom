@@ -133,6 +133,7 @@ IAP 对经济的影响必须为零。确认拒绝广告不影响免费完成，�
 | `reward.active` | Boost: {time} remaining | 32 | 剩余时间 |
 | `reward.daily_limit` | More boosts tomorrow. | 32 | 日上限 |
 | `reward.cooldown` | Boost ready in {time} of active play. | 48 | 冷却 |
+| `reward.save_failed` | Your boost is on, but it couldn't be saved. Tap Try Again. | 64 | 已赚得奖励写盘失败：boost 已生效，重试只写盘、不需要再看广告（R04） |
 | `settings.privacy` | Privacy Policy | 24 | 页面链接 |
 | `settings.privacy_choices` | Privacy Choices | 24 | UMP 入口 |
 | `settings.support` | Help & Support | 24 | 支持 |

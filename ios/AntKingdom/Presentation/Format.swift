@@ -16,6 +16,12 @@ enum Format {
         String(Int(max(0, value).rounded(.up)))
     }
 
+    /// 剩余时间 m:ss（向上取整到秒），用于奖励 boost 与冷却
+    static func clock(_ value: Double) -> String {
+        let total = Int(max(0, value).rounded(.up))
+        return String(format: "%d:%02d", locale: Locale(identifier: "en_US_POSIX"), total / 60, total % 60)
+    }
+
     static func sourceNameKey(_ id: String) -> String {
         switch id {
         case "cookie": return "source.cookie"

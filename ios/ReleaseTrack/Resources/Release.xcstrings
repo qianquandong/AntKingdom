@@ -361,6 +361,18 @@
         }
       }
     },
+    "reward.save_failed" : {
+      "comment" : "max 64 chars; 已赚得奖励写盘失败：boost 已生效，重试只写盘、不需要再看广告（R04）",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your boost is on, but it couldn't be saved. Tap Try Again."
+          }
+        }
+      }
+    },
     "reward.title" : {
       "comment" : "max 24 chars; 奖励名",
       "extractionState" : "manual",

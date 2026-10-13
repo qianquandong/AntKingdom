@@ -24,6 +24,12 @@ struct SettingsView: View {
             Form {
                 onOffRow("settings.sound", selection: $sound)
                 onOffRow("settings.haptics", selection: $haptics)
+                if let privacy = controller.privacyChoices {
+                    Section {
+                        Button(L10n.text("settings.privacy_choices"), action: privacy)
+                            .accessibilityIdentifier("settings.privacy_choices")
+                    }
+                }
                 if let restore = controller.restorePurchases {
                     Section {
                         Button(L10n.text("shop.restore"), action: restore)

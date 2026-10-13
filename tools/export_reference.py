@@ -4,7 +4,7 @@
     python tools/export_reference.py --check  # 与已提交文件比对（浮点容差 1e-9），过期则返回非零
 
 内容：三组夹具前后完整求解结果、测试中的额外运输场景、全挖地图 1–24 只人口扫描、
-600 秒回放每秒状态、离线一致性场景。浮点保留原始值，不做显示舍入。
+600 秒回放每秒状态、离线一致性场景、奖励广告回放（C12）。浮点保留原始值，不做显示舍入。
 Python 3.12+ 的 sum() 使用补偿求和，与 3.11 可能差 1 ulp，因此比对使用容差而非逐位相等。
 """
 import argparse
@@ -156,6 +156,8 @@ def build():
         "population_sweep": population_sweep(),
         "replay": replay(),
         "offline": offline_scenarios(),
+        # 正式版增量（C12）：奖励广告三种策略 × 两种节奏的真实地图回放；核心字段不受影响
+        "boost_replays": sim.boost_replays(),
     }
 
 

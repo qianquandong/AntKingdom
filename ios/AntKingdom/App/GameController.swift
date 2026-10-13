@@ -75,6 +75,13 @@ final class GameController: ObservableObject {
     var restorePurchases: (() -> Void)?
     /// 房间外观（只影响 Queen Chamber 与 Pantry 的绘制；经济不读取）。核心版恒为默认。
     var roomStyle: RoomStyle = .standard
+    /// 正式版：HUD 显示奖励广告入口（可领取/生效/冷却/当日已满时）。核心版为 nil。
+    var openReward: (() -> Void)?
+    /// 正式版：设置里的 Privacy Choices（UMP 要求时显示）。核心版为 nil。
+    var privacyChoices: (() -> Void)?
+    /// 全屏广告展示期间暂停前台步进（RELEASE_SCOPE 第 3 章）；场景仍刷新，不累积补算时间。
+    /// 发行轨同时让生命周期进入有意暂停（CampaignCoordinator.beginAdPause，D-14），收益以生命周期为准。
+    var isSuspended = false
     /// 核心版用提示条宣布“原型完成”；正式版改由章节完成页宣布（RELEASE_SCOPE 第 6 节）。
     var announcesPrototypeComplete = true
     /// 设置页重置按钮与二次确认的文案 ID：核心版重置本局；正式版重置全部本地进度。
@@ -86,6 +93,11 @@ final class GameController: ObservableObject {
     private static let autosaveInterval = 30.0
     /// 仅调试/UI 测试：地图变换与已挖格数
     @Published var debugProbe = ""
+    #if DEBUG
+    /// UI 测试：本局显示过的提示 ID（最多记 8 个，按首次出现顺序）。提示条只显示约 2.6 秒，
+    /// 慢 runner 上单次元素查询可能超过它，测试通过探针确认提示确实发出（T-04）
+    private(set) var shownToastIds: [String] = []
+    #endif
 
     /// 场景每帧读取的最新快照（不触发 SwiftUI 刷新）
     private(set) var latest: SessionSnapshot
@@ -121,6 +133,9 @@ final class GameController: ObservableObject {
         case .run:
             break
         }
+        // 全屏广告展示期间不推进（RELEASE_SCOPE 第 3 章）。收益与离线由生命周期的有意暂停判定（D-14：
+        // 暂停中准入返回 .hold），这里只是表现层的第二道保险
+        guard !isSuspended else { return }
         session.tick(frameDelta: delta)
         advanceHold()
         handle(session.drainEvents())
@@ -140,7 +155,7 @@ final class GameController: ObservableObject {
     func refreshDebugLifecycle() {
         guard let trace = lifecycleTrace, trace.sequence != traceSeen else { return }
         traceSeen = trace.sequence
-        debugLifecycle = trace.tail(24)
+        debugLifecycle = trace.tail(40)
     }
     #endif
 
@@ -328,6 +343,9 @@ final class GameController: ObservableObject {
 
     func show(_ key: String, _ arguments: [String: String] = [:], style: Toast.Style, duration: Double = 2.6) {
         let toast = Toast(text: L10n.text(key, arguments), style: style, identifier: key)
+        #if DEBUG
+        if !shownToastIds.contains(key) { shownToastIds = Array((shownToastIds + [key]).suffix(8)) }
+        #endif
         toasts.append(toast)
         if toasts.count > 3 { toasts.removeFirst(toasts.count - 3) }
         Task { @MainActor [weak self] in

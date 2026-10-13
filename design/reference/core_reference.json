@@ -15462,5 +15462,161 @@
     ]
    }
   }
+ ],
+ "boost_replays": [
+  {
+   "policy": "none",
+   "seconds": 1800,
+   "first_pantry": 150,
+   "first_ready": null,
+   "grants": [],
+   "boost_left": 0.0,
+   "foreground": 1800.0,
+   "complete_at": 419,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1530.0000000000034,
+   "spent": 430.0,
+   "refills": 2,
+   "remaining": [
+    172.18670165341086,
+    0.0,
+    null,
+    null
+   ],
+   "food_conservation_error": 3.410605131648481e-12,
+   "pace": "reference"
+  },
+  {
+   "policy": "once",
+   "seconds": 1800,
+   "first_pantry": 150,
+   "first_ready": null,
+   "grants": [],
+   "boost_left": 0.0,
+   "foreground": 1800.0,
+   "complete_at": 419,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1530.0000000000034,
+   "spent": 430.0,
+   "refills": 2,
+   "remaining": [
+    172.18670165341086,
+    0.0,
+    null,
+    null
+   ],
+   "food_conservation_error": 3.410605131648481e-12,
+   "pace": "reference"
+  },
+  {
+   "policy": "always",
+   "seconds": 1800,
+   "first_pantry": 150,
+   "first_ready": null,
+   "grants": [],
+   "boost_left": 0.0,
+   "foreground": 1800.0,
+   "complete_at": 419,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1530.0000000000034,
+   "spent": 430.0,
+   "refills": 2,
+   "remaining": [
+    172.18670165341086,
+    0.0,
+    null,
+    null
+   ],
+   "food_conservation_error": 3.410605131648481e-12,
+   "pace": "reference"
+  },
+  {
+   "policy": "none",
+   "seconds": 2400,
+   "first_pantry": 420,
+   "first_ready": 600,
+   "grants": [],
+   "boost_left": 0.0,
+   "foreground": 2400.0,
+   "complete_at": 829,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1529.9999999999693,
+   "spent": 430.0,
+   "refills": 1,
+   "remaining": [
+    0.0,
+    150.0,
+    null,
+    null
+   ],
+   "food_conservation_error": -3.069544618483633e-11,
+   "pace": "slow"
+  },
+  {
+   "policy": "once",
+   "seconds": 2400,
+   "first_pantry": 420,
+   "first_ready": 600,
+   "grants": [
+    600
+   ],
+   "boost_left": 0.0,
+   "foreground": 2400.0,
+   "complete_at": 783,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1530.0000000000396,
+   "spent": 430.0,
+   "refills": 1,
+   "remaining": [
+    0.0,
+    150.0,
+    null,
+    null
+   ],
+   "food_conservation_error": 3.956301952712238e-11,
+   "pace": "slow"
+  },
+  {
+   "policy": "always",
+   "seconds": 2400,
+   "first_pantry": 420,
+   "first_ready": 600,
+   "grants": [
+    600
+   ],
+   "boost_left": 0.0,
+   "foreground": 2400.0,
+   "complete_at": 783,
+   "ants": 24,
+   "larvae": 0,
+   "food": 1100.0,
+   "capacity": 1100.0,
+   "hauled": 1530.0000000000396,
+   "spent": 430.0,
+   "refills": 1,
+   "remaining": [
+    0.0,
+    150.0,
+    null,
+    null
+   ],
+   "food_conservation_error": 3.956301952712238e-11,
+   "pace": "slow"
+  }
  ]
 }
