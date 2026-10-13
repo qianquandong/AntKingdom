@@ -283,13 +283,35 @@ jobs:
         timeout-minutes: 20
         run: |
           set -o pipefail   # 检查失败不能被 tee 吞掉
+          # 版本/构建号用 project.yml 中固定的值（交付包与源码 tag 一致），不再用 run_number 覆盖
           bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
             -configuration TestFlight -destination "generic/platform=iOS" \
             -derivedDataPath build/DerivedData-release \
-            CURRENT_PROJECT_VERSION=${{ github.run_number }} CODE_SIGNING_ALLOWED=NO build
+            CODE_SIGNING_ALLOWED=NO build
           bash ci/check-release-binary.sh build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app \
             | tee build/release-check.md >> "$GITHUB_STEP_SUMMARY"
           cat build/release-check.md
+
+      - name: 打包无签名构建产物（仅构建证据，不能直接安装）
+        timeout-minutes: 20
+        run: |
+          set -o pipefail
+          # Debug 诊断版（含生命周期日志与 Copy Lifecycle Log），真机架构、无签名
+          bash ci/xcodebuild.sh -project ios/AntKingdom.xcodeproj -scheme AntKingdom \
+            -configuration Debug -destination "generic/platform=iOS" \
+            -derivedDataPath build/DerivedData-device \
+            CODE_SIGNING_ALLOWED=NO build
+          bash ci/package-unsigned.sh build/unsigned \
+            build/DerivedData-release/Build/Products/TestFlight-iphoneos/AntKingdom.app TestFlight \
+            build/DerivedData-device/Build/Products/Debug-iphoneos/AntKingdom.app Debug
+          cat build/unsigned/BUILD-INFO.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 上传无签名构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: antkingdom-unsigned-${{ github.sha }}
+          path: build/unsigned
+          retention-days: 90
 
       - name: 上传证据
         if: always()

@@ -82,6 +82,20 @@ CI 已对 TestFlight 配置做无签名的真机架构编译，并用 `ci/check-
 3. Xcode Organizer → Distribute App → TestFlight & App Store（或 Internal Only），由用户确认上传。
 4. 上传前 `python3 tools/check_assets.py --strict` 必须通过；占位资源不能进外部测试或提审包。
 
+### 核心真机测试包（D-13 修复后，签名待用户）
+
+固定版本：tag **`core-test-d13-2`** = 387ad4f，**0.1.0 (2)**。CI [38205092148](https://github.com/qianquandong/AntKingdom/actions/runs/38205092148) 全部通过（模拟器往返 20/20），资源为占位。
+无签名 .app（TestFlight 与 Debug 两种配置，仅构建证据，不能直接安装）：CI artifact [antkingdom-unsigned-387ad4f…](https://github.com/qianquandong/AntKingdom/actions/runs/38205092148/artifacts/11727498357)，附 SHA-256 与 BUILD-INFO.md。
+状态 **SIGNING_BLOCKED / NOT_INSTALLED**：签名需要用户自己的 Apple ID / Team，凭据只在本机钥匙串，不进仓库。
+每次交付新的测试包时，把 `ios/project.yml` 的 `CURRENT_PROJECT_VERSION` 加一并打新 tag。
+
+1. `git fetch origin --tags && git checkout core-test-d13-2 && open ios/AntKingdom.xcodeproj`
+2. Xcode → Settings → Accounts 登录 Apple ID；AntKingdom target → Signing & Capabilities → Automatically manage signing，选自己的 Team，
+   Bundle Identifier 改成自己的前缀（只在本机改，不提交）。个人免费账号的安装 7 天有效。
+3. iPhone 连 Mac，打开 设置 → 隐私与安全性 → 开发者模式；选设备与 **Debug** 配置 Run（Debug 带生命周期诊断，
+   设置 → Debug → Copy Lifecycle Log 可复制日志）。首次需在 设置 → 通用 → VPN 与设备管理 中信任开发者。
+4. 按 [D-13 报告](reports/D13-2026-10-11.md) 第 7 节逐项验收并记录机型/iOS/tag/结果；无条件的项写 NOT_RUN。
+
 ## 4a. 正式资源导入约定
 
 每个资源 ID 在客户端对应的运行时名称见 [`design/asset_runtime_names.json`](../design/asset_runtime_names.json)
