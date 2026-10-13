@@ -1,0 +1,122 @@
+{
+  "delivery": "A02-02 1.0.0",
+  "status": "desktop_checks_passed_device_not_run",
+  "checks": [
+    {
+      "id": "surface_backdrop",
+      "pass": true,
+      "pixels": [
+        1296,
+        288
+      ],
+      "opaque_fraction": 1,
+      "fully_clear_fraction": 0,
+      "visible_bounds": [
+        0,
+        0,
+        1295,
+        287
+      ],
+      "nontransparent_edge_pixels": 3164,
+      "space": "srgb",
+      "has_alpha": false
+    },
+    {
+      "id": "dig_feedback_crack_1",
+      "pass": true,
+      "pixels": [
+        144,
+        144
+      ],
+      "opaque_fraction": 0.008777006172839507,
+      "fully_clear_fraction": 0.9722222222222222,
+      "visible_bounds": [
+        46,
+        35,
+        111,
+        105
+      ],
+      "nontransparent_edge_pixels": 0,
+      "space": "srgb",
+      "has_alpha": true
+    },
+    {
+      "id": "dig_feedback_crack_2",
+      "pass": true,
+      "pixels": [
+        144,
+        144
+      ],
+      "opaque_fraction": 0.02155671296296296,
+      "fully_clear_fraction": 0.9464216820987654,
+      "visible_bounds": [
+        40,
+        29,
+        113,
+        112
+      ],
+      "nontransparent_edge_pixels": 0,
+      "space": "srgb",
+      "has_alpha": true
+    },
+    {
+      "id": "dig_feedback_crumb",
+      "pass": true,
+      "pixels": [
+        36,
+        36
+      ],
+      "opaque_fraction": 0.11805555555555555,
+      "fully_clear_fraction": 0.816358024691358,
+      "visible_bounds": [
+        10,
+        10,
+        25,
+        25
+      ],
+      "nontransparent_edge_pixels": 0,
+      "space": "srgb",
+      "has_alpha": true
+    }
+  ],
+  "crack_alignment": {
+    "method": "stage1 alpha>=96 support retained by stage2 within 1 runtime pixel",
+    "retained_pixels": 205,
+    "total_pixels": 205,
+    "ratio": 1,
+    "threshold": 0.97,
+    "pass": true
+  },
+  "runtime_bytes": 587921,
+  "surface_crop": {
+    "runtime_pixels": [
+      1296,
+      288
+    ],
+    "device_source_rect": [
+      0,
+      72,
+      1296,
+      144
+    ],
+    "device_points": [
+      432,
+      48
+    ],
+    "normalized_texture_rect": [
+      0,
+      0.25,
+      1,
+      0.5
+    ]
+  },
+  "proofs": [
+    "qa/contact-sheet.png",
+    "qa/contact-sheet-grayscale.png",
+    "qa/surface-device-crop@3x.png"
+  ],
+  "limitations": [
+    "静态工程与桌面视觉检查；不是客户端/物理设备证据",
+    "route_markers/UI/audio/发行内容尚未交付；strict发行门槛不可放宽"
+  ]
+}

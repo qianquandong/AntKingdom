@@ -1,0 +1,60 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "calls": [
+    {
+      "id": "surface_backdrop",
+      "prompt": "Use case: stylized-concept. Asset type: one opaque panoramic surface-backdrop texture for a cozy 2D iPhone ant-colony game, Crumb Kingdom. Input image 1 is ONLY a soil color/paint texture reference; image 2 is ONLY a warm gouache and sage-leaf style reference, do not copy the queen, chamber or vignette. Create a flat orthographic underground-cutaway strip showing a quiet grass-and-soil boundary: sparse short rounded sage-green grass blades, tiny low leaves, a few short roots beneath a horizontal brown soil lip, warm cream empty air above. No horizon depth, no mountains, no perspective, no sun. Panoramic 3:1 composition; render 1536x512 if possible. The eventual export is a center crop to 1296x288 (4.5:1); all important blades, ground line and short roots must fit in the central vertical quarter of this source canvas. Put the ground line at precisely mid-height, let upper and lower areas be expendable quiet texture. Continuous ground across the full width, irregular organic edge, no big rocks, no tunnel opening, no burrow, no ants, no eggs, no food, no buildings, no letters, no UI, no border, no watermark. Paint should be restrained and soft, original hand-painted paper texture, muted warm clay #986B4C and #503B32, sage #688C70, cream #F6ECD8. Light comes from upper left, modest contrast. This is a decorative background and must not imply gameplay entrances. Fully opaque full-bleed image, no transparency, no dark vignette.",
+      "generated_filename": "exec-745507e9-2add-4174-b7b9-49d57a1cf613.png",
+      "saved_as": "assets/source/a02-02/masters/surface_backdrop.png",
+      "reference_inputs": [
+        "assets/source/a01-01/masters/terrain_soil_1.png",
+        "assets/source/a01-02/masters/room_queen.png"
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_1",
+      "prompt": "Use case: stylized-concept. Asset type: one transparent digging-damage overlay sprite for a warm hand-painted 2D ant-colony game. The reference image is soil style/color ONLY, NOT an edit target, do not include its ground. Create CRACK STAGE 1: a single restrained three-arm branching hairline fracture centered at (50%,50%), irregular organic Y shape, main narrow arm from (50%,50%) towards (32%,25%), second towards (71%,37%), third towards (48%,72%). Dark warm brown #503B32 fissure with a very narrow muted clay highlight along one edge. Hand-painted gouache edges, minimal paper grain, upper-left soft light. Square canvas, one sprite only, the visible fracture fits fully within the central 60% of width and height, minimum 18% fully transparent padding on all four sides. Make the line clearly readable after downscale to a 144x144 texture displayed at 48pt: about 2-3px wide at export, taper at ends, no micro-crackle. Everything between the thin crack strokes and outside them MUST be genuinely transparent; no soil tile, no ground-colored plate, no opaque patch, no background, no vignette, no shadow haze. This is the first of three taps, not a destroyed hole. No rocks, no debris, no root, no lightning glow, no text, no borders, no symbols, no UI, no watermark. The intended final export uses the whole square canvas without tight cropping.",
+      "generated_filename": "exec-dcbaa94c-b50b-4719-888b-0bb96819d9cf.png",
+      "saved_as": "assets/source/a02-02/reference_sources/crack_1_initial.png",
+      "reference_inputs": [
+        "assets/source/a01-01/masters/terrain_soil_1.png"
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_2",
+      "prompt": "Use case: precise-object-edit. Edit target image 1 is the existing transparent digging CRACK STAGE 1. Produce exactly one CRACK STAGE 2 transparent overlay for the SAME square tile. Keep the square canvas, exact central junction, all three original branch paths and their endpoints, colors, light direction and transparent background unchanged. Keep original fracture strokes visible at the same coordinates; add only four short slender subordinate offshoot cracks connected to existing arms, and widen the central junction slightly (no more than 1.4 times). Offshoots alternate sides and fit inside 15%-85% of the canvas. The result is visibly more fractured at 48pt, but remains mostly transparent narrow lines, no detached stone plates or destroyed hole. Cozy hand-painted gouache, dark warm-brown fissure with a restrained warm clay bevel. All spaces between strokes truly alpha transparent; no tile, no soil fill, no opaque background, no black haze, no glow, no text, no border, no UI, no watermark. Do not rotate, shift, scale, reframe or recompose the original three-arm fracture. Whole-canvas export to 144x144; stage 1 -> stage 2 should grow cracks in place.",
+      "generated_filename": "exec-73a283d9-c2af-42ff-814f-80da5a1409be.png",
+      "saved_as": "assets/source/a02-02/reference_sources/crack_2_initial.png",
+      "reference_inputs": [
+        "assets/source/a02-02/reference_sources/crack_1_initial.png"
+      ]
+    },
+    {
+      "id": "dig_feedback_crumb",
+      "prompt": "Use case: stylized-concept. Asset type: one tiny soil-debris particle sprite for a cozy 2D hand-painted ant-colony game. Input image 1 is ONLY the soil material and warm-brown palette reference. Draw ONE compact irregular angular-but-soft earthen clod, a four/five-sided rounded chunk of dry clay, centered on a genuinely transparent square canvas, occupying about 62% of its width and 58% of its height. One solid readable silhouette, two broad warm clay facets, upper-left soft light, deeper umber lower-right face, restrained gouache paper texture. Soil brown #986B4C and warm dark #503B32, not golden yellow, not a cookie or food. Intended runtime texture 36x36px @3x displayed 12x12pt; should read clearly even at 8pt. Leave clean transparent padding on every side. Flat 2D sprite, orthographic, no cast shadow, no floor or ground, no dust cloud, no trail, no multiple particles, no facial features, no sparkles, no text, no border, no watermark. Whole-canvas export, no tight cropping.",
+      "generated_filename": "exec-994bc319-b882-4a4d-a947-a946a11bb229.png",
+      "saved_as": "assets/source/a02-02/masters/dig_feedback_crumb.png",
+      "reference_inputs": [
+        "assets/source/a01-01/masters/terrain_soil_1.png"
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_1_cleanup",
+      "prompt": "Use case: precise-object-edit. Edit target is a transparent crack overlay for a 48pt game tile. Keep the EXACT central three-arm fissure unchanged: same coordinates, silhouette, width, endpoints, colors, canvas dimensions and transparency. ONLY clean stray low-opacity specks outside the central crack. In particular remove the tiny isolated speck near the upper-right at roughly (96%,10%). Every pixel not belonging to the central Y-shaped fracture must be fully transparent. Clean all isolated specks near every border, leaving at least 15% completely clear padding around the canvas. Do not add any strokes, glow, shadow, background, paper or ground. Do not shift, crop, rotate or scale the fracture. The central main fracture must be preserved precisely, not reinterpreted. Output transparent PNG.",
+      "generated_filename": "exec-65c27556-5f94-43a7-815b-d8de42797983.png",
+      "saved_as": "assets/source/a02-02/masters/dig_feedback_crack_1.png",
+      "reference_inputs": [
+        "assets/source/a02-02/reference_sources/crack_1_initial.png"
+      ]
+    },
+    {
+      "id": "dig_feedback_crack_2_readability",
+      "prompt": "Use case: precise-object-edit. Image 1 is the EDIT TARGET: transparent digging crack stage 2. Improve only its small-size legibility. Keep the exact canvas, central junction and positions of the existing three main arms; keep their paths and endpoints anchored. Widen the dark fissures to about 1.8 times their current width, with dark matte umber centers and restrained clay edges; extend the four already-present side branches to approximately twice their current lengths so STAGE 2 is unmistakably more fractured than STAGE 1 at only 48pt. The resulting visible shape must fit within x=25%-80%, y=22%-78%; all outside pixels fully transparent. Preserve hand-painted irregularity and tapering ends, no perfectly straight lightning. Still thin fissure lines with transparent space between them, NOT filled ground or a hole, no detached plates. No external shadow, glow, bright gold rim, ground, text, border or extra objects. Exact central main-arm coordinates stay unchanged: do not rotate, translate, crop, stretch or recenter. Maintain a genuinely transparent square PNG.",
+      "generated_filename": "exec-9bc40d6f-334d-4ce6-969e-e3edf7e8b50d.png",
+      "saved_as": "assets/source/a02-02/masters/dig_feedback_crack_2.png",
+      "reference_inputs": [
+        "assets/source/a02-02/reference_sources/crack_2_initial.png"
+      ]
+    }
+  ]
+}
